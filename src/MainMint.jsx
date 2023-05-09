@@ -3,6 +3,7 @@ import { Flex, Box, Text, Button, Input, Spacer,Skeleton,Card,CardBody,Heading, 
 import { useState } from 'react'
 import { useAddress ,useContract,Web3Button,useContractRead} from "@thirdweb-dev/react";
 import { NFT_ADDRESS } from './const/contractAddress';
+import { ABI } from './const/abi';
 import { ethers } from 'ethers';
 
 const MainMint = () => {
@@ -25,6 +26,19 @@ const MainMint = () => {
     if (coinAmount <= 1) return
     setCoinAmount(coinAmount - 1)
   }
+  // const { instance } = useContract({
+  //   abi: ABI,
+  //   address: 'NFT_ADDRESS',
+  //   provider: new ethers.providers.JsonRpcProvider('https://goerli.infura.io/v3/your-project-id')
+  // })
+
+  // useEffect(() => {
+  //   instance.on('NewBuying', (from, timestamp, mintAmount, totalSupply) => {
+  //     console.log('NewBuying event:', from, timestamp, mintAmount, totalSupply);
+  //   });
+  //   // unsubscribe from the event when the component unmounts
+  //   return () => instance.removeAllListeners('NewBuying');
+  // }, [instance]);
   const {
     data:totalNFT,
     isLoading:loadingTotalNFT
@@ -59,11 +73,11 @@ const MainMint = () => {
                 lineHeight={"26px"}
               >
                 <Text>
-                I hate yellow bull.
+                I hate scalper ticket.
                 </Text>
                 Our mission is to ensure that all fan can buy a ticket at fair price.
               </Text>
-              <Box
+              {/* <Box
                 fontSize="30px"
                 letterSpacing="0.5%"
                 fontFamily="VT323"
@@ -74,11 +88,10 @@ const MainMint = () => {
                 <Skeleton
                   isLoaded={!loadingTotalNFT}
                 >
-                  {/* BmT coin: {totalNFT?.toString()} */}
                   BmT coin: 20
                 </Skeleton>
-              </Box>
-              {address ? (
+              </Box> */}
+              {/* {address ? (
               <div>
                 <Flex align="center" justify="center">
                   <Button
@@ -148,8 +161,8 @@ const MainMint = () => {
                 >
                   You must be connected to Mint
                 </Text>
-              )}
-              <Box
+              )} */}
+              {/* <Box
                 fontSize="30px"
                 letterSpacing="0.5%"
                 fontFamily="VT323"
@@ -160,17 +173,16 @@ const MainMint = () => {
                 <Skeleton
                   isLoaded={!loadingTotalNFT}
                 >
-                  {/* Number you can buy : {totalNFT?.toString()} */}
                   Number you can mint : 0
                 </Skeleton>
-              </Box>
+              </Box> */}
               
-              <Spacer />
+              {/* <Spacer /> */}
 
 
             </div>
         </Box>
-        <SimpleGrid
+        {/* <SimpleGrid
           columns={3}
           spacing={10}
           mt={'100px'}
@@ -263,10 +275,6 @@ const MainMint = () => {
                 >
                   Mint
                 </Web3Button>
-                
-                {/* </Button> */}
-
-                {/* 目前已賣出 */}
                 <Box
                   fontSize="30px"
                   letterSpacing="0.5%"
@@ -376,7 +384,7 @@ const MainMint = () => {
                   Burn
                 </Web3Button>
                 <Flex align="center" justify="center">
-                  <Text mb='8px' color={'black'}>Value:</Text>
+                  <Text mb='8px'>Value:</Text>
                   <Input
                     width="200px"
                     height="35px"
@@ -422,7 +430,7 @@ const MainMint = () => {
             </Stack>
             
           </Box>
-        </SimpleGrid>
+        </SimpleGrid> */}
       </Flex>
     </Flex >
   )

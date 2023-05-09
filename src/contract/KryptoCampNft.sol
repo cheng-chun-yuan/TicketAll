@@ -25,7 +25,7 @@ contract KryptoCampNFT is ERC721, Ownable {
         maxSupply = 999;
         maxPerWallet = 8; // 每個錢包最多買三個 NFT
     }
-
+    
     function setIsPublicMintenable(
         bool _isPublicMintEnabled
     ) external onlyOwner {

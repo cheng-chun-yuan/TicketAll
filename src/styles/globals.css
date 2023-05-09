@@ -4,7 +4,8 @@
 .App {
   text-align: center;
   font-family: "Press Start 2P", "VT323";
-  color: #4f6a84;
+  color: #eef2f5;
+  font-weight:bold;
 }
 
 * {
@@ -34,6 +35,9 @@ code {
   top: 0;
   left: 0;
   position: fixed;
+}
+.Web3Button[isDisabled] {
+  opacity: 0.85;
 }
 
 .moving-background {

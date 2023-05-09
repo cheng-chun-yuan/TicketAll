@@ -11,7 +11,18 @@ contract DemoNFT is ERC721 {
     address public owner; //people who construct the contrast
     uint256 public maxSupply; //total supply
     uint256 public nftPrice; // the price of NFT(initial)
-    event Refund(uint256 _tokenId,uint256 refundAmount); //to show the event of refund 
+    event Refund(
+        address indexed from,
+        uint256 timestamp,
+        uint256 _tokenId,
+        uint256 refundAmount
+    ); //to show the event of refund 
+    event NewBuying (
+        address indexed from,
+        uint256 timestamp,
+        uint256 _mintAmount,
+        uint256 _totalSupply;
+    );//to show the buying option
     uint256 public nowSupply = 0; //the current mint number
     string private baseURI; // the picture's baseURL
     uint256 public maxPerWallet; //the max NFT number for
@@ -152,6 +163,12 @@ contract DemoNFT is ERC721 {
             _safeMint(msg.sender, newTokenId);
             ticketUsed[newTokenId] = false;
         }
+        emit NewBuying(
+            msg.sender,
+            block.timestamp,
+            _mintAmount,
+            nowSupply
+        );
     }
 
     //get the money from contract
@@ -174,7 +191,12 @@ contract DemoNFT is ERC721 {
         nextSaleNumber++;
         // 发送退款给申请者
         payable(msg.sender).transfer(refundAmount);
-        emit Refund(_tokenId, refundAmount);
+        emit Refund(
+            msg.sender,
+            block.timestamp,
+            _tokenId, 
+            refundAmount
+        );
     }
 
     //transfer override with price limit
