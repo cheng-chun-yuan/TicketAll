@@ -26,7 +26,8 @@ import {
     Card,
     CardBody,
     Checkbox,
-    Stack
+    Stack,
+    Container
 } from '@chakra-ui/react';
 
 import { useToast } from '@chakra-ui/react';
@@ -542,6 +543,12 @@ export default function multistep() {
         <>
             <Box
                 borderWidth="1px"
+                sx={
+                    {
+                    backgroundColor: "black",
+                    opacity:0.85
+                    }
+                }
                 rounded="lg"
                 shadow="1px 1px 3px rgba(0,0,0,0.3)"
                 maxWidth={800}

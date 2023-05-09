@@ -3,7 +3,7 @@ KryptoCamp NFT 即將開賣！
 智能合約已完成並部署至測試鏈上，你能幫 KryptoCamp 完成販賣 NFT 網站嗎？
 在網站上線前，總共需要完成三個功能
 ![](https://i.imgur.com/WLDl3e2.jpg)
-
+071
 ## 作業規格
 1. 使用者可以連接錢包
 2. 讀取智能合約的 totalSupply（目前被購買幾個NFT），並顯示畫面上

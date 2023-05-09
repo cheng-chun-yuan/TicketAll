@@ -36,9 +36,6 @@ code {
   left: 0;
   position: fixed;
 }
-.Web3Button[isDisabled] {
-  opacity: 0.85;
-}
 
 .moving-background {
   z-index: -1;
@@ -52,3 +49,5 @@ code {
   background-attachment: fixed;
   background-position: 40% 40%;
 }
+
+

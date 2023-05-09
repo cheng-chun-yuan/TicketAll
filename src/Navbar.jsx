@@ -1,11 +1,26 @@
 import React from 'react'
 import { useState } from 'react'
-import { Box, Flex, Image, Link, Spacer,useDisclosure } from '@chakra-ui/react'
+import {
+  Box,
+  Flex,
+  Image,
+  Link,
+  Spacer,
+  useDisclosure,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider
+} from '@chakra-ui/react'
 import Facebook from './assets/social-media-icons/facebook_32x32.png'
 import Twitter from './assets/social-media-icons/twitter_32x32.png'
 import Linchiyi from './assets/social-media-icons/email_32x32.png'
 import { Button } from '@chakra-ui/react'
-import { ConnectWallet,Web3Button,useContract, useContractRead } from '@thirdweb-dev/react';
+import { ConnectWallet, Web3Button, useContract, useContractRead } from '@thirdweb-dev/react';
 
 
 const Navbar = () => {
@@ -47,9 +62,9 @@ const Navbar = () => {
       >
         {/* <Box margin="0 15px" className="items">About</Box> */}
         <Box margin="0 15px" className="items" position="relative">
-          <Link href="#" _hover={{ color: "blue" }}>About</Link>
+          <Link href="About" _hover={{ color: "blue" }}>About</Link>
           <Box position="absolute" top="100%" left="50%" transform="translateX(-50%)" backgroundColor="white" padding="10px" borderRadius="5px" boxShadow="md" opacity="0" transition="opacity 0.3s">
-            <Link href="#">About Us</Link>
+            <Link href="anout us">About Us</Link>
             <Link href="#">Our Vision</Link>
             <Link href="#">Our Mission</Link>
           </Box>
@@ -57,7 +72,7 @@ const Navbar = () => {
         <Spacer />
         {/* <Box margin="0 15px" className="items">Mint</Box> */}
         <Box margin="0 15px" className="items" position="relative">
-          <Link href="#" _hover={{ color: "blue" }}>Mint</Link>
+          <Link href="Mint" _hover={{ color: "blue" }}>Mint</Link>
           <Box
             position="absolute"
             top="100%"
@@ -78,16 +93,49 @@ const Navbar = () => {
         <Spacer />
         {/* <Box margin="0 15px" className="items">Team</Box> */}
         <Box margin="0 15px" className="items" position="relative">
-          <Link href="#" _hover={{ color: "blue" }}>Team</Link>
-          <Box position="absolute" top="100%" left="50%" transform="translateX(-50%)" backgroundColor="white" padding="10px" borderRadius="5px" boxShadow="md" opacity="0" transition="opacity 0.3s">
-            <Link href="#">Our Core Team</Link>
-            <Link href="#">Advisors</Link>
-          </Box>
+          <Menu>
+            <MenuButton 
+              className="team" 
+              sx={{ 
+                backgroundColor: "transparent",
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "transparent",
+                  color: "blue"
+                }
+              }}
+              as={Button}
+            >
+              Team
+            </MenuButton>
+            <MenuList>
+              <MenuItem minH='48px'>
+                <Image
+                  boxSize='2rem'
+                  borderRadius='full'
+                  src='https://placekitten.com/100/100'
+                  alt='Fluffybuns the destroyer'
+                  mr='12px'
+                />
+                <span>某某某</span>
+              </MenuItem>
+              <MenuItem minH='40px'>
+                <Image
+                  boxSize='2rem'
+                  borderRadius='full'
+                  src='https://placekitten.com/120/120'
+                  alt='Simon the pensive'
+                  mr='12px'
+                />
+                <span>Simon the pensive</span>
+              </MenuItem>
+            </MenuList>
+          </Menu>
         </Box>
         <Spacer />
 
         {/* TODO: 連接錢包 Connect */}
-        <ConnectWallet/>
+        <ConnectWallet />
       </Flex>
 
     </Flex >

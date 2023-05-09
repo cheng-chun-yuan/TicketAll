@@ -54,7 +54,7 @@ const MainMint = () => {
   }
 
   return (
-    <Flex justify="center" align="center" paddingBottom="150px">
+    <Flex justify="center" align="center" paddingBottom="10px">
       <Flex
         w={'100%'}
         alignItems={'center'}
