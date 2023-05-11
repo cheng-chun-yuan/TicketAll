@@ -1,38 +1,28 @@
 import React from 'react'
-import { useState } from 'react'
 import {
   Box,
   Flex,
   Image,
   Link,
   Spacer,
-  useDisclosure,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider
+  useDisclosure,
+  Heading
 } from '@chakra-ui/react'
 import Facebook from './assets/social-media-icons/facebook_32x32.png'
 import Twitter from './assets/social-media-icons/twitter_32x32.png'
 import Linchiyi from './assets/social-media-icons/email_32x32.png'
 import { Button } from '@chakra-ui/react'
-import { ConnectWallet, Web3Button, useContract, useContractRead } from '@thirdweb-dev/react';
-
+import { ConnectWallet } from '@thirdweb-dev/react';
+import { useState } from 'react';
 
 const Navbar = () => {
-  const [showToggler, setShowToggler] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const handleHover = () => {
-    setShowToggler(true);
-  };
-
-  const handleLeave = () => {
-    setShowToggler(false);
-  };
+  const { isOpen, onOpen, onClose} = useDisclosure()
+  const { isOpen: isOpen1, onOpen: onOpen1, onClose: onClose1 } = useDisclosure()
+  const { isOpen: isOpen2, onOpen: onOpen2, onClose: onClose2 } = useDisclosure()
   return (
     <Flex
       className="navbar flex-row"
@@ -60,43 +50,13 @@ const Navbar = () => {
         className="flex-row"
         padding="30px"
       >
-        {/* <Box margin="0 15px" className="items">About</Box> */}
-        <Box margin="0 15px" className="items" position="relative">
-          <Link href="About" _hover={{ color: "blue" }}>About</Link>
-          <Box position="absolute" top="100%" left="50%" transform="translateX(-50%)" backgroundColor="white" padding="10px" borderRadius="5px" boxShadow="md" opacity="0" transition="opacity 0.3s">
-            <Link href="anout us">About Us</Link>
-            <Link href="#">Our Vision</Link>
-            <Link href="#">Our Mission</Link>
-          </Box>
-        </Box>
-        <Spacer />
-        {/* <Box margin="0 15px" className="items">Mint</Box> */}
-        <Box margin="0 15px" className="items" position="relative">
-          <Link href="Mint" _hover={{ color: "blue" }}>Mint</Link>
-          <Box
-            position="absolute"
-            top="100%"
-            left="50%"
-            transform="translateX(-50%)"
-            backgroundColor="white"
-            padding="10px"
-            borderRadius="5px"
-            boxShadow="md"
-            opacity="0"
-            transition="opacity 0.3s"
-            pointerEvents="none"
-          >
-            <Link href="#">How to Mint</Link>
-            <Link href="#">FAQ</Link>
-          </Box>
-        </Box>
-        <Spacer />
-        {/* <Box margin="0 15px" className="items">Team</Box> */}
-        <Box margin="0 15px" className="items" position="relative">
-          <Menu>
-            <MenuButton 
-              className="team" 
-              sx={{ 
+        <Box margin="0 15px">
+          <Menu isOpen={isOpen}>
+            <MenuButton
+
+              onMouseEnter={onOpen}
+              onMouseLeave={onClose}
+              sx={{
                 backgroundColor: "transparent",
                 color: "white",
                 "&:hover": {
@@ -104,30 +64,190 @@ const Navbar = () => {
                   color: "blue"
                 }
               }}
-              as={Button}
+            >
+              About
+            </MenuButton>
+            <Link href="https://www.facebook.com/profile.php?id=100001337162372" className="items">
+              <MenuList onMouseEnter={onOpen} onMouseLeave={onClose}>
+                <MenuItem
+                  minH='30px'
+                  color={'black'}
+                  fontFamily="VT323"
+                  href="https://www.facebook.com/profile.php?id=100001337162372"
+                >
+                  <Image
+                    boxSize='2rem'
+                    borderRadius='full'
+                    src={Linchiyi}
+                    alt='Simon the pensive'
+                    mr='12px'
+                  />
+                  <span>
+                    林倩3
+                  </span>
+                </MenuItem>
+                <MenuItem
+                  minH='30px'
+                  color={'black'}
+                >
+                  <Image
+                    boxSize='2rem'
+                    borderRadius='full'
+                    src={Linchiyi}
+                    alt='Simon the pensive'
+                    mr='12px'
+                  />
+                  <span>
+                    林倩一
+                  </span>
+                </MenuItem>
+                <MenuItem
+                  minH='30px'
+                  color={'black'}
+                >
+                  <Image
+                    boxSize='2rem'
+                    borderRadius='full'
+                    src={Linchiyi}
+                    alt='Simon the pensive'
+                    mr='12px'
+                  />
+                  <span>
+                    林倩一
+                  </span>
+                </MenuItem>
+                <MenuItem
+                  minH='30px'
+                  color={'black'}
+                >
+                  <Image
+                    boxSize='2rem'
+                    borderRadius='full'
+                    src={Linchiyi}
+                    alt='Simon the pensive'
+                    mr='12px'
+                  />
+                  <span>林倩伊</span>
+                </MenuItem>
+              </MenuList>
+            </Link>
+
+          </Menu>
+        </Box>
+        <Spacer />
+        {/* <Box margin="0 15px" className="items">Mint</Box> */}
+        <Box margin="0 15px">
+          <Menu 
+            isOpen={isOpen1}
+            opacity={'0.8'}
+          >
+            <MenuButton
+              onMouseEnter={onOpen1}
+              onMouseLeave={onClose1}
+              sx={{
+                backgroundColor: "transparent",
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "transparent",
+                  color: "blue"
+                }
+              }}
+            >
+              Mint
+            </MenuButton>
+            <MenuList onMouseEnter={onOpen} onMouseLeave={onClose}>
+              <MenuItem
+                minH='30px'
+                color={'black'}
+                fontFamily="VT323"
+                fontSize={'xl'}
+                width={'400px'}
+                fontWeight={'bold'}
+              >
+                <span>
+                  We're a NFT ticket company committed to eliminating scalpers and providing a secure way for fans to purchase tickets for events. Our blockchain-powered digital assets ensure authenticity and fair prices, and we work directly with event organizers and artists. Thank you for choosing us for your ticketing needs.
+                </span>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </Box>
+        <Spacer />
+        {/* <Box margin="0 15px" className="items">Team</Box> */}
+        <Box margin="0 15px">
+          <Menu isOpen={isOpen2}>
+            <MenuButton
+              onMouseEnter={onOpen2}
+              onMouseLeave={onClose2}
+              sx={{
+                backgroundColor: "transparent",
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "transparent",
+                  color: "blue"
+                }
+              }}
             >
               Team
             </MenuButton>
-            <MenuList>
-              <MenuItem minH='48px'>
+            <MenuList onMouseEnter={onOpen2} onMouseLeave={onClose2}>
+              <MenuItem
+                minH='30px'
+                color={'black'}
+                fontFamily="VT323"
+              >
                 <Image
                   boxSize='2rem'
                   borderRadius='full'
-                  src='https://placekitten.com/100/100'
-                  alt='Fluffybuns the destroyer'
-                  mr='12px'
-                />
-                <span>某某某</span>
-              </MenuItem>
-              <MenuItem minH='40px'>
-                <Image
-                  boxSize='2rem'
-                  borderRadius='full'
-                  src='https://placekitten.com/120/120'
+                  src={Linchiyi}
                   alt='Simon the pensive'
                   mr='12px'
                 />
-                <span>Simon the pensive</span>
+                <span>
+                  林倩一
+                </span>
+              </MenuItem>
+              <MenuItem
+                minH='30px'
+                color={'black'}
+              >
+                <Image
+                  boxSize='2rem'
+                  borderRadius='full'
+                  src={Linchiyi}
+                  alt='Simon the pensive'
+                  mr='12px'
+                />
+                <span>
+                  林倩一
+                </span>
+              </MenuItem>
+              <MenuItem
+                minH='30px'
+                color={'black'}
+              >
+                <Image
+                  boxSize='2rem'
+                  borderRadius='full'
+                  src={Linchiyi}
+                  alt='Simon the pensive'
+                  mr='12px'
+                />
+                <span>
+                  林倩一
+                </span>
+              </MenuItem>
+              <MenuItem
+                minH='30px'
+                color={'black'}
+              >
+                <Image
+                  boxSize='2rem'
+                  borderRadius='full'
+                  src={Linchiyi}
+                  alt='Simon the pensive'
+                  mr='12px'
+                />
+                <span>林倩伊</span>
               </MenuItem>
             </MenuList>
           </Menu>

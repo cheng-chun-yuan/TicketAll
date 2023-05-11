@@ -1,94 +1,94 @@
 function AirbnbCard() {
-    const property = {
-        imageUrl: 'https://bit.ly/2Z4KKcF',
-        imageAlt: 'Rear view of modern home with pool',
-        beds: 3,
-        baths: 2,
-        title: 'Modern home in city center in the heart of historic Los Angeles',
-        formattedPrice: '$1,900.00',
-        reviewCount: 34,
-        rating: 4,
-    }
+	const property = {
+		imageUrl: 'https://bit.ly/2Z4KKcF',
+		imageAlt: 'Rear view of modern home with pool',
+		beds: 3,
+		baths: 2,
+		title: 'Modern home in city center in the heart of historic Los Angeles',
+		formattedPrice: '$1,900.00',
+		reviewCount: 34,
+		rating: 4,
+	}
 
-    return (
-        <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden'>
-            <Image src={property.imageUrl} alt={property.imageAlt} />
+	return (
+		<Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden'>
+			<Image src={property.imageUrl} alt={property.imageAlt} />
 
-            <Box p='6'>
-                <Box display='flex' alignItems='baseline'>
-                    <Badge borderRadius='full' px='2' colorScheme='teal'>
-                        New
-                    </Badge>
-                    <Box
-                        color='gray.500'
-                        fontWeight='semibold'
-                        letterSpacing='wide'
-                        fontSize='xs'
-                        textTransform='uppercase'
-                        ml='2'
-                    >
-                        {property.beds} beds &bull; {property.baths} baths
-                    </Box>
-                </Box>
+			<Box p='6'>
+				<Box display='flex' alignItems='baseline'>
+					<Badge borderRadius='full' px='2' colorScheme='teal'>
+						New
+					</Badge>
+					<Box
+						color='gray.500'
+						fontWeight='semibold'
+						letterSpacing='wide'
+						fontSize='xs'
+						textTransform='uppercase'
+						ml='2'
+					>
+						{property.beds} beds &bull; {property.baths} baths
+					</Box>
+				</Box>
 
-                <Box
-                    mt='1'
-                    fontWeight='semibold'
-                    as='h4'
-                    lineHeight='tight'
-                    noOfLines={1}
-                >
-                    {property.title}
-                </Box>
+				<Box
+					mt='1'
+					fontWeight='semibold'
+					as='h4'
+					lineHeight='tight'
+					noOfLines={1}
+				>
+					{property.title}
+				</Box>
 
-                <Box>
-                    {property.formattedPrice}
-                    <Box as='span' color='gray.600' fontSize='sm'>
-                        / wk
-                    </Box>
-                </Box>
+				<Box>
+					{property.formattedPrice}
+					<Box as='span' color='gray.600' fontSize='sm'>
+						/ wk
+					</Box>
+				</Box>
 
-                <Box display='flex' mt='2' alignItems='center'>
-                    {Array(5)
-                        .fill('')
-                        .map((_, i) => (
-                            <StarIcon
-                                key={i}
-                                color={i < property.rating ? 'teal.500' : 'gray.300'}
-                            />
-                        ))}
-                    <Box as='span' ml='2' color='gray.600' fontSize='sm'>
-                        {property.reviewCount} reviews
-                    </Box>
-                </Box>
-            </Box>
-        </Box>
-    )
+				<Box display='flex' mt='2' alignItems='center'>
+					{Array(5)
+						.fill('')
+						.map((_, i) => (
+							<StarIcon
+								key={i}
+								color={i < property.rating ? 'teal.500' : 'gray.300'}
+							/>
+						))}
+					<Box as='span' ml='2' color='gray.600' fontSize='sm'>
+						{property.reviewCount} reviews
+					</Box>
+				</Box>
+			</Box>
+		</Box>
+	)
 }
 
 const socket = io(); // Connect to the Node.js server using socket.io
 
 socket.on('NewBuying', (data) => {
-    // Update the DOM with the retrieved data
-    const addressElement = document.getElementById('from');
-    const timeElement = document.getElementById('timestamp');
-    const idElement = document.getElementById('_tokenId');
-    const amountElement = document.getElementById('refundAmount');
-    addressElement.textContent = data.from;
-    timeElement.textContent = data.timestamp;
-    idElement.textContent = data._tokenId;
-    amountElement.textContent = data.refundAmountp;
+	// Update the DOM with the retrieved data
+	const addressElement = document.getElementById('from');
+	const timeElement = document.getElementById('timestamp');
+	const idElement = document.getElementById('_tokenId');
+	const amountElement = document.getElementById('refundAmount');
+	addressElement.textContent = data.from;
+	timeElement.textContent = data.timestamp;
+	idElement.textContent = data._tokenId;
+	amountElement.textContent = data.refundAmountp;
 });
 socket.on('Refund', (data) => {
-    // Update the DOM with the retrieved data
-    const addressElement = document.getElementById('from');
-    const timeElement = document.getElementById('timestamp');
-    const numElement = document.getElementById('_mintAmount');
-    const supplyElement = document.getElementById('_totalSupply');
-    addressElement.textContent = data.from;
-    timeElement.textContent = data.timestamp;
-    numElement.textContent = data._mintAmount;
-    supplyElement.textContent = data._totalSupply;
+	// Update the DOM with the retrieved data
+	const addressElement = document.getElementById('from');
+	const timeElement = document.getElementById('timestamp');
+	const numElement = document.getElementById('_mintAmount');
+	const supplyElement = document.getElementById('_totalSupply');
+	addressElement.textContent = data.from;
+	timeElement.textContent = data.timestamp;
+	numElement.textContent = data._mintAmount;
+	supplyElement.textContent = data._totalSupply;
 });
 
 // Emit the 'getData' event to request data from the Node.js server
@@ -806,3 +806,68 @@ socket.emit('getData');
 	}
 ]
 
+	< Menu isOpen = { isOpen1 } >
+        <MenuButton
+          variant="ghost"
+          mx={1}
+          py={[1, 2, 2]}
+          px={4}
+          borderRadius={5}
+          _hover={{ bg: "gray.100" }}
+          aria-label="Menu 1"
+          onMouseEnter={onOpen1}
+          onMouseLeave={onClose1}
+        >
+          Menu 1 {isOpen1 ? <ChevronUpIcon /> : <ChevronDownIcon />}
+        </MenuButton>
+        <MenuList onMouseEnter={onOpen1} onMouseLeave={onClose1}>
+          <MenuItem>Menu Item 1</MenuItem>
+          <MenuItem>Menu Item 2</MenuItem>
+          <MenuItem>Menu Item 3</MenuItem>
+        </MenuList>
+    </Menu >
+
+      <Menu isOpen={isOpen2}>
+        <MenuButton
+          variant="ghost"
+          mx={1}
+          py={[1, 2, 2]}
+          px={4}
+          borderRadius={5}
+          _hover={{ bg: "gray.100" }}
+          aria-label="Menu 2"
+          onMouseEnter={onOpen2}
+          onMouseLeave={onClose2}
+        >
+          Menu 2 {isOpen2 ? <ChevronUpIcon /> : <ChevronDownIcon />}
+        </MenuButton>
+        <MenuList onMouseEnter={onOpen2} onMouseLeave={onClose2}>
+          <MenuItem>Menu Item 4</MenuItem>
+          <MenuItem>Menu Item 5</MenuItem>
+          <MenuItem>Menu Item 6</MenuItem>
+        </MenuList>
+      </Menu>
+
+      <Menu isOpen={isOpen3}>
+        <MenuButton
+          variant="ghost"
+          mx={1}
+          py={[1, 2, 2]}
+          px={4}
+          borderRadius={5}
+          _hover={{ bg: "gray.100" }}
+          aria-label="Menu 3"
+          onMouseEnter={onOpen3}
+          onMouseLeave={onClose3}
+        >
+          Menu 3 {isOpen3 ? <ChevronUpIcon /> : <ChevronDownIcon />}
+        </MenuButton>
+        <MenuList onMouseEnter={onOpen3} onMouseLeave={onClose3}>
+          <MenuItem>Menu Item 7</MenuItem>
+          <MenuItem>Menu Item 8</MenuItem>
+          <MenuItem>Menu Item 9</MenuItem>
+        </MenuList>
+      </Menu>
+    </>
+  );
+}

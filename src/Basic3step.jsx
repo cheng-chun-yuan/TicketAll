@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAddress, useContract, Web3Button, useContractRead } from "@thirdweb-dev/react";
+import { useAddress, useContract, Web3Button, useContractRead} from "@thirdweb-dev/react";
 import { NFT_ADDRESS } from './const/contractAddress';
 import { ethers } from 'ethers';
 import {
@@ -13,59 +13,39 @@ import {
     GridItem,
     FormLabel,
     Input,
-    Select,
     SimpleGrid,
     InputLeftAddon,
     InputGroup,
     Textarea,
     Text,
-    Spacer,
     Skeleton,
     FormHelperText,
-    InputRightElement,
-    Card,
-    CardBody,
     Checkbox,
     Stack,
-    Container
 } from '@chakra-ui/react';
-
 import { useToast } from '@chakra-ui/react';
 
 const Form1 = () => {
-    const [show, setShow] = React.useState(false);
-    const handleClick = () => setShow(!show);
     const { contract } = useContract(NFT_ADDRESS)
-    const [mintAmount, setMintAmount] = useState(1)
     const [coinAmount, setCoinAmount] = useState(1)
     const address = useAddress()
-    const mintprice = (0.001 * mintAmount).toString()
-    const [checkedItems, setCheckedItems] = React.useState([false, false])
-    const [value, setValue] = React.useState('')
-    const handleChange = (event) => setValue(event.target.value)
-    const allChecked = checkedItems.every(Boolean)
-    // const nowPrice = getAuctionPrice()
-    // const mintprice = (nowPrice * mintAmount).toString()
-    const handleDecrement = () => {
-        if (mintAmount <= 1) return
-        setMintAmount(mintAmount - 1)
-    }
     const handleDecrement2 = () => {
         if (coinAmount <= 1) return
         setCoinAmount(coinAmount - 1)
     }
     const {
-        data: totalNFT,
-        isLoading: loadingTotalNFT
-    } = useContractRead(contract, 'totalSupply')
-    const handleIncrement = () => {
-        if (mintAmount >= 8) return
-        setMintAmount(mintAmount + 1)
-    }
+        data: numCallOption,
+        isLoading: loadingCallOption
+    } = useContractRead(contract, "pointBalances", [address])
+    const {
+        data: totalmintA,
+        isLoading: loadingtotalmintA
+    } = useContractRead(contract, "totalmintAuthority")
     const handleIncrement2 = () => {
-        if (coinAmount >= 4) return
+        if (coinAmount >= 6) return
         setCoinAmount(coinAmount + 1)
     }
+    // const { data, isLoading } = useContractRead(contract, "calculatePoint", [coinAmount])
     return (
         <Box>
             <Heading
@@ -86,10 +66,10 @@ const Form1 = () => {
                 marginTop="20px"
             >
                 <Skeleton
-                    isLoaded={!loadingTotalNFT}
+                    isLoaded={!loadingtotalmintA}
                 >
-                    {/* BmT coin: {totalNFT?.toString()} */}
-                    BmT coin: 20
+                    totalsupply of mint Authority : {totalmintA?.toString()}
+                    {/* BmT coin: 20 */}
                 </Skeleton>
             </Box>
             {address ? (
@@ -135,20 +115,40 @@ const Form1 = () => {
                     </Flex>
 
                     <Web3Button
+                        style={{
+                            backgroundColor:"#D6517D",
+                            borderRadius:"5px",
+                            boxShadow:"0px 2px 2px 1px #0f0f0f",
+                            color:"white",
+                            cursor:"pointer",
+                            fontFamily:"inherit",
+                            padding:"10px",
+                            marginTop:"10px",
+                        }}
                         contractAddress={NFT_ADDRESS}
-                        action={async () => {
-                            await contract.call('mint', [mintAmount], {
-                                value: ethers.utils.parseEther(mintprice)
-                            })
+                        action={async() => {
+                            await contract.call('buyCallOption', [coinAmount])
                         }}
-                        onSuccess={() => {
-                            alert('成功囉')
-                        }}
-                        onError={(error) => {
-                            alert(error)
-                        }}
+                        //     try {
+                        //         const data = await buyCallOption({ args: [coinAmount] });
+                        //         console.info("contract call successs", data);
+                        //     } catch (err) {
+                        //         console.error("contract call failure", err);
+                        //     }
+                            // (contract) => {
+                            //     contract.call("buyCallOption", [coinAmount])
+                            // async () => { 
+                            // const data = await contract.call("calculatePoint", [coinAmount])
+                            // await contract.call("buyCallOption", [coinAmount])
+                            // await contract.methods.buyCallOption(coinAmount).send({
+                            //     ERC20: {
+                            //         tokenContract: '0xb637E978D7661Ff540B845C70CE84Ce448B16902',
+                            //         amount: point?.toString()
+                            //     }
+                            // });
+                        // }}
                     >
-                        mint authority
+                        Mint Authority
                     </Web3Button>
                 </div>
             ) : (
@@ -162,7 +162,8 @@ const Form1 = () => {
                 >
                     You must be connected to Mint
                 </Text>
-            )}
+            )
+            }
             <Box
                 fontSize="30px"
                 letterSpacing="0.5%"
@@ -172,48 +173,40 @@ const Form1 = () => {
                 marginTop="20px"
             >
                 <Skeleton
-                    isLoaded={!loadingTotalNFT}
+                    isLoaded={!loadingCallOption}
                 >
-                    {/* Number you can buy : {totalNFT?.toString()} */}
-                    Number you can mint : 0
+                    Number you can mint :  {numCallOption?.toString()}
+                    {/* BmT coin: 20 */}
                 </Skeleton>
             </Box>
-        </Box>
+        </Box >
     );
 };
 const Form2 = () => {
-    const [show, setShow] = React.useState(false);
-    const handleClick = () => setShow(!show);
     const { contract } = useContract(NFT_ADDRESS)
     const [mintAmount, setMintAmount] = useState(1)
-    const [coinAmount, setCoinAmount] = useState(1)
     const address = useAddress()
-    const mintprice = (0.001 * mintAmount).toString()
-    const [checkedItems, setCheckedItems] = React.useState([false, false])
-    const [value, setValue] = React.useState('')
-    const handleChange = (event) => setValue(event.target.value)
-    const allChecked = checkedItems.every(Boolean)
     // const nowPrice = getAuctionPrice()
     // const mintprice = (nowPrice * mintAmount).toString()
     const handleDecrement = () => {
         if (mintAmount <= 1) return
         setMintAmount(mintAmount - 1)
     }
-    const handleDecrement2 = () => {
-        if (coinAmount <= 1) return
-        setCoinAmount(coinAmount - 1)
-    }
+    const {
+        data: max,
+        isLoading: loadingmax
+    } = useContractRead(contract, "maxSupply")
     const {
         data: totalNFT,
         isLoading: loadingTotalNFT
-    } = useContractRead(contract, 'totalSupply')
+    } = useContractRead(contract, 'nowSupply')
+    const {
+        data: Auction,
+        isLoading: loadingAuction
+    } = useContractRead(contract, 'getAuctionPrice')
     const handleIncrement = () => {
         if (mintAmount >= 8) return
         setMintAmount(mintAmount + 1)
-    }
-    const handleIncrement2 = () => {
-        if (coinAmount >= 4) return
-        setCoinAmount(coinAmount + 1)
     }
     return (
         <Box>
@@ -226,9 +219,9 @@ const Form2 = () => {
                 marginTop="20px"
             >
                 <Skeleton
-                    isLoaded={!loadingTotalNFT}
+                    isLoaded={!loadingTotalNFT || !loadingmax}
                 >
-                    Remain nft number: {totalNFT?.toString()}0
+                    Remain nft number: {(max - totalNFT)?.toString()}
                 </Skeleton>
             </Box>
             <Box
@@ -240,9 +233,9 @@ const Form2 = () => {
                 marginTop="20px"
             >
                 <Skeleton
-                    isLoaded={!loadingTotalNFT}
+                    isLoaded={!loadingAuction}
                 >
-                    AuctionPrice: {totalNFT?.toString()}0000
+                    AuctionPrice: {Auction?.toString()}
                 </Skeleton>
             </Box>
             {address ? (
@@ -289,9 +282,14 @@ const Form2 = () => {
 
                     <Web3Button
                         contractAddress={NFT_ADDRESS}
-                        action={async () => {
-                            await contract.call('mint', [mintAmount], {
-                                value: ethers.utils.parseEther(mintprice)
+                        // action={async () => {
+                        //     await contract.call('mint', [mintAmount], {
+                        //         value: ethers.utils.parseEther(mintprice)
+                        //     })
+                        // }}
+                        action={(contract) => {
+                            contract.call("auctionmintNFT", [mintAmount], {
+                                value: ethers.utils.parseEther((mintAmount*Auction).toString())
                             })
                         }}
                         onSuccess={() => {
@@ -304,9 +302,6 @@ const Form2 = () => {
                         Mint
                     </Web3Button>
 
-                    {/* </Button> */}
-
-                    {/* 目前已賣出 */}
                     <Box
                         fontSize="30px"
                         letterSpacing="0.5%"
@@ -432,39 +427,12 @@ const Form3 = () => {
     );
 };
 const Form4 = () => {
-    const [show, setShow] = React.useState(false);
-    const handleClick = () => setShow(!show);
     const { contract } = useContract(NFT_ADDRESS)
-    const [mintAmount, setMintAmount] = useState(1)
-    const [coinAmount, setCoinAmount] = useState(1)
     const address = useAddress()
-    const mintprice = (0.001 * mintAmount).toString()
     const [checkedItems, setCheckedItems] = React.useState([false, false])
     const [value, setValue] = React.useState('')
     const handleChange = (event) => setValue(event.target.value)
     const allChecked = checkedItems.every(Boolean)
-    // const nowPrice = getAuctionPrice()
-    // const mintprice = (nowPrice * mintAmount).toString()
-    const handleDecrement = () => {
-        if (mintAmount <= 1) return
-        setMintAmount(mintAmount - 1)
-    }
-    const handleDecrement2 = () => {
-        if (coinAmount <= 1) return
-        setCoinAmount(coinAmount - 1)
-    }
-    const {
-        data: totalNFT,
-        isLoading: loadingTotalNFT
-    } = useContractRead(contract, 'totalSupply')
-    const handleIncrement = () => {
-        if (mintAmount >= 8) return
-        setMintAmount(mintAmount + 1)
-    }
-    const handleIncrement2 = () => {
-        if (coinAmount >= 4) return
-        setCoinAmount(coinAmount + 1)
-    }
     return (
         <Box>
             {address ? (
@@ -503,7 +471,7 @@ const Form4 = () => {
                     <Web3Button
                         contractAddress={NFT_ADDRESS}
                         action={async () => {
-                            await contract.call('burn', [value], {
+                            await contract.call('refund', [value], {
                                 // value: ethers.utils.parseEther(mintprice)
                             })
                         }}
@@ -545,8 +513,8 @@ export default function multistep() {
                 borderWidth="1px"
                 sx={
                     {
-                    backgroundColor: "black",
-                    opacity:0.85
+                        backgroundColor: "black",
+                        opacity: 0.85
                     }
                 }
                 rounded="lg"

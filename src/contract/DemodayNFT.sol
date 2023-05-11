@@ -11,22 +11,12 @@ contract DemoNFT is ERC721 {
     address public owner; //people who construct the contrast
     uint256 public maxSupply; //total supply
     uint256 public nftPrice; // the price of NFT(initial)
-    event Refund(
-        address indexed from,
-        uint256 timestamp,
-        uint256 _tokenId,
-        uint256 refundAmount
-    ); //to show the event of refund 
-    event NewBuying (
-        address indexed from,
-        uint256 timestamp,
-        uint256 _mintAmount,
-        uint256 _totalSupply;
-    );//to show the buying option
+    event Refund(uint256 _tokenId,uint256 refundAmount); //to show the event of refund 
     uint256 public nowSupply = 0; //the current mint number
     string private baseURI; // the picture's baseURL
     uint256 public maxPerWallet; //the max NFT number for
     uint256 public nextSaleNumber = 0;
+    uint256 public totalmintAuthority = 0;
     mapping(address => uint256) public pointBalances ; // Points balance of each user
     mapping(uint256 => bool) public ticketUsed;
     using Strings for uint256; 
@@ -67,23 +57,26 @@ contract DemoNFT is ERC721 {
         return ticketUsed[_tokenId];
     }
     function _baseURI() internal pure override returns (string memory) {
-        return "https://gateway.pinata.cloud/ipfs/QmdDzL4Rb2JLcJdQPtNuCJSZ5TTZKwYJXbbjyqVq49iyyL/";
+        return "https://gateway.pinata.cloud/ipfs/QmfAPy6SU7MV6qo8V5RVaWwbB3JRtKXngy7N46V45qxaTs/";
     }
     // //according to how many NFT it mint , change the tokenURL
     function tokenURI(uint256 _tokenId) public view override returns (string memory) {
+        // Todo
         _requireMinted(_tokenId);
         // uint256 picture = balanceOf(ownerOf(_tokenId));
         if(used_Ticket(_tokenId)){
-            return string(abi.encodePacked(_baseURI(),"commemorative_ticket.json"));
+            return string(abi.encodePacked("https://gateway.pinata.cloud/ipfs/QmdDzL4Rb2JLcJdQPtNuCJSZ5TTZKwYJXbbjyqVq49iyyL/","commemorative_ticket.json"));
         }
+        uint256 num = balanceOf(ownerOf(_tokenId));
         // return string(abi.encodePacked("https://gateway.pinata.cloud/ipfs/QmdDzL4Rb2JLcJdQPtNuCJSZ5TTZKwYJXbbjyqVq49iyyL/", picture.toString(), ".json"));
-        return string(abi.encodePacked(_baseURI(),"ticket.json"));
+        return string(abi.encodePacked(_baseURI(),num.toString(),".json"));
     }
+
 
     // count how many point(second token) it need to mint
     function calculatePoint(uint256 _mintAmount) public view returns (uint256) {
         //check how many nft in wallet
-        uint256 nowAmount = balanceOf(msg.sender);
+        uint256 nowAmount = balanceOf(msg.sender) + getCallOption();
         uint256 sum = (_mintAmount + 1 + nowAmount * 2) * _mintAmount / 2;
         return sum;
     }
@@ -95,9 +88,13 @@ contract DemoNFT is ERC721 {
         require(token.allowance(msg.sender, address(this)) >= costNum, "Token allowance not set");
         // Transfer the tokens from the user to this contract
         require(token.transferFrom(msg.sender, address(this), costNum), "Token transfer failed");
-        
+
         // Credit the user's account with the points
+        totalmintAuthority+= _mintAmount;
         pointBalances[msg.sender] += _mintAmount;
+    }
+    function useCallOption(uint256 _mintAmount) internal{
+        pointBalances[msg.sender] -= _mintAmount;
     }
     function getCallOption() public view checkbalance() returns (uint256){
         return pointBalances[msg.sender];
@@ -148,7 +145,7 @@ contract DemoNFT is ERC721 {
     function auctionmintNFT(uint256 _mintAmount) public payable checkbalance(){
     //new version
         // uint256 amountToken = calculatePoint(_mintAmount);
-        require(getCallOption() >= _mintAmount + balanceOf(msg.sender), "Buy call option first");
+        require(getCallOption() >= _mintAmount, "Buy call option first");
         uint256 amountETH = _mintAmount * getAuctionPrice();
         require(
             balanceOf(msg.sender) + _mintAmount <= maxPerWallet,
@@ -156,19 +153,13 @@ contract DemoNFT is ERC721 {
         );
 		require(msg.value == amountETH, "Must send the correct amount of ETH");
         require(nowSupply + _mintAmount <= maxSupply, "sold out");
-        
+        useCallOption(_mintAmount);
         for (uint256 i = 0; i < _mintAmount; i++) {
             uint256 newTokenId = nowSupply + 1;
             nowSupply++;
             _safeMint(msg.sender, newTokenId);
             ticketUsed[newTokenId] = false;
         }
-        emit NewBuying(
-            msg.sender,
-            block.timestamp,
-            _mintAmount,
-            nowSupply
-        );
     }
 
     //get the money from contract
@@ -191,12 +182,7 @@ contract DemoNFT is ERC721 {
         nextSaleNumber++;
         // 发送退款给申请者
         payable(msg.sender).transfer(refundAmount);
-        emit Refund(
-            msg.sender,
-            block.timestamp,
-            _tokenId, 
-            refundAmount
-        );
+        emit Refund(_tokenId, refundAmount);
     }
 
     //transfer override with price limit
