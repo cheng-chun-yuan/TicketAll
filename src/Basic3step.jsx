@@ -217,8 +217,12 @@ const Form2 = () => {
         data: Auction,
         isLoading: loadingAuction
     } = useContractRead(contract, 'getAuctionPrice')
+    const {
+        data: rerefund,
+        isLoading
+    } = useContractRead(contract, 'rerefund')
     const handleIncrement = () => {
-        if (mintAmount >= 8) return
+        if (mintAmount >= 6) return
         setMintAmount(mintAmount + 1)
     }
     return (
@@ -245,11 +249,16 @@ const Form2 = () => {
                 lineHeight={"26px"}
                 marginTop="20px"
             >
-                <Skeleton
-                    isLoaded={!loadingAuction}
-                >
-                    AuctionPrice: {Auction?.toString()}
-                </Skeleton>
+                {rerefund == 1 ? (
+                    <Skeleton
+                        isLoaded={!loadingAuction}
+                    >
+                        AuctionPrice: {Auction?.toString()}
+                    </Skeleton>
+                ) : (
+                    <Text>Mint not yet</Text>
+                )
+                }
             </Box>
             {address ? (
                 <div>
@@ -308,6 +317,7 @@ const Form2 = () => {
                         onError={(error) => {
                             alert('error:' + error.message)
                         }}
+                        isDisabled={rerefund}
                     >
                         Mint
                     </Web3Button>
