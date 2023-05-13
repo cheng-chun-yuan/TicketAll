@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useAddress, useContract, Web3Button, useContractRead} from "@thirdweb-dev/react";
-import { NFT_ADDRESS } from './const/contractAddress';
-import { ethers } from 'ethers';
+import { useAddress, useContract, Web3Button, useContractRead } from "@thirdweb-dev/react";
+import { NFT_ADDRESS, COIN_ADDRESS } from './const/contractAddress';
 import {
     Progress,
     Box,
@@ -22,10 +21,11 @@ import {
     FormHelperText,
     Checkbox,
     Stack,
+    useToast
 } from '@chakra-ui/react';
-import { useToast } from '@chakra-ui/react';
 
 const Form1 = () => {
+
     const { contract } = useContract(NFT_ADDRESS)
     const [coinAmount, setCoinAmount] = useState(1)
     const address = useAddress()
@@ -37,6 +37,7 @@ const Form1 = () => {
         data: numCallOption,
         isLoading: loadingCallOption
     } = useContractRead(contract, "pointBalances", [address])
+    const { tokenContract } = useContract(COIN_ADDRESS)
     const {
         data: totalmintA,
         isLoading: loadingtotalmintA
@@ -45,7 +46,6 @@ const Form1 = () => {
         if (coinAmount >= 6) return
         setCoinAmount(coinAmount + 1)
     }
-    // const { data, isLoading } = useContractRead(contract, "calculatePoint", [coinAmount])
     return (
         <Box>
             <Heading
@@ -98,6 +98,7 @@ const Form1 = () => {
                             marginTop="10px"
                             type="number"
                             value={coinAmount}
+                            onChange={(e) => setCoinAmount(e.target.value)}
                         />
                         <Button
                             backgroundColor="#D6517D"
@@ -116,37 +117,45 @@ const Form1 = () => {
 
                     <Web3Button
                         style={{
-                            backgroundColor:"#D6517D",
-                            borderRadius:"5px",
-                            boxShadow:"0px 2px 2px 1px #0f0f0f",
-                            color:"white",
-                            cursor:"pointer",
-                            fontFamily:"inherit",
-                            padding:"10px",
-                            marginTop:"10px",
+                            backgroundColor: "#D6517D",
+                            borderRadius: "5px",
+                            boxShadow: "0px 2px 2px 1px #0f0f0f",
+                            color: "white",
+                            cursor: "pointer",
+                            fontFamily: "inherit",
+                            padding: "10px",
+                            marginTop: "10px",
                         }}
                         contractAddress={NFT_ADDRESS}
-                        action={async() => {
-                            await contract.call('buyCallOption', [coinAmount])
+                        action={async () => {
+                            await contract.call('buyCallOption', [coinAmount], {
+                                from: address,
+                            })
                         }}
-                        //     try {
-                        //         const data = await buyCallOption({ args: [coinAmount] });
-                        //         console.info("contract call successs", data);
-                        //     } catch (err) {
-                        //         console.error("contract call failure", err);
-                        //     }
-                            // (contract) => {
-                            //     contract.call("buyCallOption", [coinAmount])
-                            // async () => { 
-                            // const data = await contract.call("calculatePoint", [coinAmount])
-                            // await contract.call("buyCallOption", [coinAmount])
-                            // await contract.methods.buyCallOption(coinAmount).send({
-                            //     ERC20: {
-                            //         tokenContract: '0xb637E978D7661Ff540B845C70CE84Ce448B16902',
-                            //         amount: point?.toString()
-                            //     }
-                            // });
-                        // }}
+                        onSuccess={() => {
+                            alert('成功囉')
+                        }}
+                        onError={(error) => {
+                            alert('error:' + error.message)
+                        }}
+                    //     try {
+                    //         const data = await buyCallOption({ args: [coinAmount] });
+                    //         console.info("contract call successs", data);
+                    //     } catch (err) {
+                    //         console.error("contract call failure", err);
+                    //     }
+                    // (contract) => {
+                    //     contract.call("buyCallOption", [coinAmount])
+                    // async () => { 
+                    // const data = await contract.call("calculatePoint", [coinAmount])
+                    // await contract.call("buyCallOption", [coinAmount])
+                    // await contract.methods.buyCallOption(coinAmount).send({
+                    //     ERC20: {
+                    //         tokenContract: '0xb637E978D7661Ff540B845C70CE84Ce448B16902',
+                    //         amount: point?.toString()
+                    //     }
+                    // });
+                    // }}
                     >
                         Mint Authority
                     </Web3Button>
@@ -200,6 +209,10 @@ const Form2 = () => {
         data: totalNFT,
         isLoading: loadingTotalNFT
     } = useContractRead(contract, 'nowSupply')
+    const {
+        data: totalNF,
+        isLoading: loadingTotalNF
+    } = useContractRead(contract, 'balanceOf', [address])
     const {
         data: Auction,
         isLoading: loadingAuction
@@ -264,6 +277,7 @@ const Form2 = () => {
                             marginTop="10px"
                             type="number"
                             value={mintAmount}
+                            onChange={(e) => setMintAmount(e.target.value)}
                         />
                         <Button
                             backgroundColor="#D6517D"
@@ -282,21 +296,17 @@ const Form2 = () => {
 
                     <Web3Button
                         contractAddress={NFT_ADDRESS}
-                        // action={async () => {
-                        //     await contract.call('mint', [mintAmount], {
-                        //         value: ethers.utils.parseEther(mintprice)
-                        //     })
-                        // }}
-                        action={(contract) => {
-                            contract.call("auctionmintNFT", [mintAmount], {
-                                value: ethers.utils.parseEther((mintAmount*Auction).toString())
+                        action={async () => {
+                            await contract.call("auctionmintNFT", [mintAmount], {
+                                value: (mintAmount * Auction).toString(),
+                                from: address,
                             })
                         }}
                         onSuccess={() => {
                             alert('成功囉')
                         }}
                         onError={(error) => {
-                            alert(error)
+                            alert('error:' + error.message)
                         }}
                     >
                         Mint
@@ -311,9 +321,9 @@ const Form2 = () => {
                         marginTop="20px"
                     >
                         <Skeleton
-                            isLoaded={!loadingTotalNFT}
+                            isLoaded={!loadingTotalNF}
                         >
-                            NFT in wallet:{totalNFT?.toString()}
+                            NFT in wallet:{totalNF?.toString()}
                         </Skeleton>
                     </Box>
                 </div>
@@ -430,7 +440,7 @@ const Form4 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const address = useAddress()
     const [checkedItems, setCheckedItems] = React.useState([false, false])
-    const [value, setValue] = React.useState('')
+    const [valuee, setValue] = React.useState('')
     const handleChange = (event) => setValue(event.target.value)
     const allChecked = checkedItems.every(Boolean)
     return (
@@ -444,7 +454,7 @@ const Form4 = () => {
                             height="35px"
                             textAlign="center"
                             type="number"
-                            value={value}
+                            value={valuee}
                             onChange={handleChange}
                             placeholder='your tokenId'
                             size='sm'
@@ -471,7 +481,7 @@ const Form4 = () => {
                     <Web3Button
                         contractAddress={NFT_ADDRESS}
                         action={async () => {
-                            await contract.call('refund', [value], {
+                            await contract.call('refund', [valuee], {
                                 // value: ethers.utils.parseEther(mintprice)
                             })
                         }}
@@ -484,7 +494,7 @@ const Form4 = () => {
                         isDisabled={!allChecked}
                         theme="dark"
                     >
-                        Burn
+                        Refund
                     </Web3Button>
                 </div>
             ) : (
@@ -508,7 +518,7 @@ export default function multistep() {
     const [step, setStep] = useState(1);
     const [progress, setProgress] = useState(25);
     return (
-        <>
+        <Box>
             <Box
                 borderWidth="1px"
                 sx={
@@ -522,14 +532,44 @@ export default function multistep() {
                 maxWidth={800}
                 p={6}
                 m="10px auto"
-                as="form">
+            >
                 <Progress
-                    hasStripe
                     value={progress}
                     mb="5%"
                     mx="5%"
-                    isAnimated></Progress>
+                ></Progress>
                 {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : step === 3 ? <Form3 /> : <Form4 />}
+                {/* {step == 1 ? <Form1 /> : step == 2 ? <Form2 /> : <Form4 />} */}
+                {/* <Flex w="100%" justifyContent="space-between">
+                        <Flex>
+                            <Button
+                                onClick={() => {
+                                    setStep(step - 1);
+                                    setProgress(progress - 25);
+                                }}
+                                isDisabled={step == 1}
+                                colorScheme="teal"
+                                w="7rem"
+                                mr="5%">
+                                Back
+                            </Button>
+                            <Button
+                                w="7rem"
+                                isDisabled={step == 4}
+                                onClick={() => {
+                                    setStep(step + 1);
+                                    if (step === 4) {
+                                        setProgress(100);
+                                    } else {
+                                        setProgress(progress + 25);
+                                    }
+                                }}
+                                colorScheme="teal"
+                                variant="outline">
+                                Next
+                            </Button>
+                        </Flex>
+                    </Flex> */}
                 <ButtonGroup mt="5%" w="100%">
                     <Flex w="100%" justifyContent="space-between">
                         <Flex>
@@ -568,19 +608,20 @@ export default function multistep() {
                                 variant="solid"
                                 onClick={() => {
                                     toast({
-                                        title: 'Be Patient',
+                                        title: 'Message delivery',
+                                        description: "We will reply you as soon as possible",
                                         status: 'success',
-                                        description: "We've received your question.",
                                         duration: 3000,
                                         isClosable: true,
                                     });
                                 }}>
-                                Q/A
+                                Submit
                             </Button>
                         ) : null}
                     </Flex>
                 </ButtonGroup>
             </Box>
-        </>
+        </Box>
     );
 }
+// export { Form1, Form2 ,Form3};

@@ -83,12 +83,11 @@ contract DemoNFT is ERC721 {
 
     //use point to prepurchase NFT
     function buyCallOption(uint256 _mintAmount) public payable checkbalance(){
-        uint256 costNum = calculatePoint(_mintAmount);
-        // Check that the user has approved the transfer of tokens to this contract
-        require(token.allowance(msg.sender, address(this)) >= costNum, "Token allowance not set");
-        // Transfer the tokens from the user to this contract
-        require(token.transferFrom(msg.sender, address(this), costNum), "Token transfer failed");
-
+        // uint256 costNum = calculatePoint(_mintAmount);
+        // // Check that the user has approved the transfer of tokens to this contract
+        // require(token.allowance(msg.sender, address(this)) >= costNum, "Token allowance not set");
+        // // Transfer the tokens from the user to this contract
+        // require(token.transferFrom(msg.sender, address(this), costNum), "Token transfer failed");
         // Credit the user's account with the points
         totalmintAuthority+= _mintAmount;
         pointBalances[msg.sender] += _mintAmount;
