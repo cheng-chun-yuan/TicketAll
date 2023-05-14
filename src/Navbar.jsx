@@ -235,7 +235,7 @@ const Navbar = () => {
                   mr='12px'
                 />
                 <span>
-                  林倩一
+                  許聖德
                 </span>
               </MenuItem>
               <MenuItem
@@ -250,7 +250,7 @@ const Navbar = () => {
                   mr='12px'
                 />
                 <span>
-                  林倩一
+                  陳麒文
                 </span>
               </MenuItem>
               <MenuItem
@@ -264,7 +264,9 @@ const Navbar = () => {
                   alt='Simon the pensive'
                   mr='12px'
                 />
-                <span>林倩伊</span>
+                <span>
+                  Debby
+                </span>
               </MenuItem>
             </MenuList>
           </Menu>
