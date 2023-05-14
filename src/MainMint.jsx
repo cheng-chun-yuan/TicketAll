@@ -23,9 +23,9 @@ const MainMint = () => {
       >
         <Box>
           <div className="mint-container">
-            <Text fontSize="40px" textShadow="0 5px #000">Buymeticket</Text>
+            <Text fontSize="4xl" textShadow="0 5px #000" color={"pink.300"}>Buymeticket</Text>
             <Text
-              fontSize="30px"
+              fontSize="3xl"
               letterSpacing="0.5%"
               fontFamily="VT323"
               textShadow="0 2px 2px #000"

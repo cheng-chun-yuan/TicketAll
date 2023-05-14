@@ -47,9 +47,10 @@ const Navbar = () => {
 
       <Flex
         justify="space-around"
+        direction="row"
         align="center"
-        className="flex-row"
-        padding="30px"
+        // className="flex-row"
+        padding="20px"
       >
         <Box margin="0 10px">
           <Menu isOpen={isOpen}>
@@ -73,7 +74,7 @@ const Navbar = () => {
                 color={'black'}
                 fontFamily="VT323"
                 fontSize={'xl'}
-                width={'400px'}
+                width={["100%", "400px"]}
                 fontWeight={'bold'}
               >
                 <span>
@@ -81,7 +82,6 @@ const Navbar = () => {
                 </span>
               </MenuItem>
             </MenuList>
-
           </Menu>
         </Box>
         <Spacer />
@@ -104,12 +104,12 @@ const Navbar = () => {
               Mint
             </MenuButton>
             <MenuList onMouseEnter={onOpen} onMouseLeave={onClose}>
-            <MenuItem
+              <MenuItem
                 minH='30px'
                 color={'black'}
                 fontFamily="VT323"
                 fontSize={'xl'}
-                width={'200px'}
+                width={["100%", "200px"]}
                 fontWeight={'bold'}
               >
                 <span>
@@ -121,7 +121,7 @@ const Navbar = () => {
                 color={'black'}
                 fontFamily="VT323"
                 fontSize={'xl'}
-                width={'200px'}
+                width={["100%", "200px"]}
                 fontWeight={'bold'}
               >
                 <span>
@@ -133,7 +133,7 @@ const Navbar = () => {
                 color={'black'}
                 fontFamily="VT323"
                 fontSize={'xl'}
-                width={'200px'}
+                width={["100%", "200px"]}
                 fontWeight={'bold'}
               >
                 <span>
@@ -157,7 +157,7 @@ const Navbar = () => {
                 color={'black'}
                 fontFamily="VT323"
                 fontSize={'xl'}
-                width={'200px'}
+                width={["100%", "200px"]}
                 fontWeight={'bold'}
               >
                 <span>
