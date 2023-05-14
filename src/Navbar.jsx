@@ -265,7 +265,7 @@ const Navbar = () => {
                   mr='12px'
                 />
                 <span>
-                  Debby
+                  張芳瑜
                 </span>
               </MenuItem>
             </MenuList>
