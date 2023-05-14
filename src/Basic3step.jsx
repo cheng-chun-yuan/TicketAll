@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useAddress, useContract, Web3Button, useContractRead, useContractEvents } from "@thirdweb-dev/react";
 import { NFT_ADDRESS, COIN_ADDRESS } from './const/contractAddress';
+import Rrfund from './assets/social-media-icons/refund.png'
+import Minty from './assets/social-media-icons/mint.png'
 import Web3 from 'web3';
 import {
     Progress,
@@ -14,7 +16,7 @@ import {
     FormLabel,
     Input,
     SimpleGrid,
-    Card,CardBody,
+    Card, CardBody,
     InputLeftAddon,
     InputGroup,
     Textarea,
@@ -24,9 +26,13 @@ import {
     Checkbox,
     Stack,
     useToast,
-    Spacer
+    Spacer,
+    Tooltip,
+    Image,
+    Center
 } from '@chakra-ui/react';
-
+import dayjs from "dayjs";
+import { InfoOutlineIcon } from '@chakra-ui/icons';
 const Form1 = () => {
 
     const { contract } = useContract(NFT_ADDRESS)
@@ -260,11 +266,11 @@ const Form2 = () => {
                 {rerefund == 2 ? <Skeleton
                     isLoaded={!loadingAuction}
                 >
-                    Final Mint <Spacer/>AuctionPrice: {Auctioneth} eth
+                    Final Mint <Spacer />AuctionPrice: {Auctioneth} eth
                 </Skeleton> : rerefund == 1 ? <Skeleton
                     isLoaded={!loadingAuction}
                 >
-                    First Round <Spacer/>AuctionPrice: {Auctioneth} eth
+                    First Round <Spacer />AuctionPrice: {Auctioneth} eth
                 </Skeleton> : <Text>Mint not yet</Text>}
             </Box>
             {address ? (
@@ -476,8 +482,9 @@ const Form3 = () => {
     const address = useAddress()
     const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7');
     const BN = web3.utils.BN;
-    const { data: allEvents, loading: loadingevent } = useContractEvents(contract, "Transfer")
+    const { data: allEvents, loading: loadingevent } = useContractEvents(contract, "firstmint")
     const { data: allRefund, loading: loadingrefund } = useContractEvents(contract, "Refund")
+    const { data: finalMint, loading: loadingmint } = useContractEvents(contract, "finalmint")
     return (
         <Card maxH={'50vh'} overflow={'scroll'}>
             <CardBody>
@@ -489,25 +496,84 @@ const Form3 = () => {
                 >
                     Your History
                 </Heading>
-                {!loadingevent && !loadingrefund ?
+                {!loadingevent && !loadingrefund && !loadingmint ?
                     (
                         <Box>
-                            {allRefund && allRefund?.map((event,index) => (
+                            {allRefund && allRefund?.map((event, index) => (
                                 <Card key={index}>
-                                    <CardBody>
-                                        Refund Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() :'no message'}
-                                        <Spacer/>
-                                        Amount : {web3.utils.fromWei(new BN(event.data.refundAmount?.toString()), 'ether') ? web3.utils.fromWei(new BN(event.data.refundAmount?.toString()), 'ether') :'no message'} ETH
-                                    </CardBody>
+                                    {event.data.from === address && (
+                                        <CardBody>
+                                            <Center>
+                                                <Flex alignItems={'center'} mb={'10px'}>
+                                                    <Image
+                                                        src={Rrfund}
+                                                        alt='Refund'
+                                                        width={30}
+                                                        height={30}
+                                                        mr={'10px'}
+                                                    />
+                                                    <Tooltip
+                                                        label={`Time:${dayjs.unix(event.data.timestamp)}`}
+                                                        bg={'gray.200'}
+                                                        color={'black'}
+                                                    >
+                                                        <InfoOutlineIcon />
+                                                    </Tooltip>
+                                                    <Text fontWeight={'bold'} mr={'10px'}>
+                                                        Refund Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
+                                                        <Spacer />
+                                                        Amount : {web3.utils.fromWei(new BN(event.data.refundAmount?.toString()), 'ether') ? web3.utils.fromWei(new BN(event.data.refundAmount?.toString()), 'ether') : 'no message'} ETH
+                                                    </Text>
+                                                </Flex>
+                                            </Center>
+                                        </CardBody>
+                                    )}
                                 </Card>
                             ))}
-                            {allEvents && allEvents?.map((event,index) => (
+                            {allEvents && allEvents?.map((event, index) => (
                                 <Card key={index}>
-                                {event.data.to === address && (
-                                    <CardBody>
-                                        Mint Token ID: {event.data.tokenId?.toString() ? event.data.tokenId?.toString() :'no message'}
-                                    </CardBody>
-                                )}
+                                    {event.data.to === address && (
+                                        <CardBody>
+                                            <Center>
+                                                <Flex alignItems={'center'} mb={'10px'}>
+                                                    <Image
+                                                        src={Minty}
+                                                        alt='Mint'
+                                                        width={30}
+                                                        height={30}
+                                                        mr={'10px'}
+                                                    />
+                                                    <Tooltip
+                                                        label={`Time:${dayjs.unix(event.data.timestamp)}`}
+                                                        bg={'gray.200'}
+                                                        color={'black'}
+                                                    >
+                                                        <InfoOutlineIcon />
+                                                    </Tooltip>
+                                                    <Text fontWeight={'bold'} mr={'10px'}>
+                                                        firstMint Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
+                                                    </Text>
+                                                </Flex>
+                                            </Center>
+                                        </CardBody>
+                                    )}
+                                </Card>
+                            ))}
+                            {finalMint && finalMint?.map((event, index) => (
+                                <Card key={index}>
+                                    {event.data.to === address && (
+                                        <CardBody>
+                                            <Tooltip
+                                                label={`Time:${dayjs.unix(event.data.timestamp)}`}
+                                                bg={'gray.200'}
+                                                color={'black'}
+
+                                            >
+                                                <InfoOutlineIcon />
+                                            </Tooltip>
+                                            finalMint Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
+                                        </CardBody>
+                                    )}
                                 </Card>
                             ))}
                         </Box>
@@ -634,7 +700,7 @@ export default function multistep() {
                     mb="5%"
                     mx="5%"
                 ></Progress>
-                {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : step === 3 ? <Form3 /> : step === 4 ? <Form5 />: <Form4 />}
+                {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : step === 3 ? <Form3 /> : step === 4 ? <Form5 /> : <Form4 />}
                 <ButtonGroup mt="5%" w="100%">
                     <Flex w="100%" justifyContent="space-between">
                         <Flex>

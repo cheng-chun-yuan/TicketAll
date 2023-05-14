@@ -11,8 +11,9 @@ contract DemoNFT is ERC721 {
     address public owner; //people who construct the contrast
     uint256 public maxSupply; //total supply
     uint256 public nftPrice; // the price of NFT(initial)
-    event Refund(uint256 _tokenId, uint256 refundAmount, uint256 timestamp); //to show the event of refund 
-    // event mint(uint256 _tokenId, address from, uint256 timestamp); 
+    event Refund(uint256 _tokenId, uint256 refundAmount, uint256 timestamp,address from); //to show the event of refund 
+    event firstmint(uint256 _tokenId, address to, uint256 timestamp);
+    event finalmint(uint256 _tokenId, address to, uint256 timestamp); 
     uint256 public nowSupply = 0; //the current mint number
     string private baseURI; // the picture's baseURL
     uint256 public maxPerWallet; //the max NFT number for
@@ -144,7 +145,7 @@ contract DemoNFT is ERC721 {
     }
     //Todo : should modify the mint function (mint many NFT simultaneously with one ERC20 token and ETH)
     function auctionmintNFT(uint256 _mintAmount) public payable checkbalance(){
-    //new version
+        //new version
         // uint256 amountToken = calculatePoint(_mintAmount);
         require(getCallOption() >= _mintAmount, "Buy call option first");
         uint256 amountETH = _mintAmount * getAuctionPrice();
@@ -161,7 +162,7 @@ contract DemoNFT is ERC721 {
             _safeMint(msg.sender, newTokenId);
             ticketUsed[newTokenId] = false;
         }
-        emit mint(_tokenId,msg.sender,block.timestamp);
+        emit firstmint(_tokenId,msg.sender,block.timestamp);
     }
 
     //get the money from contract
@@ -185,7 +186,7 @@ contract DemoNFT is ERC721 {
         // 发送退款给申请者
         payable(msg.sender).transfer(refundAmount);
         
-        emit Refund(_tokenId, refundAmount,block.timestamp);
+        emit Refund(_tokenId, refundAmount,block.timestamp,msg.sender);
     }
 
     //transfer override with price limit
