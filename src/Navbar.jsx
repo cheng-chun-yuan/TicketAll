@@ -272,11 +272,8 @@ const Navbar = () => {
           </Menu>
         </Box>
         <Spacer />
-
-        {/* TODO: 連接錢包 Connect */}
         <ConnectWallet />
       </Flex>
-
     </Flex >
   )
 }
