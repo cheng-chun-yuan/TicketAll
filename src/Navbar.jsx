@@ -45,14 +45,13 @@ const Navbar = () => {
         </Link>
       </Flex>
 
-      {/* Right Side - Section and Connect */}
       <Flex
         justify="space-around"
         align="center"
         className="flex-row"
         padding="30px"
       >
-        <Box margin="0 15px">
+        <Box margin="0 10px">
           <Menu isOpen={isOpen}>
             <MenuButton
               onMouseEnter={onOpen}
@@ -86,11 +85,9 @@ const Navbar = () => {
           </Menu>
         </Box>
         <Spacer />
-        {/* <Box margin="0 15px" className="items">Mint</Box> */}
-        <Box margin="0 15px">
+        <Box margin="0 10px">
           <Menu 
             isOpen={isOpen1}
-            opacity={'0.8'}
           >
             <MenuButton
               onMouseEnter={onOpen1}
@@ -171,10 +168,8 @@ const Navbar = () => {
           </Menu>
         </Box>
         <Spacer />
-        {/* <Box margin="0 15px" className="items">Team</Box> */}
-        <Box margin="0 15px">
+        <Box margin="0 10px">
           <Menu isOpen={isOpen2}>
-            
             <MenuButton
               onMouseEnter={onOpen2}
               onMouseLeave={onClose2}

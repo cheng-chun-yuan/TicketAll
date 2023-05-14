@@ -47,7 +47,6 @@ const Form1 = () => {
         data: numCallOption,
         isLoading: loadingCallOption
     } = useContractRead(contract, "pointBalances", [address])
-    const { tokenContract } = useContract(COIN_ADDRESS)
     const {
         data: totalmintA,
         isLoading: loadingtotalmintA
@@ -79,7 +78,6 @@ const Form1 = () => {
                     isLoaded={!loadingtotalmintA}
                 >
                     totalsupply of mint Authority : {totalmintA?.toString()}
-                    {/* BmT coin: 20 */}
                 </Skeleton>
             </Box>
             {address ? (
@@ -147,24 +145,6 @@ const Form1 = () => {
                         onError={(error) => {
                             alert('error:' + error.message)
                         }}
-                    //     try {
-                    //         const data = await buyCallOption({ args: [coinAmount] });
-                    //         console.info("contract call successs", data);
-                    //     } catch (err) {
-                    //         console.error("contract call failure", err);
-                    //     }
-                    // (contract) => {
-                    //     contract.call("buyCallOption", [coinAmount])
-                    // async () => { 
-                    // const data = await contract.call("calculatePoint", [coinAmount])
-                    // await contract.call("buyCallOption", [coinAmount])
-                    // await contract.methods.buyCallOption(coinAmount).send({
-                    //     ERC20: {
-                    //         tokenContract: '0xb637E978D7661Ff540B845C70CE84Ce448B16902',
-                    //         amount: point?.toString()
-                    //     }
-                    // });
-                    // }}
                     >
                         Mint Authority
                     </Web3Button>
@@ -194,7 +174,6 @@ const Form1 = () => {
                     isLoaded={!loadingCallOption}
                 >
                     Number you can mint :  {numCallOption?.toString()}
-                    {/* BmT coin: 20 */}
                 </Skeleton>
             </Box>
         </Box >
