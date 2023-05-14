@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAddress, useContract, Web3Button, useContractRead } from "@thirdweb-dev/react";
 import { NFT_ADDRESS, COIN_ADDRESS } from './const/contractAddress';
+import Web3 from 'web3';
 import {
     Progress,
     Box,
@@ -28,6 +29,7 @@ const Form1 = () => {
 
     const { contract } = useContract(NFT_ADDRESS)
     const [coinAmount, setCoinAmount] = useState(1)
+
     const address = useAddress()
     const handleDecrement2 = () => {
         if (coinAmount <= 1) return
@@ -194,6 +196,7 @@ const Form1 = () => {
 const Form2 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const [mintAmount, setMintAmount] = useState(1)
+    const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7');
     const address = useAddress()
     // const nowPrice = getAuctionPrice()
     // const mintprice = (nowPrice * mintAmount).toString()
@@ -225,6 +228,10 @@ const Form2 = () => {
         if (mintAmount >= 6) return
         setMintAmount(mintAmount + 1)
     }
+    // const Auctioneth = web3.utils.fromWei(Auction, 'ether');
+    const BN = web3.utils.BN;
+    const Auctioneth = web3.utils.fromWei(new BN(Auction?.toString()), 'ether');
+
     return (
         <Box>
             <Box
@@ -249,16 +256,15 @@ const Form2 = () => {
                 lineHeight={"26px"}
                 marginTop="20px"
             >
-                {rerefund == 1 ? (
-                    <Skeleton
+                {rerefund == 2 ?  <Skeleton
                         isLoaded={!loadingAuction}
                     >
-                        AuctionPrice: {Auction?.toString()}
-                    </Skeleton>
-                ) : (
-                    <Text>Mint not yet</Text>
-                )
-                }
+                        Final AuctionPrice: {Auctioneth} eth
+                    </Skeleton> : rerefund == 1 ? <Skeleton
+                            isLoaded={!loadingAuction}
+                        >
+                            AuctionPrice: {Auctioneth} eth
+                        </Skeleton> : <Text>Mint not yet</Text>}
             </Box>
             {address ? (
                 <div>
@@ -306,10 +312,19 @@ const Form2 = () => {
                     <Web3Button
                         contractAddress={NFT_ADDRESS}
                         action={async () => {
-                            await contract.call("auctionmintNFT", [mintAmount], {
-                                value: (mintAmount * Auction).toString(),
-                                from: address,
-                            })
+                            if (rerefund==1) {
+                                await contract.call("auctionmintNFT", [mintAmount], {
+                                    value: (mintAmount * Auction).toString(),
+                                    from: address,
+                                });
+                            } else {
+                                await contract.call("FinalmintNFT", [mintAmount], {
+                                    value: (mintAmount * Auction).toString(),
+                                    from: address,
+                                });
+                            }
+                            
+                            
                         }}
                         onSuccess={() => {
                             alert('成功囉')
@@ -317,7 +332,7 @@ const Form2 = () => {
                         onError={(error) => {
                             alert('error:' + error.message)
                         }}
-                        isDisabled={rerefund}
+                        isDisabled={rerefund==0}
                     >
                         Mint
                     </Web3Button>
@@ -549,37 +564,6 @@ export default function multistep() {
                     mx="5%"
                 ></Progress>
                 {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : step === 3 ? <Form3 /> : <Form4 />}
-                {/* {step == 1 ? <Form1 /> : step == 2 ? <Form2 /> : <Form4 />} */}
-                {/* <Flex w="100%" justifyContent="space-between">
-                        <Flex>
-                            <Button
-                                onClick={() => {
-                                    setStep(step - 1);
-                                    setProgress(progress - 25);
-                                }}
-                                isDisabled={step == 1}
-                                colorScheme="teal"
-                                w="7rem"
-                                mr="5%">
-                                Back
-                            </Button>
-                            <Button
-                                w="7rem"
-                                isDisabled={step == 4}
-                                onClick={() => {
-                                    setStep(step + 1);
-                                    if (step === 4) {
-                                        setProgress(100);
-                                    } else {
-                                        setProgress(progress + 25);
-                                    }
-                                }}
-                                colorScheme="teal"
-                                variant="outline">
-                                Next
-                            </Button>
-                        </Flex>
-                    </Flex> */}
                 <ButtonGroup mt="5%" w="100%">
                     <Flex w="100%" justifyContent="space-between">
                         <Flex>
