@@ -140,6 +140,18 @@ const Navbar = () => {
                 fontWeight={'bold'}
               >
                 <span>
+                  Your History
+                </span>
+              </MenuItem>
+              <MenuItem
+                minH='30px'
+                color={'black'}
+                fontFamily="VT323"
+                fontSize={'xl'}
+                width={'200px'}
+                fontWeight={'bold'}
+              >
+                <span>
                   Q/A
                 </span>
               </MenuItem>
