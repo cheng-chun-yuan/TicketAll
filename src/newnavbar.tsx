@@ -19,7 +19,7 @@ import {
     Spacer
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-// import Facebook from './assets/social-media-icons/facebook_32x32.png'
+// import Facebook from './assets/social-media-icons/twitter_32x32'
 // import Twitter from './assets/social-media-icons/twitter_32x32.png'
 // import Linchiyi from './assets/social-media-icons/email_32x32.png';
 // import Linchielon from './assets/social-media-icons/071.png';
@@ -314,11 +314,11 @@ export default function Simple() {
                                             color={'black'}
                                             fontFamily="VT323"
                                             fontSize={'xl'}
-                                            width={["100%", "400px"]}
+                                            width={"200px"}
                                             fontWeight={'bold'}
                                         >
                                             <span>
-                                                We're a NFT ticket company committed to eliminating scalpers and providing a secure way for fans to purchase tickets for events. Our blockchain-powered digital assets ensure authenticity and fair prices, and we work directly with event organizers and artists. Thank you for choosing us for your ticketing needs.
+                                                We're Anti-Scapler NFT Ticketing Platform
                                             </span>
                                         </MenuItem>
                                     </MenuList>
