@@ -19,12 +19,14 @@ import {
     Spacer
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-// import Facebook from './assets/social-media-icons/twitter_32x32'
-// import Twitter from './assets/social-media-icons/twitter_32x32.png'
-// import Linchiyi from './assets/social-media-icons/email_32x32.png';
-// import Linchielon from './assets/social-media-icons/071.png';
-// import Cheng from './assets/social-media-icons/cheng.png';
-// import Debby from './assets/social-media-icons/Debby.jpg';
+import Facebook from './assets/social-media-icons/twitter_32x32.png'
+import Twitter from './assets/social-media-icons/twitter_32x32.png'
+import Linchiyi from './assets/social-media-icons/email_32x32.png';
+import Linchielon from './assets/social-media-icons/071.png';
+import Cheng from './assets/social-media-icons/cheng.png';
+import Debby from './assets/social-media-icons/Debby.jpg';
+import Cw from './assets/social-media-icons/cw.jpg';
+import Sh from './assets/social-media-icons/SH.jpg';
 import { ConnectWallet } from '@thirdweb-dev/react';
 
 const NavLink = ({ children }: { children: ReactNode }) => (
@@ -204,13 +206,13 @@ export default function Simple() {
                                             color={'black'}
                                             fontFamily="VT323"
                                         >
-                                            {/* <Image
+                                            <Image
                                                 boxSize='2rem'
                                                 borderRadius='full'
                                                 src={Cheng}
                                                 alt='Simon the pensive'
                                                 mr='12px'
-                                            /> */}
+                                            />
                                             <span>
                                                 鄭鈞元
                                             </span>
@@ -220,13 +222,13 @@ export default function Simple() {
                                             color={'black'}
                                             fontFamily="VT323"
                                         >
-                                            {/* <Image
+                                            <Image
                                                 boxSize='2rem'
                                                 borderRadius='full'
                                                 src={Linchielon}
                                                 alt='Simon the pensive'
                                                 mr='12px'
-                                            /> */}
+                                            />
                                             <span>
                                                 林倩伊
                                             </span>
@@ -235,13 +237,13 @@ export default function Simple() {
                                             minH='30px'
                                             color={'black'}
                                         >
-                                            {/* <Image
+                                            <Image
                                                 boxSize='2rem'
                                                 borderRadius='full'
-                                                src={Linchiyi}
+                                                src={Sh}
                                                 alt='Simon the pensive'
                                                 mr='12px'
-                                            /> */}
+                                            />
                                             <span>
                                                 許聖德
                                             </span>
@@ -250,13 +252,13 @@ export default function Simple() {
                                             minH='30px'
                                             color={'black'}
                                         >
-                                            {/* <Image
+                                            <Image
                                                 boxSize='2rem'
                                                 borderRadius='full'
-                                                src={Linchiyi}
+                                                src={Cw}
                                                 alt='Simon the pensive'
                                                 mr='12px'
-                                            /> */}
+                                            />
                                             <span>
                                                 陳麒文
                                             </span>
@@ -265,13 +267,13 @@ export default function Simple() {
                                             minH='30px'
                                             color={'black'}
                                         >
-                                            {/* <Image
+                                            <Image
                                                 boxSize='2rem'
                                                 borderRadius='full'
                                                 src={Debby}
                                                 alt='Simon the pensive'
                                                 mr='12px'
-                                            /> */}
+                                            />
                                             <span>
                                                 張芳瑜
                                             </span>
@@ -428,13 +430,13 @@ export default function Simple() {
                                             color={'black'}
                                             fontFamily="VT323"
                                         >
-                                            {/* <Image
+                                            <Image
                                                 boxSize='2rem'
                                                 borderRadius='full'
                                                 src={Cheng}
                                                 alt='Simon the pensive'
                                                 mr='12px'
-                                            /> */}
+                                            />
                                             <span>
                                                 鄭鈞元
                                             </span>
@@ -444,13 +446,13 @@ export default function Simple() {
                                             color={'black'}
                                             fontFamily="VT323"
                                         >
-                                            {/* <Image
+                                            <Image
                                                 boxSize='2rem'
                                                 borderRadius='full'
                                                 src={Linchielon}
                                                 alt='Simon the pensive'
                                                 mr='12px'
-                                            /> */}
+                                            />
                                             <span>
                                                 林倩伊
                                             </span>
@@ -459,13 +461,13 @@ export default function Simple() {
                                             minH='30px'
                                             color={'black'}
                                         >
-                                            {/* <Image
+                                            <Image
                                                 boxSize='2rem'
                                                 borderRadius='full'
-                                                src={Linchiyi}
+                                                src={Sh}
                                                 alt='Simon the pensive'
                                                 mr='12px'
-                                            /> */}
+                                            />
                                             <span>
                                                 許聖德
                                             </span>
@@ -474,13 +476,13 @@ export default function Simple() {
                                             minH='30px'
                                             color={'black'}
                                         >
-                                            {/* <Image
+                                            <Image
                                                 boxSize='2rem'
                                                 borderRadius='full'
-                                                src={Linchiyi}
+                                                src={Cw}
                                                 alt='Simon the pensive'
                                                 mr='12px'
-                                            /> */}
+                                            />
                                             <span>
                                                 陳麒文
                                             </span>
@@ -489,13 +491,13 @@ export default function Simple() {
                                             minH='30px'
                                             color={'black'}
                                         >
-                                            {/* <Image
+                                            <Image
                                                 boxSize='2rem'
                                                 borderRadius='full'
                                                 src={Debby}
                                                 alt='Simon the pensive'
                                                 mr='12px'
-                                            /> */}
+                                            />
                                             <span>
                                                 張芳瑜
                                             </span>

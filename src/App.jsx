@@ -15,9 +15,6 @@ export default function Home() {
         <Newnavbar/>
         <MainMint/>
         <Multistep/>
-        {/* <Form1 />
-        <Form2 />
-        <Form3 /> */}
       </Box>
 
       <Box
