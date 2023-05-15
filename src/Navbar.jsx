@@ -10,16 +10,14 @@ import {
   MenuList,
   MenuItem,
   useDisclosure,
-  Heading
 } from '@chakra-ui/react'
 import Facebook from './assets/social-media-icons/facebook_32x32.png'
 import Twitter from './assets/social-media-icons/twitter_32x32.png'
 import Linchiyi from './assets/social-media-icons/email_32x32.png'
 import Linchielon from './assets/social-media-icons/071.png'
 import Cheng from './assets/social-media-icons/cheng.png'
-import { Button } from '@chakra-ui/react'
+import Debby from './assets/social-media-icons/Debby.jpg'
 import { ConnectWallet } from '@thirdweb-dev/react';
-import { useState } from 'react';
 
 const Navbar = () => {
   const { isOpen, onOpen, onClose} = useDisclosure()
@@ -31,8 +29,6 @@ const Navbar = () => {
       justify="space-between" align="center"
       direction="row"
     >
-      {/* Left Side - Social Media Icons */}
-
       <Flex justify="space-around" direction="row">
         <Link href="https://www.facebook.com/profile.php?id=100001337162372" className="items">
           <Image src={Facebook} boxSize="42px" margin="0 15px" />
@@ -205,7 +201,6 @@ const Navbar = () => {
                 minH='30px'
                 color={'black'}
                 fontFamily="VT323"
-                href="https://www.facebook.com/profile.php?id=100001337162372"
               >
                 <Image
                   boxSize='2rem'
@@ -255,7 +250,7 @@ const Navbar = () => {
                 <Image
                   boxSize='2rem'
                   borderRadius='full'
-                  src={Linchiyi}
+                  src={Debby}
                   alt='Simon the pensive'
                   mr='12px'
                 />

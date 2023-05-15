@@ -1,5 +1,6 @@
 import MainMint from './MainMint';
 import Navbar from './Navbar';
+import Newnavbar from './newnavbar';
 import Multistep from './Basic3step'
 // import {Form1,Form2,Form3} from './Basic3step'
 import { Box } from '@chakra-ui/react'
@@ -11,7 +12,7 @@ export default function Home() {
   return (
     <Box className="overlay">
       <Box className="App">
-        <Navbar />
+        <Newnavbar/>
         <MainMint/>
         <Multistep/>
         {/* <Form1 />

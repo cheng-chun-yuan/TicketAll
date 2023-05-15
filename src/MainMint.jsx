@@ -23,7 +23,7 @@ const MainMint = () => {
       >
         <Box>
           <div className="mint-container">
-            <Text fontSize="4xl" textShadow="0 5px #000" color={"pink.300"}>Buymeticket</Text>
+            <Text fontSize="3xl" textShadow="0 5px #000" color={"pink.300"}>Buymeticket</Text>
             <Text
               fontSize="3xl"
               letterSpacing="0.5%"
