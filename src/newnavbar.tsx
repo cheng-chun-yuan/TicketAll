@@ -314,11 +314,11 @@ export default function Simple() {
                                             color={'black'}
                                             fontFamily="VT323"
                                             fontSize={'xl'}
-                                            width={"200px"}
+                                            width={"220px"}
                                             fontWeight={'bold'}
                                         >
                                             <span>
-                                                We're Anti-Scapler NFT Ticketing Platform
+                                                We're Anti-Scapler NFT Ticketing Platform committed to eliminating scalpers and providing a secure way for fans to purchase tickets for events. Our blockchain-powered digital assets ensure authenticity and fair prices, and we work directly with event organizers and artists.
                                             </span>
                                         </MenuItem>
                                     </MenuList>
