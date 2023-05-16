@@ -1,6 +1,6 @@
 import Content from './content';
 import Backnavbar from './backnavbar';
-import Multistep from './Basic3step'
+import Info from './info'
 // import {Form1,Form2,Form3} from './Basic3step'
 import { Box } from '@chakra-ui/react'
 import BgImage from './assets/background/071.gif'
@@ -13,6 +13,7 @@ export default function Home() {
         <Box className="overlay">
             <Box className="App">
                 <Backnavbar />
+                <Info/>
                 <Footer />
             </Box>
 

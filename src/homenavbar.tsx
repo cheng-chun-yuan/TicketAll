@@ -2,16 +2,13 @@ import React, { ReactNode } from 'react';
 import {
     Box,
     Flex,
-    Avatar,
     HStack,
     Link,
     IconButton,
-    Button,
     Menu,
     MenuButton,
     MenuList,
     MenuItem,
-    MenuDivider,
     useDisclosure,
     useColorModeValue,
     Stack,
@@ -19,16 +16,12 @@ import {
     Spacer
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-import Facebook from './assets/social-media-icons/twitter_32x32.png'
-import Twitter from './assets/social-media-icons/twitter_32x32.png'
-import Linchiyi from './assets/social-media-icons/email_32x32.png';
 import Linchielon from './assets/social-media-icons/071.png';
 import Cheng from './assets/social-media-icons/cheng.png';
 import Debby from './assets/social-media-icons/Debby.jpg';
 import Cw from './assets/social-media-icons/cw.jpg';
 import Sh from './assets/social-media-icons/SH.jpg';
 import { ConnectWallet } from '@thirdweb-dev/react';
-import { useHref } from 'react-router-dom';
 
 const NavLink = ({ children }: { children: ReactNode }) => (
     <Link
