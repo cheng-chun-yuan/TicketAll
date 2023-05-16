@@ -70,19 +70,37 @@ export default function Simple() {
                             spacing={4}
                             display={{ base: 'none', md: 'flex' }}>
                             <NavLink>
-                                <Link
-                                    sx={{
-                                        backgroundColor: "transparent",
-                                        color: "white",
-                                        "&:hover": {
-                                            backgroundColor: "transparent",
-                                            color: "blue.400"
-                                        }
-                                    }}
-                                    href='concert/mint'
+                                <Menu
+                                    isOpen={isOpen3}
                                 >
-                                    Mint
-                                </Link>
+                                    <MenuButton
+                                        onMouseEnter={onOpen3}
+                                        onMouseLeave={onClose3}
+                                        sx={{
+                                            color: "white",
+                                            "&:hover": {
+                                                backgroundColor: "transparent",
+                                                color: 'blue.400'
+                                            }
+                                        }}
+                                    >
+                                        About
+                                    </MenuButton>
+                                    <MenuList onMouseEnter={onOpen3} onMouseLeave={onClose3}>
+                                        <MenuItem
+                                            minH='30px'
+                                            color={'black'}
+                                            fontFamily="VT323"
+                                            fontSize={'xl'}
+                                            width={["100%", "400px"]}
+                                            fontWeight={'bold'}
+                                        >
+                                            <span>
+                                                We're a NFT ticket company committed to eliminating scalpers and providing a secure way for fans to purchase tickets for events. Our blockchain-powered digital assets ensure authenticity and fair prices, and we work directly with event organizers and artists. Thank you for choosing us for your ticketing needs.
+                                            </span>
+                                        </MenuItem>
+                                    </MenuList>
+                                </Menu>
                             </NavLink>
                             <Spacer />
                             <NavLink>
@@ -195,21 +213,37 @@ export default function Simple() {
                             spacing={4}
                         >
                             <NavLink>
-                                <Link
-                                    sx={{
-                                        backgroundColor: "transparent",
-                                        color: "white",
-                                        "&:hover": {
+                                <Menu isOpen={isOpen3}>
+                                    <MenuButton
+                                        onMouseEnter={onOpen3}
+                                        onMouseLeave={onClose3}
+                                        sx={{
                                             backgroundColor: "transparent",
-                                            color: "blue.400"
-                                        }
-                                    }}
-                                    href='concert/mint'
-                                >
-                                    Mint
-                                </Link>
+                                            color: "white",
+                                            "&:hover": {
+                                                backgroundColor: "transparent",
+                                                color: "blue"
+                                            }
+                                        }}
+                                    >
+                                        About
+                                    </MenuButton>
+                                    <MenuList onMouseEnter={onOpen3} onMouseLeave={onClose3}>
+                                        <MenuItem
+                                            minH='30px'
+                                            color={'black'}
+                                            fontFamily="VT323"
+                                            fontSize={'xl'}
+                                            width={"220px"}
+                                            fontWeight={'bold'}
+                                        >
+                                            <span>
+                                                We're Anti-Scapler NFT Ticketing Platform committed to eliminating scalpers and providing a secure way for fans to purchase tickets for events. Our blockchain-powered digital assets ensure authenticity and fair prices, and we work directly with event organizers and artists.
+                                            </span>
+                                        </MenuItem>
+                                    </MenuList>
+                                </Menu>
                             </NavLink>
-                            <Spacer />
                             <NavLink>
                                 <Menu isOpen={isOpen2}>
                                     <MenuButton
@@ -219,7 +253,8 @@ export default function Simple() {
                                             backgroundColor: "transparent",
                                             color: "white",
                                             "&:hover": {
-                                                color: "blue.400"
+                                                backgroundColor: "transparent",
+                                                color: "blue"
                                             }
                                         }}
                                     >

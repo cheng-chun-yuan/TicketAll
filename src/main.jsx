@@ -1,10 +1,12 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App";
+import App from "./Second";
+import NewPage from './NewPage';
+import Information from './Information';
 import { ThirdwebProvider } from "@thirdweb-dev/react";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import "./styles/globals.css";
 import { ChakraProvider } from '@chakra-ui/react'
-
 
 // This is the chain your dApp will work on.
 // Change this to the chain your app is built for.
@@ -17,7 +19,13 @@ root.render(
   <React.StrictMode>
     <ThirdwebProvider activeChain={activeChain}>
       <ChakraProvider>
-        <App />
+        <Router>
+          <Routes>
+            <Route path="/" element={<NewPage/>} />
+            <Route path="/concert" element={<App />} />
+            <Route path="/concert/mint" element={<Information />} />
+          </Routes>
+        </Router>
       </ChakraProvider>
     </ThirdwebProvider>
   </React.StrictMode>
