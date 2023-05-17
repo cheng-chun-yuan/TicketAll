@@ -95,7 +95,21 @@ export default function Simple() {
                                     </MenuList>
                                 </Menu>
                             </NavLink>
-                            <Spacer />
+                            <NavLink>
+                                <Link
+                                    sx={{
+                                        backgroundColor: "transparent",
+                                        color: "white",
+                                        "&:hover": {
+                                            backgroundColor: "transparent",
+                                            color: "blue.400"
+                                        }
+                                    }}
+                                    href='/staking'
+                                >
+                                    Staking
+                                </Link>
+                            </NavLink>
                             <NavLink>
                                 <Menu isOpen={isOpen2}>
                                     <MenuButton
@@ -236,6 +250,21 @@ export default function Simple() {
                                         </MenuItem>
                                     </MenuList>
                                 </Menu>
+                            </NavLink>
+                            <NavLink>
+                                <Link
+                                    sx={{
+                                        backgroundColor: "transparent",
+                                        color: "white",
+                                        "&:hover": {
+                                            backgroundColor: "transparent",
+                                            color: "blue"
+                                        }
+                                    }}
+                                    href='/staking'
+                                >
+                                    Staking
+                                </Link>
                             </NavLink>
                             <NavLink>
                                 <Menu isOpen={isOpen2}>

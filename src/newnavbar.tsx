@@ -70,6 +70,36 @@ export default function Simple() {
                             spacing={4}
                             display={{ base: 'none', md: 'flex' }}>
                             <NavLink>
+                                <Link 
+                                    href='/' 
+                                    sx={{
+                                        backgroundColor: "transparent",
+                                        color: "white",
+                                        "&:hover": {
+                                            backgroundColor: "transparent",
+                                            color: "blue.400"
+                                        }
+                                    }}
+                                >
+                                    Back
+                                </Link>
+                            </NavLink>
+                            <NavLink>
+                                <Link
+                                    sx={{
+                                        backgroundColor: "transparent",
+                                        color: "white",
+                                        "&:hover": {
+                                            backgroundColor: "transparent",
+                                            color: "blue"
+                                        }
+                                    }}
+                                    href='/staking'
+                                >
+                                    Staking
+                                </Link>
+                            </NavLink>
+                            <NavLink>
                                 <Link
                                     sx={{
                                         backgroundColor: "transparent",
@@ -84,7 +114,6 @@ export default function Simple() {
                                     Mint
                                 </Link>
                             </NavLink>
-                            <Spacer />
                             <NavLink>
                                 <Menu isOpen={isOpen2}>
                                     <MenuButton
@@ -194,6 +223,38 @@ export default function Simple() {
                             as={'nav'}
                             spacing={4}
                         >
+                            <NavLink>
+                                <Link 
+                                    href='/' 
+                                    sx={{
+                                        backgroundColor: "transparent",
+                                        color: "white",
+                                        "&:hover": {
+                                            backgroundColor: "transparent",
+                                            color: "blue.400"
+                                        }
+                                    }}
+                                >
+                                    Back
+                                </Link>
+                            </NavLink>
+                            <Spacer />
+                            <NavLink>
+                                <Link
+                                    sx={{
+                                        backgroundColor: "transparent",
+                                        color: "white",
+                                        "&:hover": {
+                                            backgroundColor: "transparent",
+                                            color: "blue.400"
+                                        }
+                                    }}
+                                    href='/staking'
+                                >
+                                    Staking
+                                </Link>
+                            </NavLink>
+                            <Spacer />
                             <NavLink>
                                 <Link
                                     sx={{

@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./Second";
+import Stake from "./staking"
 import NewPage from './NewPage';
 import Information from './Information';
 import { ThirdwebProvider } from "@thirdweb-dev/react";
@@ -23,6 +24,7 @@ root.render(
           <Routes>
             <Route path="/" element={<NewPage/>} />
             <Route path="/concert" element={<App />} />
+            <Route path="/staking" element={<Stake />} />
             <Route path="/concert/mint" element={<Information />} />
           </Routes>
         </Router>
