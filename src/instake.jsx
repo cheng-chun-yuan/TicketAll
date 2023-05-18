@@ -1,7 +1,7 @@
 import Token from './assets/social-media-icons/black.png';
 import React from 'react';
 import { useAddress, useContract, useContractRead, Web3Button } from "@thirdweb-dev/react";
-import { STAKING_ADDRESS,COIN_ADDRESS,NFT_ADDRESS } from './const/contractAddress';
+import { STAKING_ADDRESS,BMT_ADDRESS } from './const/contractAddress';
 import {
     Box,
     Heading,
@@ -15,7 +15,7 @@ import {
 
 export default function InStake() {
     const { contract } = useContract(STAKING_ADDRESS)
-    const { contract:cointract } = useContract(COIN_ADDRESS)
+    const { contract:BMTcontract } = useContract(BMT_ADDRESS)
     const address = useAddress()
     const [valuee, setValue] = React.useState('')
     const handleChange = (event) => setValue(event.target.value)
@@ -95,7 +95,7 @@ export default function InStake() {
                             }}
                             contractAddress={STAKING_ADDRESS}
                             action={async () => {
-                                await cointract.call("approve", [NFT_ADDRESS,valuee]) 
+                                await BMTcontract.call("approve", [STAKING_ADDRESS,valuee]) 
                                 await contract.call('stake', [valuee])
                             }}
                             onSuccess={() => {

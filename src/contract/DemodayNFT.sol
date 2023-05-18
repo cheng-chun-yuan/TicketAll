@@ -54,7 +54,9 @@ contract DemoNFT is ERC721 {
         require(_exists(_tokenId), "Token does not exist");
         ticketUsed[_tokenId] = true;
     }
-
+    function check() public view returns (bool) {
+        return msg.sender.balance >= 0.05 ether;
+    }
     function used_Ticket(uint256 _tokenId) public view returns (bool) {
         return ticketUsed[_tokenId];
     }

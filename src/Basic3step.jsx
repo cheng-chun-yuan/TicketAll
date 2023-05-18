@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAddress, useContract, Web3Button, useContractRead, useContractEvents } from "@thirdweb-dev/react";
-import { NFT_ADDRESS, COIN_ADDRESS } from './const/contractAddress';
+import { NFT_ADDRESS, BA_ADDRESS } from './const/contractAddress';
 import Rrfund from './assets/social-media-icons/refund.png'
 import Minty from './assets/social-media-icons/mint.png'
 import Web3 from 'web3';
@@ -37,7 +37,8 @@ import { InfoOutlineIcon } from '@chakra-ui/icons';
 const Form1 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const [coinAmount, setCoinAmount] = useState(1)
-    const { contract: cointract } = useContract(COIN_ADDRESS)
+    const { contract: BA_contract } = useContract(BA_ADDRESS)
+    const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7');
     const address = useAddress()
     const handleDecrement2 = () => {
         if (coinAmount <= 1) return
@@ -55,6 +56,10 @@ const Form1 = () => {
         data: totalmintA,
         isLoading: loadingtotalmintA
     } = useContractRead(contract, "totalmintAuthority")
+    const {
+        data: check,
+        isLoading: loadingcheck
+    } = useContractRead(contract, "check")
     const handleIncrement2 = () => {
         if (coinAmount >= 6) return
         setCoinAmount(coinAmount + 1)
@@ -80,15 +85,24 @@ const Form1 = () => {
             >
                 
                 <Skeleton
-                    isLoaded={!loadingtotalmintA}
+                    isLoaded={!loadingcheck}
                 >
-                    {}
-                    <Icon viewBox='0 0 200 200' color='red.500'>
-                    <path
-                        fill='currentColor'
-                        d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
-                    />
-                    </Icon>
+                    {!check ? (
+                        <Icon viewBox='0 0 200 200' color='red.500'>
+                        <path
+                            fill='currentColor'
+                            d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
+                        />
+                        </Icon>
+                    ):(
+                        <Icon viewBox='0 0 200 200' color='green.500'>
+                        <path
+                            fill='currentColor'
+                            d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
+                        />
+                        </Icon>
+                    )}
+                    
                     CheckBalance (Must>0.05 ETH)
                 </Skeleton>
                 <Skeleton
@@ -153,7 +167,7 @@ const Form1 = () => {
                         }}
                         contractAddress={NFT_ADDRESS}
                         action={async () => {
-                            await cointract.call("approve", [NFT_ADDRESS, 100])
+                            await BA_contract.call("approve", [NFT_ADDRESS, 100])
                             await contract.call('buyCallOption', [coinAmount])
                         }}
                         onSuccess={() => {
@@ -239,7 +253,6 @@ const Form2 = () => {
     // const Auctioneth = web3.utils.fromWei(Auction, 'ether');
     const BN = web3.utils.BN;
     const Auctioneth = web3.utils.fromWei(new BN(Auction?.toString()), 'ether');
-
     return (
         <Box>
             <Box
