@@ -37,7 +37,7 @@ const Form1 = () => {
 
     const { contract } = useContract(NFT_ADDRESS)
     const [coinAmount, setCoinAmount] = useState(1)
-
+    const { contract:cointract } = useContract(COIN_ADDRESS)  
     const address = useAddress()
     const handleDecrement2 = () => {
         if (coinAmount <= 1) return
@@ -47,6 +47,10 @@ const Form1 = () => {
         data: numCallOption,
         isLoading: loadingCallOption
     } = useContractRead(contract, "pointBalances", [address])
+    const {
+        data: numPoint,
+        isLoading: loadingPoint
+    } = useContractRead(contract, "calculatePoint", [coinAmount, address])
     const {
         data: totalmintA,
         isLoading: loadingtotalmintA
@@ -131,10 +135,12 @@ const Form1 = () => {
                             cursor: "pointer",
                             fontFamily: "inherit",
                             padding: "10px",
-                            marginTop: "10px",
+                            marginBottom: "10px",
+                            margin:"10px"
                         }}
                         contractAddress={NFT_ADDRESS}
                         action={async () => {
+                            await cointract.call("approve", [NFT_ADDRESS,100]) 
                             await contract.call('buyCallOption', [coinAmount], {
                                 from: address,
                             })
@@ -148,6 +154,11 @@ const Form1 = () => {
                     >
                         Mint Authority
                     </Web3Button>
+                    <Skeleton
+                        isLoaded={!loadingPoint}
+                    >
+                        BA token you need  :  {numPoint?.toString()}
+                    </Skeleton>
                 </div>
             ) : (
                 <Text
@@ -168,7 +179,7 @@ const Form1 = () => {
                 fontFamily="VT323"
                 textShadow="0 2px 2px #000"
                 lineHeight={"26px"}
-                marginTop="20px"
+                marginTop="10px"
             >
                 <Skeleton
                     isLoaded={!loadingCallOption}
