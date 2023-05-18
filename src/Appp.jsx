@@ -12,8 +12,8 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react'
 import { FaArrowRight } from 'react-icons/fa'
-import Linchielon from './assets/social-media-icons/concert.png';
-import ylbull from './assets/social-media-icons/singer.png';
+import Linchielon from './assets/social-media-icons/lauv.jpg';
+import ylbull from './assets/social-media-icons/lauv2.jpg';
 export const Appp = () => (
     <Box
         maxW="7xl"
@@ -80,12 +80,12 @@ export const Appp = () => (
                         }}
                     >
                         <Heading size="xl" color={useColorModeValue('red.500', 'red.300')} fontFamily="VT323">
-                            Welcome to 071 Concert
+                            Welcome to Lauv Concert
                         </Heading>
                         <Heading size="xl" fontWeight="normal" color={useColorModeValue('black', 'black')} fontFamily="VT323">
-                            Official Sales Start : 2023/05/14 (SUN) 0AM
+                            Official Sales Start : 2023/05/16 (SUN) 0AM
                             <Spacer/>
-                            Venue : National Taiwan University (NTU)
+                            Venue : Taipei Nangang Exhibition Center
                         </Heading>
                     </Stack>
                     <HStack spacing="3">
