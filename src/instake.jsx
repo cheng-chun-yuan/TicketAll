@@ -1,4 +1,4 @@
-import Token from './assets/social-media-icons/trans.png';
+import Token from './assets/social-media-icons/black.png';
 import React from 'react';
 import { useAddress, useContract, useContractRead, Web3Button } from "@thirdweb-dev/react";
 import { STAKING_ADDRESS } from './const/contractAddress';
@@ -176,7 +176,7 @@ export default function InStake() {
                             }}
                             contractAddress={STAKING_ADDRESS}
                             action={async () => {
-                                await contract.call('claim')
+                                await contract.call('claimReward')
                             }}
                             onSuccess={() => {
                                 alert('成功囉')

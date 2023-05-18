@@ -6,7 +6,7 @@ import Simple from './homenavbar';
 import { Box,SimpleGrid,IconButton,Image, Center } from '@chakra-ui/react'
 import BgImage from './assets/background/071.gif'
 import Footer from './footer'
-import {App} from './Appp'
+import {Appp} from './Appp'
 import Linchielon from './ticket.jpeg';
 
 export default function NewPage() {
@@ -16,7 +16,7 @@ export default function NewPage() {
             <Box className="App">
                 <Simple />
                 <MainMint />
-                <App/>
+                <Appp/>
                 <Footer />
             </Box>
 

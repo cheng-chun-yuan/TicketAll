@@ -7,13 +7,14 @@ import {
     Image,
     Link,
     Skeleton,
+    Spacer,
     Stack,
     useColorModeValue,
 } from '@chakra-ui/react'
 import { FaArrowRight } from 'react-icons/fa'
-import Linchielon from './assets/social-media-icons/profile.png';
-import ylbull from './assets/social-media-icons/ylbull.png';
-export const App = () => (
+import Linchielon from './assets/social-media-icons/concert.png';
+import ylbull from './assets/social-media-icons/singer.png';
+export const Appp = () => (
     <Box
         maxW="7xl"
         mx="auto"
@@ -82,7 +83,9 @@ export const App = () => (
                             Welcome to 071 Concert
                         </Heading>
                         <Heading size="xl" fontWeight="normal" color={useColorModeValue('black', 'black')} fontFamily="VT323">
-                            hope to see you!!
+                            Official Sales Start : 2023/05/14 (SUN) 0AM
+                            <Spacer/>
+                            Venue : National Taiwan University (NTU)
                         </Heading>
                     </Stack>
                     <HStack spacing="3">
