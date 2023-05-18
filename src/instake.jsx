@@ -19,7 +19,7 @@ import {
 
 export default function InStake() {
     const { contract } = useContract(STAKING_ADDRESS)
-    const { cointract } = useContract(COIN_ADDRESS)
+    const { contract:cointract } = useContract(COIN_ADDRESS)
     const address = useAddress()
     const [valuee, setValue] = React.useState('')
     const handleChange = (event) => setValue(event.target.value)
