@@ -1,16 +1,12 @@
 import Token from './assets/social-media-icons/black.png';
 import React from 'react';
 import { useAddress, useContract, useContractRead, Web3Button } from "@thirdweb-dev/react";
-import { STAKING_ADDRESS,COIN_ADDRESS } from './const/contractAddress';
+import { STAKING_ADDRESS,COIN_ADDRESS,NFT_ADDRESS } from './const/contractAddress';
 import {
     Box,
-    Button,
     Heading,
-    Flex,
     Input,
     Text,
-    Checkbox,
-    Stack,
     Spacer,
     Image,
     Center,
@@ -205,83 +201,3 @@ export default function InStake() {
         </Box>
     );
 }
-const Form4 = () => {
-    return (
-        <Box>
-            {address ? (
-                <div>
-                    <Flex align="center" justify="center">
-                        <Text mb='8px'>Value:</Text>
-                        <Input
-                            width="200px"
-                            height="35px"
-                            textAlign="center"
-                            type="number"
-                            value={valuee}
-                            onChange={handleChange}
-                            placeholder='your tokenId'
-                            size='sm'
-                        />
-                    </Flex>
-                    <Stack pl={3} mt={1} spacing={1} >
-                        <Checkbox
-                            isChecked={checkedItems[0]}
-                            onChange={(e) => setCheckedItems([e.target.checked, checkedItems[1]])}
-                            size='sm'
-                            color={'red'}
-                        >
-                            I agree that I cannot return all money and mint authority when I refund
-                        </Checkbox>
-                        <Checkbox
-                            isChecked={checkedItems[1]}
-                            onChange={(e) => setCheckedItems([checkedItems[0], e.target.checked])}
-                            size='sm'
-                            color={'red'}
-                        >
-                            I am sure that a want to refund this ticket and take resposibility of my action.
-                        </Checkbox>
-                    </Stack>
-                    <Web3Button
-                        style={{
-                            backgroundColor: "white",
-                            borderRadius: "5px",
-                            boxShadow: "0px 2px 2px 1px #0f0f0f",
-                            cursor: "pointer",
-                            fontFamily: "inherit",
-                            padding: "10px",
-                            marginTop: "10px",
-                        }}
-                        contractAddress={NFT_ADDRESS}
-                        action={async () => {
-                            await contract.call('refund', [valuee], {
-                                // value: ethers.utils.parseEther(mintprice)
-                            })
-                        }}
-                        onSuccess={() => {
-                            alert('成功囉')
-                        }}
-                        onError={(error) => {
-                            alert(error)
-                        }}
-                        isDisabled={!allChecked}
-                        theme="dark"
-                    >
-                        Refund
-                    </Web3Button>
-                </div>
-            ) : (
-                <Text
-                    marginTop="70px"
-                    fontSize="30px"
-                    letterSpacing="-5.5%"
-                    fontFamily="VT323"
-                    textShadow="0 3px #000"
-                    color="#D6517D"
-                >
-                    You must be connected to Mint
-                </Text>
-            )}
-
-        </Box>
-    );
-};

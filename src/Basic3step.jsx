@@ -29,14 +29,15 @@ import {
     Spacer,
     Tooltip,
     Image,
-    Center
+    Center,
+    Icon
 } from '@chakra-ui/react';
 import dayjs from "dayjs";
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 const Form1 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const [coinAmount, setCoinAmount] = useState(1)
-    const { contract:cointract } = useContract(COIN_ADDRESS)  
+    const { contract: cointract } = useContract(COIN_ADDRESS)
     const address = useAddress()
     const handleDecrement2 = () => {
         if (coinAmount <= 1) return
@@ -77,9 +78,17 @@ const Form1 = () => {
                 lineHeight={"26px"}
                 marginTop="20px"
             >
+                
                 <Skeleton
                     isLoaded={!loadingtotalmintA}
                 >
+                    {}
+                    <Icon viewBox='0 0 200 200' color='red.500'>
+                    <path
+                        fill='currentColor'
+                        d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
+                    />
+                    </Icon>
                     CheckBalance (Must>0.05 ETH)
                 </Skeleton>
                 <Skeleton
@@ -140,11 +149,11 @@ const Form1 = () => {
                             fontFamily: "inherit",
                             padding: "10px",
                             marginBottom: "10px",
-                            margin:"10px"
+                            margin: "10px"
                         }}
                         contractAddress={NFT_ADDRESS}
                         action={async () => {
-                            await cointract.call("approve", [NFT_ADDRESS,100]) 
+                            await cointract.call("approve", [NFT_ADDRESS, 100])
                             await contract.call('buyCallOption', [coinAmount])
                         }}
                         onSuccess={() => {
