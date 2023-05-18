@@ -9,7 +9,7 @@ const Content = () => {
             >
                 <Box>
                     <div className="mint-container">
-                        <Text fontSize="3xl" textShadow="0 5px #000" color={"pink.300"}>Lauv Concert</Text>
+                        <Text fontSize="2xl" textShadow="0 5px #000" color={"pink.300"}>Lauv Concert</Text>
                         <Text
                             fontSize="3xl"
                             letterSpacing="0.5%"

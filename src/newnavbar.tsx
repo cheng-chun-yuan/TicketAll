@@ -19,16 +19,12 @@ import {
     Spacer
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-import Facebook from './assets/social-media-icons/twitter_32x32.png'
-import Twitter from './assets/social-media-icons/twitter_32x32.png'
-import Linchiyi from './assets/social-media-icons/email_32x32.png';
 import Linchielon from './assets/social-media-icons/071.png';
 import Cheng from './assets/social-media-icons/cheng.png';
 import Debby from './assets/social-media-icons/Debby.jpg';
 import Cw from './assets/social-media-icons/cw.jpg';
 import Sh from './assets/social-media-icons/SH.jpg';
 import { ConnectWallet } from '@thirdweb-dev/react';
-import { useHref } from 'react-router-dom';
 
 const NavLink = ({ children }: { children: ReactNode }) => (
     <Link
@@ -46,9 +42,7 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 
 export default function Simple() {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { isOpen: isOpen1, onOpen: onOpen1, onClose: onClose1 } = useDisclosure();
     const { isOpen: isOpen2, onOpen: onOpen2, onClose: onClose2 } = useDisclosure();
-    const { isOpen: isOpen3, onOpen: onOpen3, onClose: onClose3 } = useDisclosure();
     return (
         <>
             <Box
@@ -91,7 +85,7 @@ export default function Simple() {
                                         color: "white",
                                         "&:hover": {
                                             backgroundColor: "transparent",
-                                            color: "blue"
+                                            color: "blue.400"
                                         }
                                     }}
                                     href='/staking'

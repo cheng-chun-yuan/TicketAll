@@ -80,7 +80,7 @@ export const Appp = () => (
                         }}
                     >
                         <Heading size="xl" color={useColorModeValue('red.500', 'red.300')} fontFamily="VT323">
-                            Welcome to Lauv Concert
+                        Lauv : The Between Albums Tour
                         </Heading>
                         <Heading size="xl" fontWeight="normal" color={useColorModeValue('black', 'black')} fontFamily="VT323">
                             Official Sales Start : 2023/05/16 (SUN) 0AM

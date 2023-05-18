@@ -34,7 +34,6 @@ import {
 import dayjs from "dayjs";
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 const Form1 = () => {
-
     const { contract } = useContract(NFT_ADDRESS)
     const [coinAmount, setCoinAmount] = useState(1)
     const { contract:cointract } = useContract(COIN_ADDRESS)  
@@ -81,7 +80,12 @@ const Form1 = () => {
                 <Skeleton
                     isLoaded={!loadingtotalmintA}
                 >
-                    totalsupply of mint Authority : {totalmintA?.toString()}
+                    CheckBalance (Must>0.05 ETH)
+                </Skeleton>
+                <Skeleton
+                    isLoaded={!loadingtotalmintA}
+                >
+                    Totalsupply of Mint Authority : {totalmintA?.toString()}
                 </Skeleton>
             </Box>
             {address ? (
@@ -141,12 +145,10 @@ const Form1 = () => {
                         contractAddress={NFT_ADDRESS}
                         action={async () => {
                             await cointract.call("approve", [NFT_ADDRESS,100]) 
-                            await contract.call('buyCallOption', [coinAmount], {
-                                from: address,
-                            })
+                            await contract.call('buyCallOption', [coinAmount])
                         }}
                         onSuccess={() => {
-                            alert('成功囉')
+                            alert('The transaction has been successfully completed.')
                         }}
                         onError={(error) => {
                             alert('error:' + error.message)
@@ -242,7 +244,7 @@ const Form2 = () => {
                 <Skeleton
                     isLoaded={!loadingTotalNFT || !loadingmax}
                 >
-                    Remain nft number: {(max - totalNFT)?.toString()}
+                    Remain Amount of NFT : {(max - totalNFT)?.toString()}
                 </Skeleton>
             </Box>
             <Box
@@ -256,11 +258,11 @@ const Form2 = () => {
                 {rerefund == 2 ? <Skeleton
                     isLoaded={!loadingAuction}
                 >
-                    Final Mint <Spacer />AuctionPrice: {Auctioneth} eth
+                    Final Mint <Spacer />AuctionPrice: {Auctioneth} ETH
                 </Skeleton> : rerefund == 1 ? <Skeleton
                     isLoaded={!loadingAuction}
                 >
-                    First Round <Spacer />AuctionPrice: {Auctioneth} eth
+                    First Round <Spacer />Auction Price: {Auctioneth} ETH
                 </Skeleton> : <Text>Mint not yet</Text>}
             </Box>
             {address ? (
@@ -333,7 +335,7 @@ const Form2 = () => {
 
                         }}
                         onSuccess={() => {
-                            alert('成功囉')
+                            alert('The transaction has been successfully completed.')
                         }}
                         onError={(error) => {
                             alert('error:' + error.message)
@@ -638,7 +640,7 @@ const Form4 = () => {
                             })
                         }}
                         onSuccess={() => {
-                            alert('成功囉')
+                            alert('The transaction has been successfully completed.')
                         }}
                         onError={(error) => {
                             alert(error)

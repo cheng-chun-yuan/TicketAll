@@ -1,7 +1,7 @@
 import Token from './assets/social-media-icons/black.png';
 import React from 'react';
 import { useAddress, useContract, useContractRead, Web3Button } from "@thirdweb-dev/react";
-import { STAKING_ADDRESS } from './const/contractAddress';
+import { STAKING_ADDRESS,COIN_ADDRESS } from './const/contractAddress';
 import {
     Box,
     Button,
@@ -19,6 +19,7 @@ import {
 
 export default function InStake() {
     const { contract } = useContract(STAKING_ADDRESS)
+    const { cointract } = useContract(COIN_ADDRESS)
     const address = useAddress()
     const [valuee, setValue] = React.useState('')
     const handleChange = (event) => setValue(event.target.value)
@@ -98,12 +99,11 @@ export default function InStake() {
                             }}
                             contractAddress={STAKING_ADDRESS}
                             action={async () => {
-                                await contract.call('stake', [valuee], {
-                                    // value: ethers.utils.parseEther(mintprice)
-                                })
+                                await cointract.call("approve", [NFT_ADDRESS,valuee]) 
+                                await contract.call('stake', [valuee])
                             }}
                             onSuccess={() => {
-                                alert('成功囉')
+                                alert('The transaction has been successfully completed.')
                             }}
                             onError={(error) => {
                                 alert(error)
@@ -129,7 +129,7 @@ export default function InStake() {
                                 })
                             }}
                             onSuccess={() => {
-                                alert('成功囉')
+                                alert('The transaction has been successfully completed.')
                             }}
                             onError={(error) => {
                                 alert(error)
@@ -179,7 +179,7 @@ export default function InStake() {
                                 await contract.call('claimReward')
                             }}
                             onSuccess={() => {
-                                alert('成功囉')
+                                alert('The transaction has been successfully completed.')
                             }}
                             onError={(error) => {
                                 alert(error)
