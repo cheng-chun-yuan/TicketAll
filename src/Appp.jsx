@@ -83,7 +83,7 @@ export const Appp = () => (
                         Lauv : The Between Albums Tour
                         </Heading>
                         <Heading size="xl" fontWeight="normal" color={useColorModeValue('black', 'black')} fontFamily="VT323">
-                            Official Sales Start : 2023/05/16 (SUN) 0AM
+                            Official Sales Start : 2023/05/16 (TUE) 0AM
                             <Spacer/>
                             Venue : Taipei Nangang Exhibition Center
                         </Heading>
