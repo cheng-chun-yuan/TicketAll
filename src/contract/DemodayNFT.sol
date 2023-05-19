@@ -5,13 +5,13 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract DemoNFT is ERC721 {
+contract emooooNFT is ERC721 {
     //setting argument
-    IERC20 public token; //the second token cost for mint NFT 
+    IERC20 public token = IERC20(0x302bf904a598A1C3eeCcc2E2c5971b734F52A501); //the second token cost for mint NFT 
     address public owner; //people who construct the contrast
     uint256 public maxSupply; //total supply
     uint256 public nftPrice; // the price of NFT(initial)
-    event Refund(uint256 _tokenId, uint256 refundAmount, uint256 timestamp,address from); //to show the event of refund 
+    event Refund(uint256 _tokenId,uint256 refundAmount,uint256 timestamp,address from); //to show the event of refund 
     event firstmint(uint256 _tokenId, address to, uint256 timestamp);
     event finalmint(uint256 _tokenId, address to, uint256 timestamp); 
     uint256 public nowSupply = 0; //the current mint number
@@ -21,20 +21,19 @@ contract DemoNFT is ERC721 {
     uint256 public totalmintAuthority = 0;
     mapping(address => uint256) public pointBalances ; // Points balance of each user
     mapping(uint256 => bool) public ticketUsed;
-    using Strings for uint256; 
+    using Strings for uint256;
+    uint256 public rerefund = 0;
 
     // construct the contrast with specific name symbol maxSupply nftPrice maxPerWallet IERC_token
     constructor(
         uint256 _maxSupply,
         uint256 _nftPrice,
-        uint256 _maxPerWallet,
-        IERC20 _token
+        uint256 _maxPerWallet
         
-    ) ERC721("BuymeTicket", "BmT") {
+    ) ERC721("Lauv_Concert", "LAUV") {
         maxSupply = _maxSupply;
         nftPrice = _nftPrice;
         owner = msg.sender;
-        token = _token;
         maxPerWallet = _maxPerWallet;
     }
 
@@ -44,7 +43,7 @@ contract DemoNFT is ERC721 {
     }
     //checkwalletbalance
     modifier checkbalance() {
-        require(msg.sender.balance >= 0.05 ether , "please add more money to your account");
+        require(msg.sender.balance >= 0.1 ether , "please add more money to your account");
         _;
     }
     // //change TokenURL to 
@@ -54,9 +53,7 @@ contract DemoNFT is ERC721 {
         require(_exists(_tokenId), "Token does not exist");
         ticketUsed[_tokenId] = true;
     }
-    function check() public view returns (bool) {
-        return msg.sender.balance >= 0.05 ether;
-    }
+
     function used_Ticket(uint256 _tokenId) public view returns (bool) {
         return ticketUsed[_tokenId];
     }
@@ -78,20 +75,19 @@ contract DemoNFT is ERC721 {
 
 
     // count how many point(second token) it need to mint
-    function calculatePoint(uint256 _mintAmount) public view returns (uint256) {
+    function calculatePoint(uint256 _mintAmount ,address adddr) public view returns (uint256) {
         //check how many nft in wallet
-        uint256 nowAmount = balanceOf(msg.sender) + getCallOption();
-        uint256 sum = (_mintAmount + 1 + nowAmount * 2) * _mintAmount / 2;
+        uint256 nowAmount = balanceOf(adddr) + pointBalances[adddr];
+        uint256 sum = (_mintAmount + 1 + nowAmount + nowAmount) * _mintAmount / 2;
         return sum;
     }
 
     //use point to prepurchase NFT
     function buyCallOption(uint256 _mintAmount) public payable checkbalance(){
-        // uint256 costNum = calculatePoint(_mintAmount);
+        uint256 costNum = calculatePoint(_mintAmount,msg.sender);
         // // Check that the user has approved the transfer of tokens to this contract
-        // require(token.allowance(msg.sender, address(this)) >= costNum, "Token allowance not set");
-        // // Transfer the tokens from the user to this contract
-        // require(token.transferFrom(msg.sender, address(this), costNum), "Token transfer failed");
+        token.approve(address(this), costNum);
+        require(token.transferFrom(msg.sender, address(this), costNum), "Token transfer failed");
         // Credit the user's account with the points
         totalmintAuthority+= _mintAmount;
         pointBalances[msg.sender] += _mintAmount;
@@ -130,7 +126,10 @@ contract DemoNFT is ERC721 {
                 ? currentAuction.startPrice - step * currentAuction.priceStep
                 : currentAuction.endPrice;
     }
-
+    function setToken(address addr) public onlyOwner {
+        token = IERC20(addr); 
+    }
+    
     function setAuction(
         uint256 _startTime,
         uint256 _timeStep,
@@ -144,11 +143,13 @@ contract DemoNFT is ERC721 {
         auction.endPrice = _endPrice; // 10000000000000000 最後金額
         auction.priceStep = _priceStep; // 10000000000000000 每次扣除多少金額
         auction.stepNumber = _stepNumber; // 5 幾個階段
+        rerefund += 1; 
     }
-    //Todo : should modify the mint function (mint many NFT simultaneously with one ERC20 token and ETH)
+
     function auctionmintNFT(uint256 _mintAmount) public payable checkbalance(){
-        //new version
+    //new version
         // uint256 amountToken = calculatePoint(_mintAmount);
+        require(rerefund == 1, "not open");
         require(getCallOption() >= _mintAmount, "Buy call option first");
         uint256 amountETH = _mintAmount * getAuctionPrice();
         require(
@@ -162,18 +163,42 @@ contract DemoNFT is ERC721 {
             uint256 newTokenId = nowSupply + 1;
             nowSupply++;
             _safeMint(msg.sender, newTokenId);
-            ticketUsed[newTokenId] = false;
+            emit firstmint(newTokenId,msg.sender,block.timestamp);
         }
-        emit firstmint(_tokenId,msg.sender,block.timestamp);
+        
     }
-
+    function FinalmintNFT(uint256 _mintAmount) public payable checkbalance(){
+    //new version
+        // uint256 amountToken = calculatePoint(_mintAmount);
+        require(rerefund == 2, "not open");
+        require(getCallOption() >= _mintAmount, "Buy call option first");
+        uint256 amountETH = _mintAmount * getAuctionPrice();
+        require(
+            balanceOf(msg.sender) + _mintAmount <= maxPerWallet,
+            "exceed max wallet limit"
+        );
+		require(msg.value == amountETH, "Must send the correct amount of ETH");
+        require(nowSupply + _mintAmount <= maxSupply+nextSaleNumber, "sold out");
+        useCallOption(_mintAmount);
+        for (uint256 i = 0; i < _mintAmount; i++) {
+            uint256 newTokenId = nowSupply + 1;
+            nowSupply++;
+            _safeMint(msg.sender, newTokenId);
+            emit finalmint(newTokenId,msg.sender,block.timestamp);
+        }
+        
+    }
     //get the money from contract
     function withdraw() public payable{
         require(msg.sender == owner, "Only the contract owner can withdraw");
         payable(msg.sender).transfer(address(this).balance);
     }
+    function check(address addr) public view returns (bool) {
+        return addr.balance >= 0.05 ether;
+    }
     //refund
     function refund(uint256 _tokenId) external payable {
+        require(rerefund < 2, "Now cannot refund");
         require(_exists(_tokenId), "ERC721A: nonexistent token");
         require(msg.sender == ownerOf(_tokenId), "ERC721A: only token owner can request refund");
 
@@ -187,7 +212,6 @@ contract DemoNFT is ERC721 {
         nextSaleNumber++;
         // 发送退款给申请者
         payable(msg.sender).transfer(refundAmount);
-        
         emit Refund(_tokenId, refundAmount,block.timestamp,msg.sender);
     }
 

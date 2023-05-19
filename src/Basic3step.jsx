@@ -59,7 +59,7 @@ const Form1 = () => {
     const {
         data: check,
         isLoading: loadingcheck
-    } = useContractRead(contract, "check")
+    } = useContractRead(contract, "check", [address])
     const handleIncrement2 = () => {
         if (coinAmount >= 6) return
         setCoinAmount(coinAmount + 1)
@@ -87,15 +87,15 @@ const Form1 = () => {
                 <Skeleton
                     isLoaded={!loadingcheck}
                 >
-                    {!check ? (
-                        <Icon viewBox='0 0 200 200' color='red.500'>
+                    {check ? (
+                        <Icon viewBox='0 0 200 200' color='green.500'>
                         <path
                             fill='currentColor'
                             d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
                         />
                         </Icon>
                     ):(
-                        <Icon viewBox='0 0 200 200' color='green.500'>
+                        <Icon viewBox='0 0 200 200' color='red.500'>
                         <path
                             fill='currentColor'
                             d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
@@ -178,6 +178,30 @@ const Form1 = () => {
                         }}
                     >
                         Mint Authority
+                    </Web3Button>
+                    <Web3Button
+                        style={{
+                            backgroundColor: "white",
+                            borderRadius: "5px",
+                            boxShadow: "0px 2px 2px 1px #0f0f0f",
+                            cursor: "pointer",
+                            fontFamily: "inherit",
+                            padding: "10px",
+                            marginBottom: "10px",
+                            margin: "10px"
+                        }}
+                        contractAddress={NFT_ADDRESS}
+                        action={async () => {
+                            await contract.call('DemoCallOption', [coinAmount])
+                        }}
+                        onSuccess={() => {
+                            alert('The transaction has been successfully completed.')
+                        }}
+                        onError={(error) => {
+                            alert('error:' + error.message)
+                        }}
+                    >
+                        Free for Demo
                     </Web3Button>
                     <Skeleton
                         isLoaded={!loadingPoint}
@@ -642,7 +666,7 @@ const Form4 = () => {
                             size='sm'
                             color={'red'}
                         >
-                            I am sure that a want to refund this ticket and take resposibility of my action.
+                            I am sure that I want to refund this ticket and take resposibility of my action.
                         </Checkbox>
                     </Stack>
                     <Web3Button
