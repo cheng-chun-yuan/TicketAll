@@ -1,10 +1,9 @@
-import Content from './MintInfo';
-import Backnavbar from './backnavbar';
-import Stake from './instake'
+import Backnavbar from '../Stakingsrc/backnavbar';
+import Info from './info'
 // import {Form1,Form2,Form3} from './Basic3step'
 import { Box } from '@chakra-ui/react'
-import BgImage from './assets/background/071.gif'
-import Footer from './footer'
+import BgImage from '../assets/background/071.gif'
+import Footer from '../footer'
 
 
 export default function Home() {
@@ -13,7 +12,7 @@ export default function Home() {
         <Box className="overlay">
             <Box className="App">
                 <Backnavbar />
-                <Stake/>
+                <Info/>
                 <Footer />
             </Box>
 

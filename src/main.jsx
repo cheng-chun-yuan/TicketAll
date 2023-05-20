@@ -1,9 +1,9 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import Concert from "./Concert";
-import Staking from "./staking"
-import HomePage from './HomePage';
-import Information from './Information';
+import Concert from "./Concertsrc/Concert";
+import Staking from "./Stakingsrc/Staking"
+import HomePage from './Homesrc/HomePage';
+import Information from './Informationsrc/Information';
 import { ThirdwebProvider } from "@thirdweb-dev/react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import "./styles/globals.css";

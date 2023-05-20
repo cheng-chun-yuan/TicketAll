@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useAddress, useContract, Web3Button, useContractRead, useContractEvents } from "@thirdweb-dev/react";
-import { NFT_ADDRESS, BA_ADDRESS } from './const/contractAddress';
-import Rrfund from './assets/social-media-icons/refund.png'
-import Minty from './assets/social-media-icons/mint.png'
+import { NFT_ADDRESS, BA_ADDRESS } from '../const/contractAddress';
+import RefundIcon from '../assets/social-media-icons/refund.png'
+import MintIcon from '../assets/social-media-icons/mint.png'
 import Web3 from 'web3';
 import {
     Progress,
@@ -38,7 +38,6 @@ const Form1 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const [coinAmount, setCoinAmount] = useState(1)
     const { contract: BA_contract } = useContract(BA_ADDRESS)
-    const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7');
     const address = useAddress()
     const handleDecrement2 = () => {
         if (coinAmount <= 1) return
@@ -179,30 +178,6 @@ const Form1 = () => {
                     >
                         Mint Authority
                     </Web3Button>
-                    <Web3Button
-                        style={{
-                            backgroundColor: "white",
-                            borderRadius: "5px",
-                            boxShadow: "0px 2px 2px 1px #0f0f0f",
-                            cursor: "pointer",
-                            fontFamily: "inherit",
-                            padding: "10px",
-                            marginBottom: "10px",
-                            margin: "10px"
-                        }}
-                        contractAddress={NFT_ADDRESS}
-                        action={async () => {
-                            await contract.call('DemoCallOption', [coinAmount])
-                        }}
-                        onSuccess={() => {
-                            alert('The transaction has been successfully completed.')
-                        }}
-                        onError={(error) => {
-                            alert('error:' + error.message)
-                        }}
-                    >
-                        Free for Demo
-                    </Web3Button>
                     <Skeleton
                         isLoaded={!loadingPoint}
                     >
@@ -244,15 +219,13 @@ const Form2 = () => {
     const [mintAmount, setMintAmount] = useState(1)
     const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7');
     const address = useAddress()
-    // const nowPrice = getAuctionPrice()
-    // const mintprice = (nowPrice * mintAmount).toString()
     const handleDecrement = () => {
         if (mintAmount <= 1) return
         setMintAmount(mintAmount - 1)
     }
     const {
-        data: max,
-        isLoading: loadingmax
+        data: maxSupply,
+        isLoading: loadingmaxSupply
     } = useContractRead(contract, "maxSupply")
     const {
         data: totalNFT,
@@ -268,7 +241,6 @@ const Form2 = () => {
     } = useContractRead(contract, 'getAuctionPrice')
     const {
         data: rerefund,
-        isLoading
     } = useContractRead(contract, 'rerefund')
     const handleIncrement = () => {
         if (mintAmount >= 6) return
@@ -288,9 +260,9 @@ const Form2 = () => {
                 marginTop="20px"
             >
                 <Skeleton
-                    isLoaded={!loadingTotalNFT || !loadingmax}
+                    isLoaded={!loadingTotalNFT || !loadingmaxSupply}
                 >
-                    Remain Amount of NFT : {(max - totalNFT)?.toString()}
+                    Remain Amount of NFT : {(maxSupply - totalNFT)?.toString()}
                 </Skeleton>
             </Box>
             <Box
@@ -421,8 +393,119 @@ const Form2 = () => {
         </Box>
     );
 };
+const Form3 = () => {
+    const { contract } = useContract(NFT_ADDRESS)
+    const address = useAddress()
+    const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7');
+    const BN = web3.utils.BN;
+    const { data: allEvents, loading: loadingevent } = useContractEvents(contract, "firstmint")
+    const { data: allRefund, loading: loadingrefund } = useContractEvents(contract, "Refund")
+    const { data: finalMint, loading: loadingmint } = useContractEvents(contract, "finalmint")
+    return (
+        <Card maxH={'50vh'} overflow={'scroll'}>
+            <CardBody>
+                <Heading
+                    fontFamily="VT323"
+                    mb={'20px'}
+                    size={'lg'}
+                    fontWeight={'bold'}
+                >
+                    Your History
+                </Heading>
+                {!loadingevent && !loadingrefund && !loadingmint ?
+                    (
+                        <Box>
+                            {allRefund && allRefund?.map((event, index) => (
+                                <Card key={index}>
+                                    {event.data.from === address && (
+                                        <CardBody>
+                                            <Center>
+                                                <Flex alignItems={'center'} mb={'10px'}>
+                                                    <Image
+                                                        src={RefundIcon}
+                                                        alt='Refund'
+                                                        width={30}
+                                                        height={30}
+                                                        mr={'10px'}
+                                                    />
+                                                    <Tooltip
+                                                        label={`Time:${dayjs.unix(event.data.timestamp)}`}
+                                                        bg={'gray.200'}
+                                                        color={'black'}
+                                                    >
+                                                        <InfoOutlineIcon />
+                                                    </Tooltip>
+                                                    <Text fontWeight={'bold'} mr={'10px'}>
+                                                        Refund Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
+                                                        <Spacer />
+                                                        Amount : {web3.utils.fromWei(new BN(event.data.refundAmount?.toString()), 'ether') ? web3.utils.fromWei(new BN(event.data.refundAmount?.toString()), 'ether') : 'no message'} ETH
+                                                    </Text>
+                                                </Flex>
+                                            </Center>
+                                        </CardBody>
+                                    )}
+                                </Card>
+                            ))}
+                            {allEvents && allEvents?.map((event, index) => (
+                                <Card key={index}>
+                                    {event.data.to === address && (
+                                        <CardBody>
+                                            <Center>
+                                                <Flex alignItems={'center'} mb={'10px'}>
+                                                    <Image
+                                                        src={MintIcon}
+                                                        alt='Mint'
+                                                        width={30}
+                                                        height={30}
+                                                        mr={'10px'}
+                                                    />
+                                                    <Tooltip
+                                                        label={`Time:${dayjs.unix(event.data.timestamp)}`}
+                                                        bg={'gray.200'}
+                                                        color={'black'}
+                                                    >
+                                                        <InfoOutlineIcon />
+                                                    </Tooltip>
+                                                    <Text fontWeight={'bold'} mr={'10px'}>
+                                                        firstMint Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
+                                                    </Text>
+                                                </Flex>
+                                            </Center>
+                                        </CardBody>
+                                    )}
+                                </Card>
+                            ))}
+                            {finalMint && finalMint?.map((event, index) => (
+                                <Card key={index}>
+                                    {event.data.to === address && (
+                                        <CardBody>
+                                            <Tooltip
+                                                label={`Time:${dayjs.unix(event.data.timestamp)}`}
+                                                bg={'gray.200'}
+                                                color={'black'}
 
-const Form5 = () => {
+                                            >
+                                                <InfoOutlineIcon />
+                                            </Tooltip>
+                                            finalMint Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
+                                        </CardBody>
+                                    )}
+                                </Card>
+                            ))}
+                        </Box>
+                    ) : (
+                        <Stack>
+                            <Skeleton height={'100px'} />
+                            <Skeleton height={'100px'} />
+                            <Skeleton height={'100px'} />
+                        </Stack>
+                    )
+                }
+            </CardBody>
+        </Card>
+    );
+};
+const Form4 = () => {
     return (
         <>
             <Heading
@@ -515,119 +598,8 @@ const Form5 = () => {
         </>
     );
 };
-const Form3 = () => {
-    const { contract } = useContract(NFT_ADDRESS)
-    const address = useAddress()
-    const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7');
-    const BN = web3.utils.BN;
-    const { data: allEvents, loading: loadingevent } = useContractEvents(contract, "firstmint")
-    const { data: allRefund, loading: loadingrefund } = useContractEvents(contract, "Refund")
-    const { data: finalMint, loading: loadingmint } = useContractEvents(contract, "finalmint")
-    return (
-        <Card maxH={'50vh'} overflow={'scroll'}>
-            <CardBody>
-                <Heading
-                    fontFamily="VT323"
-                    mb={'20px'}
-                    size={'lg'}
-                    fontWeight={'bold'}
-                >
-                    Your History
-                </Heading>
-                {!loadingevent && !loadingrefund && !loadingmint ?
-                    (
-                        <Box>
-                            {allRefund && allRefund?.map((event, index) => (
-                                <Card key={index}>
-                                    {event.data.from === address && (
-                                        <CardBody>
-                                            <Center>
-                                                <Flex alignItems={'center'} mb={'10px'}>
-                                                    <Image
-                                                        src={Rrfund}
-                                                        alt='Refund'
-                                                        width={30}
-                                                        height={30}
-                                                        mr={'10px'}
-                                                    />
-                                                    <Tooltip
-                                                        label={`Time:${dayjs.unix(event.data.timestamp)}`}
-                                                        bg={'gray.200'}
-                                                        color={'black'}
-                                                    >
-                                                        <InfoOutlineIcon />
-                                                    </Tooltip>
-                                                    <Text fontWeight={'bold'} mr={'10px'}>
-                                                        Refund Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
-                                                        <Spacer />
-                                                        Amount : {web3.utils.fromWei(new BN(event.data.refundAmount?.toString()), 'ether') ? web3.utils.fromWei(new BN(event.data.refundAmount?.toString()), 'ether') : 'no message'} ETH
-                                                    </Text>
-                                                </Flex>
-                                            </Center>
-                                        </CardBody>
-                                    )}
-                                </Card>
-                            ))}
-                            {allEvents && allEvents?.map((event, index) => (
-                                <Card key={index}>
-                                    {event.data.to === address && (
-                                        <CardBody>
-                                            <Center>
-                                                <Flex alignItems={'center'} mb={'10px'}>
-                                                    <Image
-                                                        src={Minty}
-                                                        alt='Mint'
-                                                        width={30}
-                                                        height={30}
-                                                        mr={'10px'}
-                                                    />
-                                                    <Tooltip
-                                                        label={`Time:${dayjs.unix(event.data.timestamp)}`}
-                                                        bg={'gray.200'}
-                                                        color={'black'}
-                                                    >
-                                                        <InfoOutlineIcon />
-                                                    </Tooltip>
-                                                    <Text fontWeight={'bold'} mr={'10px'}>
-                                                        firstMint Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
-                                                    </Text>
-                                                </Flex>
-                                            </Center>
-                                        </CardBody>
-                                    )}
-                                </Card>
-                            ))}
-                            {finalMint && finalMint?.map((event, index) => (
-                                <Card key={index}>
-                                    {event.data.to === address && (
-                                        <CardBody>
-                                            <Tooltip
-                                                label={`Time:${dayjs.unix(event.data.timestamp)}`}
-                                                bg={'gray.200'}
-                                                color={'black'}
 
-                                            >
-                                                <InfoOutlineIcon />
-                                            </Tooltip>
-                                            finalMint Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
-                                        </CardBody>
-                                    )}
-                                </Card>
-                            ))}
-                        </Box>
-                    ) : (
-                        <Stack>
-                            <Skeleton height={'100px'} />
-                            <Skeleton height={'100px'} />
-                            <Skeleton height={'100px'} />
-                        </Stack>
-                    )
-                }
-            </CardBody>
-        </Card>
-    );
-};
-const Form4 = () => {
+const Form5 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const address = useAddress()
     const [checkedItems, setCheckedItems] = React.useState([false, false])
@@ -713,7 +685,7 @@ const Form4 = () => {
         </Box>
     );
 };
-export default function multistep() {
+function multistep() {
     const toast = useToast();
     const [step, setStep] = useState(1);
     const [progress, setProgress] = useState(25);
@@ -738,7 +710,7 @@ export default function multistep() {
                     mb="5%"
                     mx="5%"
                 ></Progress>
-                {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : step === 3 ? <Form3 /> : step === 4 ? <Form5 /> : <Form4 />}
+                {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : step === 3 ? <Form3 /> : step === 4 ? <Form4 /> : <Form5 />}
                 <ButtonGroup mt="5%" w="100%">
                     <Flex w="100%" justifyContent="space-between">
                         <Flex>
@@ -793,4 +765,4 @@ export default function multistep() {
         </Box>
     );
 }
-// export { Form1, Form2 ,Form3};
+export default multistep;

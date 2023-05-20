@@ -4,7 +4,7 @@ import {
     Text,
     Spacer
 } from '@chakra-ui/react';
-export default function Info() {
+function Info() {
     return (
         <Box>
             <Box
@@ -55,3 +55,4 @@ export default function Info() {
         </Box>
     );
 }
+export default Info;

@@ -1,7 +1,7 @@
-import Token from './assets/social-media-icons/black.png';
+import Token from '../assets/social-media-icons/black.png';
 import React from 'react';
 import { useAddress, useContract, useContractRead, Web3Button } from "@thirdweb-dev/react";
-import { STAKING_ADDRESS,BMT_ADDRESS } from './const/contractAddress';
+import { STAKING_ADDRESS,BMT_ADDRESS } from '../const/contractAddress';
 import {
     Box,
     Heading,
@@ -13,7 +13,7 @@ import {
     Skeleton,
 } from '@chakra-ui/react';
 
-export default function InStake() {
+function InStake() {
     const { contract } = useContract(STAKING_ADDRESS)
     const { contract:BMTcontract } = useContract(BMT_ADDRESS)
     const address = useAddress()
@@ -201,3 +201,4 @@ export default function InStake() {
         </Box>
     );
 }
+export default InStake;

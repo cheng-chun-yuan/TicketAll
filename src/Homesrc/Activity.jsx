@@ -12,8 +12,8 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react'
 import { FaArrowRight } from 'react-icons/fa'
-import lauv from './../assets/social-media-icons/lauv.jpg';
-import lauv2 from './../assets/social-media-icons/lauv2.jpg';
+import lauv from '../assets/social-media-icons/lauv.jpg';
+import lauv2 from '../assets/social-media-icons/lauv2.jpg';
 const Activity = () => (
     <Box
         maxW="7xl"
