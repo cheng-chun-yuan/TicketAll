@@ -12,9 +12,9 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react'
 import { FaArrowRight } from 'react-icons/fa'
-import Linchielon from './assets/social-media-icons/lauv.jpg';
-import ylbull from './assets/social-media-icons/lauv2.jpg';
-export const Appp = () => (
+import lauv from './../assets/social-media-icons/lauv.jpg';
+import lauv2 from './../assets/social-media-icons/lauv2.jpg';
+const Activity = () => (
     <Box
         maxW="7xl"
         mx="auto"
@@ -98,7 +98,7 @@ export const Appp = () => (
             </Box>
             <Flex flex="1" overflow="hidden">
                 <Image
-                    src={Linchielon}
+                    src={lauv}
                     alt="Lovely Image"
                     fallback={<Skeleton />}
                     maxH="450px"
@@ -111,7 +111,7 @@ export const Appp = () => (
                         base: 'none',
                         sm: 'initial',
                     }}
-                    src={ylbull}
+                    src={lauv2}
                     alt="Lovely Image"
                     fallback={<Skeleton />}
                     maxH="450px"
@@ -121,3 +121,5 @@ export const Appp = () => (
         </Stack>
     </Box>
 )
+
+export default Activity;

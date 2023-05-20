@@ -103,7 +103,7 @@ const Form1 = () => {
                         </Icon>
                     )}
                     
-                    CheckBalance (Must>0.05 ETH)
+                    CheckBalance (Must{'>'}0.05 ETH)
                 </Skeleton>
                 <Skeleton
                     isLoaded={!loadingtotalmintA}

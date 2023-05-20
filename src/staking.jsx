@@ -1,4 +1,4 @@
-import Content from './content';
+import Content from './MintInfo';
 import Backnavbar from './backnavbar';
 import Stake from './instake'
 // import {Form1,Form2,Form3} from './Basic3step'

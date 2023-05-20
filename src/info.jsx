@@ -36,19 +36,19 @@ export default function Info() {
                     textShadow="0 2px 2px #000"
                 >
                     STEP1:Staking
-                    <Spacer/>
+                    <Spacer />
                     Staking BmT in our staking pool to get the BA token
-                    <Spacer/>
+                    <Spacer />
                     STEP2:Buy Mint Authority
-                    <Spacer/>
+                    <Spacer />
                     Choose one concert and spend BA token to exchange Buy Authority of specific concert
-                    <Spacer/>
+                    <Spacer />
                     STEP3:Mint NFT
-                    <Spacer/>
+                    <Spacer />
                     Spending Buy Authority to mint the NFT ticket ,noticing that you can only get 90% of current price when you refund
-                    <Spacer/>
+                    <Spacer />
                     STEP4:Ckeck NFT
-                    <Spacer/>
+                    <Spacer />
                     Go to the Mint History or Opensea to check your NFT in Wallet
                 </Text>
             </Box>

@@ -1,8 +1,8 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import App from "./Second";
-import Stake from "./staking"
-import NewPage from './NewPage';
+import Concert from "./Concert";
+import Staking from "./staking"
+import HomePage from './HomePage';
 import Information from './Information';
 import { ThirdwebProvider } from "@thirdweb-dev/react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -22,9 +22,9 @@ root.render(
       <ChakraProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<NewPage/>} />
-            <Route path="/concert" element={<App />} />
-            <Route path="/staking" element={<Stake />} />
+            <Route path="/" element={<HomePage/>} />
+            <Route path="/concert" element={<Concert />} />
+            <Route path="/staking" element={<Staking />} />
             <Route path="/concert/mint" element={<Information />} />
           </Routes>
         </Router>

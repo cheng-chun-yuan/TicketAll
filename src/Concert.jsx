@@ -1,5 +1,5 @@
-import Content from './content';
-import Newnavbar from './newnavbar';
+import MintInfo from './MintInfo';
+import Mintnavbar from './mintnavbar';
 import Multistep from './Basic3step'
 // import {Form1,Form2,Form3} from './Basic3step'
 import { Box } from '@chakra-ui/react'
@@ -12,8 +12,8 @@ export default function Home() {
   return (
     <Box className="overlay">
       <Box className="App">
-        <Newnavbar/>
-        <Content/>
+        <Mintnavbar/>
+        <MintInfo/>
         <Multistep/>
         <Footer/>
       </Box>
