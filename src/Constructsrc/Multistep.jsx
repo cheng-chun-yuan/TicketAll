@@ -278,7 +278,7 @@ const Form2 = () => {
                     textShadow="0 3px #000"
                     color="#D6517D"
                 >
-                    You must be connected to Mint
+                    Please change your account to the contract owner
                 </Text>
             )}
 
