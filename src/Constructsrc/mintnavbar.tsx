@@ -62,7 +62,7 @@ export default function Simple() {
                             display={{ base: 'none', md: 'flex' }}>
                             <NavLink>
                                 <Link 
-                                    href='/Activity' 
+                                    href='/' 
                                     sx={{
                                         backgroundColor: "transparent",
                                         color: "white",
@@ -216,7 +216,7 @@ export default function Simple() {
                         >
                             <NavLink>
                                 <Link 
-                                    href='/Activity' 
+                                    href='/' 
                                     sx={{
                                         backgroundColor: "transparent",
                                         color: "white",

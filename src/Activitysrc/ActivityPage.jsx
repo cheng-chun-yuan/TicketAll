@@ -4,16 +4,18 @@ import Homeinfo from './Homeinfo';
 import Homenavbar from './homenavbar';
 // import {Form1,Form2,Form3} from './Basic3step'
 import { Box} from '@chakra-ui/react'
-import BgImage from '../assets/background/071.gif'
+import BgImage from './../assets/background/071.gif'
 import Footer from '../footer'
+import Activity from './Activity'
 
-function HomePage() {
+function ActivityPage() {
 
     return (
         <Box className="overlay">
             <Box className="App">
                 <Homenavbar />
                 <Homeinfo />
+                <Activity/>
                 <Footer />
             </Box>
             <Box
@@ -23,4 +25,4 @@ function HomePage() {
         </Box>
     );
 }
-export default HomePage;
+export default ActivityPage;
