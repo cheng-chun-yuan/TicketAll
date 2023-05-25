@@ -1,8 +1,10 @@
 import React from 'react'
+import { useAddress} from "@thirdweb-dev/react";
 import { Flex, Box, Text, Spacer, Heading, SimpleGrid, Image, Link, Center, Button, Input } from '@chakra-ui/react'
 import Seller from '../assets/social-media-icons/seller.jpeg'
 import Buyer from '../assets/social-media-icons/buyer.jpeg'
 const MainMint = () => {
+  const address = useAddress()
   return (
     <Flex justify="center" align="center" >
       <Flex
@@ -24,7 +26,7 @@ const MainMint = () => {
         </Box>
         <Box>
             <Heading>Alias:</Heading>
-            <Input type="text" id="alias" placeholder="Username, Email etc" />
+            <Input type="text" id="alias" placeholder="wallet address" />
             <Button id="passwordless-register" onClick={handleRegisterClick} color={'black'}>Register</Button>
             <Button id="passwordless-signin" onClick={handleSigninClick} color={'black'}>Login</Button>
             {/* <Flex align="center" justify="center">
