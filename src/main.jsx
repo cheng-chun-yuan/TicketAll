@@ -24,7 +24,6 @@ root.render(
       <ChakraProvider>
         <Router>
           <Routes>
-
             <Route path="/" element={<Home />} />
             <Route path="/Activity" element={<Activity/>} />
             <Route path="/Seller" element={<Construct/>} />

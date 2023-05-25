@@ -1823,6 +1823,11 @@
   resolved "https://registry.npmjs.org/@paperxyz/sdk-common-utilities/-/sdk-common-utilities-0.0.2.tgz"
   integrity sha512-eKjwnwIR76YixT1CYQRGBjVPTS+Soj6CkY852dZO1SwynWRuyBYyEPoJuYgHVBeNOgcMEzj9PDHxSAsjKn/RZQ==
 
+"@passwordlessdev/passwordless-client@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@passwordlessdev/passwordless-client/-/passwordless-client-1.1.0.tgz#bdc53bb583c552c116b469ab7c544365f4f70e3d"
+  integrity sha512-s3e0MOiwEJ6Wvzfeg9U63kShU6oncCKlBwKPy3BfdEYa/H/3g0DuxMRVcJnTDR2uF2UH4UsCmscg+UPNdrCUZg==
+
 "@pedrouid/environment@^1.0.1":
   version "1.0.1"
   resolved "https://registry.npmjs.org/@pedrouid/environment/-/environment-1.0.1.tgz"

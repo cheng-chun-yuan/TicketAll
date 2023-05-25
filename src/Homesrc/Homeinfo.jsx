@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Box, Text, Spacer, Heading, SimpleGrid, Image, Link, Center } from '@chakra-ui/react'
+import { Flex, Box, Text, Spacer, Heading, SimpleGrid, Image, Link, Center, Button, Input } from '@chakra-ui/react'
 import Seller from '../assets/social-media-icons/seller.jpeg'
 import Buyer from '../assets/social-media-icons/buyer.jpeg'
 const MainMint = () => {
@@ -21,6 +21,27 @@ const MainMint = () => {
               Choose your role
             </Text>
           </div>
+        </Box>
+        <Box>
+            <Heading>Alias:</Heading>
+            <Input type="text" id="alias" placeholder="Username, Email etc" />
+            <Button id="passwordless-register" onClick={handleRegisterClick} color={'black'}>Register</Button>
+            <Button id="passwordless-signin" onClick={handleSigninClick} color={'black'}>Login</Button>
+            {/* <Flex align="center" justify="center">
+            <Text mb='8px'>Alias:</Text>
+            <Input
+              width="250px"
+              height="35px"
+              textAlign="center"
+              type="text"
+              value={valuee}
+              onChange={handleChange}
+              placeholder='Enter username'
+              size='sm'
+            />
+          </Flex>
+          <Button id="passwordless-register" color={'black'}>Register</Button>
+          <Button id="passwordless-signin" color={'black'}>Login</Button> */}
         </Box>
         <Box>
           <Box
