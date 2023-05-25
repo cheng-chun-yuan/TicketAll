@@ -55,10 +55,10 @@ const MainMint = () => {
                     return;
                   }
                   const { token, error } = await p.register(backendResponse.token);
-                  if (token.ok) {
-                    alert("User is registered!");
+                  if (token) {
+                    alert("User is registered!,Choose your role");
                   } else {
-                    alert("User is not registered!", error.message);
+                    alert("User is not registered!");
                   }
                 }}
                 color={'black'}
@@ -73,19 +73,21 @@ const MainMint = () => {
                     apiKey: API_KEY,
                   });
                   const { token, error } = await p.signinWithAlias(alias);
+                  if(error) {
+                    alert("Sign in failed, received the error");
+                    return;
+                  }
                   const user = await fetch(BACKEND_URL + "/verify-signin?token=" + token).then((r) => r.json());
-                  if (user.ok) {
+                  if (user.success === true) {
                     alert("User is logged in!");
                   } else {
-                    alert("User is not logged in!", error.message);
+                    alert("User is not logged in!", error);
                   }
                 }}
                 color={'black'}
               >
                 Verify
               </Button>
-            </Box>
-            <Box>
               <Box
                 borderWidth="1px"
                 sx={
