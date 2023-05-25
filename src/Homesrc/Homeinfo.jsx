@@ -25,13 +25,19 @@ const MainMint = () => {
           </div>
         </Box>
         <Box>
-          <Heading>Alias:</Heading>
-          <Input type="text" id="alias" placeholder="wallet address" />
+          <Heading
+            fontSize="4xl"
+            letterSpacing="0.5%"
+            fontFamily="VT323"
+            textShadow="0 2px 2px #000"
+          >
+            Register by wallet:
+          </Heading>
           <Button
+            margin={'8px'}
             onClick={async function handleRegisterClick(e) {
               e.preventDefault();
-
-              const alias = document.getElementById("alias").value;
+              const alias = address;
               // Status("Starting registering...");
 
               const p = new Passwordless.Client({
@@ -43,7 +49,7 @@ const MainMint = () => {
               );
               const backendResponse = await backendRequest.json();
               if (!backendRequest.ok) {
-                console.log("Our backend failed while creating a token: ");
+                alert("It seems that your wallet is registered already.Try to Verify.");
                 return;
               }
               const { token, error } = await p.register(backendResponse.token);
@@ -55,60 +61,22 @@ const MainMint = () => {
           <Button
             onClick={async function handleSigninClick(e) {
               e.preventDefault();
-              const alias = document.getElementById("alias").value;
-
-
-              /**
-               * Initiate the Passwordless client with your public api key
-               */
+              const alias = address;
               const p = new Passwordless.Client({
                 apiKey: API_KEY,
               });
-
-              try {
-                /**
-                 * Sign in - The Passwordless API and the browser initiates a sign in based on the alias
-                 */
-
-                //var userId = await fetch("user/id").then(r => r.json()); // get user id from database
-
-                const { token, error } = await p.signinWithAlias(alias);
-                //const token = await p.signinWithId(486761564);
-
-                console.log("Received token", token);
-                /**
-                 * Verify the sign in - Call your node backend to verify the token created from the sign in
-                 */
-                const user = await fetch(BACKEND_URL + "/verify-signin?token=" + token).then((r) => r.json());
-
-                /**
-                 * Done - you can now check the user result for status, userid etc
-                 */
-
-                console.log("User", user);
-              } catch (e) {
-                console.error("Things went really bad: ", e);
+              const { token, error } = await p.signinWithAlias(alias);
+              const user = await fetch(BACKEND_URL + "/verify-signin?token=" + token).then((r) => r.json());
+              if (user.ok) {
+                alert("User is logged in!");
+              } else {
+                alert("User is not logged in!", error.message);
               }
             }}
             color={'black'}
           >
-            Login
+            Verify
           </Button>
-          {/* <Flex align="center" justify="center">
-            <Text mb='8px'>Alias:</Text>
-            <Input
-              width="250px"
-              height="35px"
-              textAlign="center"
-              type="text"
-              value={valuee}
-              onChange={handleChange}
-              placeholder='Enter username'
-              size='sm'
-            />
-          </Flex>
-          <Button id="passwordless-register" color={'black'}>Register</Button>
-          <Button id="passwordless-signin" color={'black'}>Login</Button> */}
         </Box>
         <Box>
           <Box
