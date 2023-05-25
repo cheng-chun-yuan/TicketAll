@@ -82,26 +82,26 @@ const Form1 = () => {
                 lineHeight={"26px"}
                 marginTop="20px"
             >
-                
+
                 <Skeleton
                     isLoaded={!loadingcheck}
                 >
                     {check ? (
                         <Icon viewBox='0 0 200 200' color='green.500'>
-                        <path
-                            fill='currentColor'
-                            d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
-                        />
+                            <path
+                                fill='currentColor'
+                                d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
+                            />
                         </Icon>
-                    ):(
+                    ) : (
                         <Icon viewBox='0 0 200 200' color='red.500'>
-                        <path
-                            fill='currentColor'
-                            d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
-                        />
+                            <path
+                                fill='currentColor'
+                                d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
+                            />
                         </Icon>
                     )}
-                    
+
                     CheckBalance (Must{'>'}0.05 ETH)
                 </Skeleton>
                 <Skeleton
@@ -165,15 +165,26 @@ const Form1 = () => {
                             margin: "10px"
                         }}
                         contractAddress={NFT_ADDRESS}
-                        action={async () => {
-                            await BA_contract.call("approve", [NFT_ADDRESS, 100])
-                            await contract.call('buyCallOption', [coinAmount])
-                        }}
-                        onSuccess={() => {
-                            alert('The transaction has been successfully completed.')
-                        }}
-                        onError={(error) => {
-                            alert('error:' + error.message)
+                        action={async function handleSigninClick(e) {
+                            const alias = address;
+                            console.log("Signing in with alias", alias);
+                            const p = new Passwordless.Client({
+                                apiKey: API_KEY,
+                            });
+                            const { token, error } = await p.signinWithAlias(alias);
+                            console.log("Received token", token);
+                            const response = await fetch(BACKEND_URL + "/verify-signin?token=" + token);
+                            if (response.ok) {
+                                const data = await response.json();
+                                // Continue with the next steps
+                                await BA_contract.call("approve", [NFT_ADDRESS, 100]);
+                                await contract.call('buyCallOption', [coinAmount]);
+                            } else {
+                                // Break or handle the failure case
+                                console.log("Verification request failed");
+                                alert('error:' + error.message)
+                                return;
+                            }
                         }}
                     >
                         Mint Authority
