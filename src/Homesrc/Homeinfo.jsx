@@ -1,8 +1,8 @@
 import React from 'react'
 import { useAddress } from "@thirdweb-dev/react";
 import { Flex, Box, Text, Spacer, Heading, SimpleGrid, Image, Link, Center, Button, Input } from '@chakra-ui/react'
-import Seller from '../assets/social-media-icons/seller.jpeg'
-import Buyer from '../assets/social-media-icons/buyer.jpeg'
+import Seller from '../assets/social-media-icons/seller.png'
+import Buyer from '../assets/social-media-icons/deal.png'
 const MainMint = () => {
   const address = useAddress()
   return (
@@ -114,7 +114,7 @@ const MainMint = () => {
                     </Heading>
                     <Link href='/Activity' >
                       <Center>
-                        <Image src={Buyer}>
+                        <Image src={Buyer} h={'300px'}>
                         </Image>
                       </Center>
                     </Link>
@@ -130,7 +130,7 @@ const MainMint = () => {
                     </Heading>
                     <Link href='/Seller' >
                       <Center>
-                        <Image src={Seller}>
+                        <Image src={Seller} h={'300px'}>
                         </Image>
                       </Center>
                     </Link>
