@@ -66,7 +66,7 @@ contract emooooNFT is ERC721 {
         _requireMinted(_tokenId);
         // uint256 picture = balanceOf(ownerOf(_tokenId));
         if(used_Ticket(_tokenId)){
-            return string(abi.encodePacked("https://gateway.pinata.cloud/ipfs/QmdDzL4Rb2JLcJdQPtNuCJSZ5TTZKwYJXbbjyqVq49iyyL/","commemorative_ticket.json"));
+            return string(abi.encodePacked("https://gateway.pinata.cloud/ipfs/QmdDzL4Rb2JLcJdQPtNuCJSZ5TTZKwYJXbbjyqVq49iyyL/commemorative_ticket.json"));
         }
         uint256 num = balanceOf(ownerOf(_tokenId));
         // return string(abi.encodePacked("https://gateway.pinata.cloud/ipfs/QmdDzL4Rb2JLcJdQPtNuCJSZ5TTZKwYJXbbjyqVq49iyyL/", picture.toString(), ".json"));
