@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAddress, useContract, Web3Button, useContractRead, useContractEvents } from "@thirdweb-dev/react";
-import { NFT_ADDRESS, BA_ADDRESS } from '../const/contractAddress';
+import { NFT_ADDRESS, BA_ADDRESS,STAKING_ADDRESS} from '../const/contractAddress';
 import RefundIcon from '../assets/social-media-icons/refund.png'
 import MintIcon from '../assets/social-media-icons/mint.png'
 import Web3 from 'web3';
@@ -406,12 +406,15 @@ const Form2 = () => {
 };
 const Form3 = () => {
     const { contract } = useContract(NFT_ADDRESS)
+    // const { contract:st_contract } = useContract(STAKING_ADDRESS)
     const address = useAddress()
     const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7');
     const BN = web3.utils.BN;
     const { data: allEvents, loading: loadingevent } = useContractEvents(contract, "firstmint")
     const { data: allRefund, loading: loadingrefund } = useContractEvents(contract, "Refund")
     const { data: finalMint, loading: loadingmint } = useContractEvents(contract, "finalmint")
+    // const { data: stake, loading: loadingstake } = useContractEvents(st_contract, "NFTStaked")
+    // const { data: unstake, loading: loadingunstake } = useContractEvents(st_contract, "NFTUnstaked")
     return (
         <Card maxH={'50vh'} overflow={'scroll'}>
             <CardBody>
@@ -426,6 +429,64 @@ const Form3 = () => {
                 {!loadingevent && !loadingrefund && !loadingmint ?
                     (
                         <Box>
+                            {/* {unstake && unstake?.map((event, index) => (
+                                <Card key={index}>
+                                    {event.data.user === address && (
+                                        <CardBody>
+                                            <Center>
+                                                <Flex alignItems={'center'} mb={'10px'}>
+                                                    <Image
+                                                        src={MintIcon}
+                                                        alt='Mint'
+                                                        width={30}
+                                                        height={30}
+                                                        mr={'10px'}
+                                                    />
+                                                    <Tooltip
+                                                        label={`Time:${dayjs.unix(event.data.timestamp)}`}
+                                                        bg={'gray.200'}
+                                                        color={'black'}
+                                                    >
+                                                        <InfoOutlineIcon />
+                                                    </Tooltip>
+                                                    <Text fontWeight={'bold'} mr={'10px'}>
+                                                        Unstake Token ID: {event.data.tokenId?.toString() ? event.data.tokenId?.toString() : 'no message'}
+                                                    </Text>
+                                                </Flex>
+                                            </Center>
+                                        </CardBody>
+                                    )}
+                                </Card>
+                            ))}
+                            {stake && stake?.map((event, index) => (
+                                <Card key={index}>
+                                    {event.data.user === address && (
+                                        <CardBody>
+                                            <Center>
+                                                <Flex alignItems={'center'} mb={'10px'}>
+                                                    <Image
+                                                        src={MintIcon}
+                                                        alt='Mint'
+                                                        width={30}
+                                                        height={30}
+                                                        mr={'10px'}
+                                                    />
+                                                    <Tooltip
+                                                        label={`Time:${dayjs.unix(event.data.timestamp)}`}
+                                                        bg={'gray.200'}
+                                                        color={'black'}
+                                                    >
+                                                        <InfoOutlineIcon />
+                                                    </Tooltip>
+                                                    <Text fontWeight={'bold'} mr={'10px'}>
+                                                        Stake Token ID: {event.data.tokenId?.toString() ? event.data.tokenId?.toString() : 'no message'}
+                                                    </Text>
+                                                </Flex>
+                                            </Center>
+                                        </CardBody>
+                                    )}
+                                </Card>
+                            ))} */}
                             {allRefund && allRefund?.map((event, index) => (
                                 <Card key={index}>
                                     {event.data.from === address && (
