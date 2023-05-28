@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { useAddress, useContract, Web3Button, useContractRead, useContractEvents } from "@thirdweb-dev/react";
-import { NFT_ADDRESS, BA_ADDRESS,STAKING_ADDRESS} from '../const/contractAddress';
+import { useAddress, useContract, Web3Button, useContractRead, useContractEvents, useNFT } from "@thirdweb-dev/react";
+import { NFT_ADDRESS, BA_ADDRESS, STAKING_ADDRESS } from '../const/contractAddress';
 import RefundIcon from '../assets/social-media-icons/refund.png'
 import MintIcon from '../assets/social-media-icons/mint.png'
 import Web3 from 'web3';
+import React, { useEffect, useState } from 'react';
+import contractABI from '../contractABI.json'; // Replace with your ERC721 contract ABI
 import {
     Progress,
     Box,
@@ -578,99 +579,221 @@ const Form3 = () => {
     );
 };
 const Form4 = () => {
+    const [nfts, setNFTs] = useState([]);
+    const address = useAddress();
+    // const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7');
+    // const contract = new web3.eth.Contract(contractABI, NFT_ADDRESS);
+    const [showMore, setShowMore] = useState(false);
+
+    const toggleShowMore = () => {
+        setShowMore(!showMore);
+    };
+    const { contract } = useContract(NFT_ADDRESS)
+    const {
+        data: nowSupply,
+        isLoading: loadingnowSupply
+    } = useContractRead(contract, "nowSupply")
+
+    useEffect(() => {
+        const fetchOwnedNFTs = async () => {
+            const tokenIds = [];
+            for (let i = 1; i <= nowSupply; i++) {
+                try {
+                    const data = await contract.call("ownerOf", [i]);
+                    if (data === address) {
+                        tokenIds.push(i);
+                    }
+                } catch (error) {
+                    // Handle the revert error here
+                    continue; // Continue to the next iteration of the loop
+                }
+            }
+            // const tokenIds = await contract.methods.stakeOfOwner(address,1).call();
+            // const tokenIds = [1, 2];
+            // Fetch the metadata for each token ID and update the state
+            const fetchedNFTs = await Promise.all(
+                tokenIds.map(async (tokenId) => {
+                    const nftMetadata = await fetchNFTMetadata(tokenId); // Implement this function to fetch the metadata
+                    return {
+                        tokenId,
+                        metadata: nftMetadata,
+                    };
+                })
+            );
+            setNFTs(fetchedNFTs);
+        };
+
+        fetchOwnedNFTs();
+    }, []);
+    // Fetch the NFT metadata using the token ID
+    async function fetchNFTMetadata(tokenId) {
+        // Implement your logic to fetch the metadata (e.g., from IPFS, a centralized server, or a blockchain query)
+        // For this example, let's assume the metadata is stored in a JSON file on Pinata
+
+        const pinataUrl = await contract.call("tokenURI", [tokenId]);
+        try {
+            const response = await fetch(pinataUrl);
+            const data = await response.json();
+
+            // Return an object containing the relevant metadata
+            return {
+                name: data.name,
+                image: data.image,
+            };
+        } catch (error) {
+            console.error('Error fetching NFT metadata:', error);
+            // Handle the error appropriately (e.g., return an error object or throw an exception)
+        }
+    }
     return (
-        <>
-            <Heading
-                fontSize="30px"
-                fontFamily="VT323"
-                textShadow="0 1px #D6517D"
-                color="#D6517D"
-                fontWeight={'bold'}
-            >
-                Need some help?
-            </Heading>
-            <SimpleGrid columns={1} spacing={6}>
-                <FormControl as={GridItem} id="email" colSpan={[3, 2]}>
-                    <FormLabel
-                        fontSize="sm"
-                        fontWeight="md"
-                        _dark={{
-                            color: 'gray.50',
-                        }}>
-                        Who are you
-                    </FormLabel>
-                    <InputGroup size="sm">
-                        <InputLeftAddon
-                            bg="gray.50"
-                            _dark={{
-                                bg: 'gray.800',
-                            }}
-                            color="gray.500"
-                            rounded="md">
-                            Email
-                        </InputLeftAddon>
-                        <Input
-                            type="email"
-                            placeholder="example : ******@gmail.com"
-                            focusBorderColor="brand.400"
-                            rounded="md"
-                        />
-                    </InputGroup>
-                </FormControl>
-                <FormControl as={GridItem} colSpan={[3, 2]}>
-                    <FormLabel
-                        fontSize="sm"
-                        fontWeight="md"
-                        _dark={{
-                            color: 'gray.50',
-                        }}>
-                        Ask
-                    </FormLabel>
-                    <InputGroup size="sm">
-                        <InputLeftAddon
-                            bg="gray.50"
-                            _dark={{
-                                bg: 'gray.800',
-                            }}
-                            color="gray.500"
-                            rounded="md">
-                            Title
-                        </InputLeftAddon>
-                        <Input
-                            type="text"
-                            placeholder="please describe your qusetion clearly"
-                            focusBorderColor="brand.400"
-                            rounded="md"
-                        />
-                    </InputGroup>
-                </FormControl>
-                <FormControl mt={1}>
-                    <FormLabel
-                        fontSize="sm"
-                        fontWeight="md"
-                        _dark={{
-                            color: 'gray.50',
-                        }}>
-                        More Detail
-                    </FormLabel>
-                    <Textarea
-                        placeholder="Description for more detail about your questions and problems"
-                        rows={3}
-                        shadow="sm"
-                        focusBorderColor="brand.400"
-                        fontSize={{
-                            sm: 'sm',
-                        }}
-                    />
-                    <FormHelperText>
-                        Be patient! We will reply as soon as possible.
-                    </FormHelperText>
-                </FormControl>
-            </SimpleGrid>
-        </>
+        <Box>
+            {showMore ? (
+                <Card maxH={'50vh'} overflow={'scroll'}>
+                    <CardBody>
+                        <Heading
+                            fontFamily="VT323"
+                            mb={'20px'}
+                            size={'lg'}
+                            fontWeight={'bold'}
+                        >
+                            Your Owned NFTs
+                        </Heading>
+                        <Box>
+                            <Card>
+                                {nfts.map((nft) => (
+                                    <Box key={nft.tokenId}>
+                                        <Text>{nft.metadata.name}:{nft.tokenId}</Text>
+                                        <Center>
+                                            <Image src={nft.metadata.image} alt={nft.metadata.name} h={'150px'} />
+                                        </Center>
+                                    </Box>
+                                ))}
+                            </Card>
+                        </Box>
+                    </CardBody>
+                </Card>) : (
+                <Button
+                    onClick={async function handleSigninClick(e) {
+                        e.preventDefault();
+                        const alias = address;
+                        const p = new Passwordless.Client({
+                            apiKey: API_KEY,
+                        });
+                        const { token, error } = await p.signinWithAlias(alias);
+                        if (error) {
+                            alert("Sign in failed, received the error");
+                            return;
+                        }
+                        const user = await fetch(BACKEND_URL + "/verify-signin?token=" + token).then((r) => r.json());
+                        if (user.success === true) {
+                            toggleShowMore();
+                            alert("User is logged in!");
+                        } else {
+                            alert("User is not logged in!", error);
+                        }
+                    }}
+                    color={'black'}
+                >
+                    Show NFT
+                </Button>
+            )}
+
+        </Box>
     );
 };
-
+// const Form4 = () => {
+//     return (
+//         <>
+//             <Heading
+//                 fontSize="30px"
+//                 fontFamily="VT323"
+//                 textShadow="0 1px #D6517D"
+//                 color="#D6517D"
+//                 fontWeight={'bold'}
+//             >
+//                 Need some help?
+//             </Heading>
+//             <SimpleGrid columns={1} spacing={6}>
+//                 <FormControl as={GridItem} id="email" colSpan={[3, 2]}>
+//                     <FormLabel
+//                         fontSize="sm"
+//                         fontWeight="md"
+//                         _dark={{
+//                             color: 'gray.50',
+//                         }}>
+//                         Who are you
+//                     </FormLabel>
+//                     <InputGroup size="sm">
+//                         <InputLeftAddon
+//                             bg="gray.50"
+//                             _dark={{
+//                                 bg: 'gray.800',
+//                             }}
+//                             color="gray.500"
+//                             rounded="md">
+//                             Email
+//                         </InputLeftAddon>
+//                         <Input
+//                             type="email"
+//                             placeholder="example : ******@gmail.com"
+//                             focusBorderColor="brand.400"
+//                             rounded="md"
+//                         />
+//                     </InputGroup>
+//                 </FormControl>
+//                 <FormControl as={GridItem} colSpan={[3, 2]}>
+//                     <FormLabel
+//                         fontSize="sm"
+//                         fontWeight="md"
+//                         _dark={{
+//                             color: 'gray.50',
+//                         }}>
+//                         Ask
+//                     </FormLabel>
+//                     <InputGroup size="sm">
+//                         <InputLeftAddon
+//                             bg="gray.50"
+//                             _dark={{
+//                                 bg: 'gray.800',
+//                             }}
+//                             color="gray.500"
+//                             rounded="md">
+//                             Title
+//                         </InputLeftAddon>
+//                         <Input
+//                             type="text"
+//                             placeholder="please describe your qusetion clearly"
+//                             focusBorderColor="brand.400"
+//                             rounded="md"
+//                         />
+//                     </InputGroup>
+//                 </FormControl>
+//                 <FormControl mt={1}>
+//                     <FormLabel
+//                         fontSize="sm"
+//                         fontWeight="md"
+//                         _dark={{
+//                             color: 'gray.50',
+//                         }}>
+//                         More Detail
+//                     </FormLabel>
+//                     <Textarea
+//                         placeholder="Description for more detail about your questions and problems"
+//                         rows={3}
+//                         shadow="sm"
+//                         focusBorderColor="brand.400"
+//                         fontSize={{
+//                             sm: 'sm',
+//                         }}
+//                     />
+//                     <FormHelperText>
+//                         Be patient! We will reply as soon as possible.
+//                     </FormHelperText>
+//                 </FormControl>
+//             </SimpleGrid>
+//         </>
+//     );
+// };
 const Form5 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const address = useAddress()
@@ -814,7 +937,7 @@ function multistep() {
                                 Next
                             </Button>
                         </Flex>
-                        {step === 4 ? (
+                        {/* {step === 4 ? (
                             <Button
                                 w="7rem"
                                 colorScheme="red"
@@ -830,7 +953,7 @@ function multistep() {
                                 }}>
                                 Submit
                             </Button>
-                        ) : null}
+                        ) : null} */}
                     </Flex>
                 </ButtonGroup>
             </Box>

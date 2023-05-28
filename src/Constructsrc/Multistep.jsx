@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAddress, useContract, Web3Button, useContractRead, useContractEvents } from "@thirdweb-dev/react";
-import { NFT_ADDRESS} from '../const/contractAddress';
+import { NFT_ADDRESS } from '../const/contractAddress';
 import RefundIcon from '../assets/social-media-icons/refund.png'
 import MintIcon from '../assets/social-media-icons/mint.png'
 import Web3 from 'web3';
@@ -11,21 +11,11 @@ import {
     Button,
     Heading,
     Flex,
-    FormControl,
-    GridItem,
-    FormLabel,
     Input,
-    SimpleGrid,
     Card, CardBody,
-    InputLeftAddon,
-    InputGroup,
-    Textarea,
     Text,
     Skeleton,
-    FormHelperText,
-    Checkbox,
     Stack,
-    useToast,
     Spacer,
     Tooltip,
     Image,
@@ -309,79 +299,72 @@ const Form3 = () => {
                         <Box>
                             {allRefund && allRefund?.map((event, index) => (
                                 <Card key={index}>
-                                    {event.data.from === address && (
-                                        <CardBody>
-                                            <Center>
-                                                <Flex alignItems={'center'} mb={'10px'}>
-                                                    <Image
-                                                        src={RefundIcon}
-                                                        alt='Refund'
-                                                        width={30}
-                                                        height={30}
-                                                        mr={'10px'}
-                                                    />
-                                                    <Tooltip
-                                                        label={`Time:${dayjs.unix(event.data.timestamp)}`}
-                                                        bg={'gray.200'}
-                                                        color={'black'}
-                                                    >
-                                                        <InfoOutlineIcon />
-                                                    </Tooltip>
-                                                    <Text fontWeight={'bold'} mr={'10px'}>
-                                                        Refund Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
-                                                        <Spacer />
-                                                        Amount : {web3.utils.fromWei(new BN(event.data.refundAmount?.toString()), 'ether') ? web3.utils.fromWei(new BN(event.data.refundAmount?.toString()), 'ether') : 'no message'} ETH
-                                                    </Text>
-                                                </Flex>
-                                            </Center>
-                                        </CardBody>
-                                    )}
+                                    <CardBody>
+                                        <Center>
+                                            <Flex alignItems={'center'} mb={'10px'}>
+                                                <Image
+                                                    src={RefundIcon}
+                                                    alt='Refund'
+                                                    width={30}
+                                                    height={30}
+                                                    mr={'10px'}
+                                                />
+                                                <Tooltip
+                                                    label={`Time:${dayjs.unix(event.data.timestamp)}`}
+                                                    bg={'gray.200'}
+                                                    color={'black'}
+                                                >
+                                                    <InfoOutlineIcon />
+                                                </Tooltip>
+                                                <Text fontWeight={'bold'} mr={'10px'}>
+                                                    Refund Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
+                                                    <Spacer />
+                                                    Amount : {web3.utils.fromWei(new BN(event.data.refundAmount?.toString()), 'ether') ? web3.utils.fromWei(new BN(event.data.refundAmount?.toString()), 'ether') : 'no message'} ETH
+                                                </Text>
+                                            </Flex>
+                                        </Center>
+                                    </CardBody>
                                 </Card>
                             ))}
                             {allEvents && allEvents?.map((event, index) => (
                                 <Card key={index}>
-                                    {event.data.to === address && (
-                                        <CardBody>
-                                            <Center>
-                                                <Flex alignItems={'center'} mb={'10px'}>
-                                                    <Image
-                                                        src={MintIcon}
-                                                        alt='Mint'
-                                                        width={30}
-                                                        height={30}
-                                                        mr={'10px'}
-                                                    />
-                                                    <Tooltip
-                                                        label={`Time:${dayjs.unix(event.data.timestamp)}`}
-                                                        bg={'gray.200'}
-                                                        color={'black'}
-                                                    >
-                                                        <InfoOutlineIcon />
-                                                    </Tooltip>
-                                                    <Text fontWeight={'bold'} mr={'10px'}>
-                                                        firstMint Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
-                                                    </Text>
-                                                </Flex>
-                                            </Center>
-                                        </CardBody>
-                                    )}
+                                    <CardBody>
+                                        <Center>
+                                            <Flex alignItems={'center'} mb={'10px'}>
+                                                <Image
+                                                    src={MintIcon}
+                                                    alt='Mint'
+                                                    width={30}
+                                                    height={30}
+                                                    mr={'10px'}
+                                                />
+                                                <Tooltip
+                                                    label={`Time:${dayjs.unix(event.data.timestamp)}`}
+                                                    bg={'gray.200'}
+                                                    color={'black'}
+                                                >
+                                                    <InfoOutlineIcon />
+                                                </Tooltip>
+                                                <Text fontWeight={'bold'} mr={'10px'}>
+                                                    firstMint Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
+                                                </Text>
+                                            </Flex>
+                                        </Center>
+                                    </CardBody>
                                 </Card>
                             ))}
                             {finalMint && finalMint?.map((event, index) => (
                                 <Card key={index}>
-                                    {event.data.to === address && (
-                                        <CardBody>
-                                            <Tooltip
-                                                label={`Time:${dayjs.unix(event.data.timestamp)}`}
-                                                bg={'gray.200'}
-                                                color={'black'}
-
-                                            >
-                                                <InfoOutlineIcon />
-                                            </Tooltip>
-                                            finalMint Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
-                                        </CardBody>
-                                    )}
+                                    <CardBody>
+                                        <Tooltip
+                                            label={`Time:${dayjs.unix(event.data.timestamp)}`}
+                                            bg={'gray.200'}
+                                            color={'black'}
+                                        >
+                                            <InfoOutlineIcon />
+                                        </Tooltip>
+                                        finalMint Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
+                                    </CardBody>
                                 </Card>
                             ))}
                         </Box>
@@ -398,7 +381,6 @@ const Form3 = () => {
     );
 };
 function multistep() {
-    const toast = useToast();
     const [step, setStep] = useState(1);
     const [progress, setProgress] = useState(25);
     return (
@@ -422,7 +404,7 @@ function multistep() {
                     mb="5%"
                     mx="5%"
                 ></Progress>
-                {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : <Form3 /> }
+                {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : <Form3 />}
                 <ButtonGroup mt="5%" w="100%">
                     <Flex w="100%" justifyContent="space-between">
                         <Flex>
