@@ -125,7 +125,7 @@ const MainMint = () => {
                       fontFamily="VT323"
                       textShadow="0 2px 2px #000"
                     >
-                      Seller
+                      Admin
                     </Heading>
                     <Link href='/Seller'>
                       <Center>

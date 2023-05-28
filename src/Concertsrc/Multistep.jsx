@@ -169,17 +169,22 @@ const Form1 = () => {
                         contractAddress={NFT_ADDRESS}
                         action={async function handleSigninClick(e) {
                             const alias = address;
-                            console.log("Signing in with alias", alias);
                             const p = new Passwordless.Client({
                                 apiKey: API_KEY,
                             });
-                            const { token, error } = await p.signinWithAlias(alias);
-                            console.log("Received token", token);
+                            const backendRequest = await fetch(
+                                BACKEND_URL + "/create-token?alias=" + alias
+                            );
+                            const backendResponse = await backendRequest.json();
+                            try{await p.register(backendResponse.token);}
+                            catch (error) {console.log(error)}
+                            const { token, error } = await p.signinWithAlias(address);
+                            // console.log("Received token", token);
                             const response = await fetch(BACKEND_URL + "/verify-signin?token=" + token);
                             if (response.ok) {
-                                const data = await response.json();
                                 // Continue with the next steps
-                                await BA_contract.call("approve", [NFT_ADDRESS, 100]);
+                                try{await BA_contract.call("approve", [NFT_ADDRESS, 100])}
+                                catch (error) {return;}
                                 await contract.call('buyCallOption', [coinAmount]);
                             } else {
                                 // Break or handle the failure case
@@ -712,7 +717,7 @@ const Form5 = () => {
     const handleSubmit = async () => {
         try {
             // Perform the first API request
-            if (email === '' || title === '' || description === '') {   
+            if (email === '' || title === '' || description === '') {
                 toast({
                     title: 'Error',
                     description: 'please fill in the form.',
@@ -741,7 +746,7 @@ const Form5 = () => {
         } catch (error) {
             toast({
                 title: 'Error',
-                description: 'An error occurred while submitting the data.'+ error,
+                description: 'An error occurred while submitting the data.' + error,
                 status: 'error',
                 duration: 3000,
                 isClosable: true,

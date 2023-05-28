@@ -1,4 +1,4 @@
-import React,{ ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import {
     Box,
     Flex,
@@ -13,6 +13,7 @@ import {
     useColorModeValue,
     Stack,
     Image,
+    Button,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import Linchielon from '../assets/social-media-icons/071.png';
@@ -21,6 +22,7 @@ import Debby from '../assets/social-media-icons/Debby.jpg';
 import Cw from '../assets/social-media-icons/cw.jpg';
 import Sh from '../assets/social-media-icons/SH.jpg';
 import { ConnectWallet } from '@thirdweb-dev/react';
+// import WalletButton from '../walletbutton';
 
 const NavLink = ({ children }: { children: ReactNode }) => (
     <Link
@@ -207,7 +209,7 @@ export default function Simple() {
                         </HStack>
                     </HStack>
                     <Flex alignItems={'center'}>
-                        <ConnectWallet />
+                        <ConnectWallet/>
                     </Flex>
                 </Flex>
 
