@@ -701,100 +701,100 @@ const Form4 = () => {
         </Box>
     );
 };
-// const Form4 = () => {
-//     return (
-//         <>
-//             <Heading
-//                 fontSize="30px"
-//                 fontFamily="VT323"
-//                 textShadow="0 1px #D6517D"
-//                 color="#D6517D"
-//                 fontWeight={'bold'}
-//             >
-//                 Need some help?
-//             </Heading>
-//             <SimpleGrid columns={1} spacing={6}>
-//                 <FormControl as={GridItem} id="email" colSpan={[3, 2]}>
-//                     <FormLabel
-//                         fontSize="sm"
-//                         fontWeight="md"
-//                         _dark={{
-//                             color: 'gray.50',
-//                         }}>
-//                         Who are you
-//                     </FormLabel>
-//                     <InputGroup size="sm">
-//                         <InputLeftAddon
-//                             bg="gray.50"
-//                             _dark={{
-//                                 bg: 'gray.800',
-//                             }}
-//                             color="gray.500"
-//                             rounded="md">
-//                             Email
-//                         </InputLeftAddon>
-//                         <Input
-//                             type="email"
-//                             placeholder="example : ******@gmail.com"
-//                             focusBorderColor="brand.400"
-//                             rounded="md"
-//                         />
-//                     </InputGroup>
-//                 </FormControl>
-//                 <FormControl as={GridItem} colSpan={[3, 2]}>
-//                     <FormLabel
-//                         fontSize="sm"
-//                         fontWeight="md"
-//                         _dark={{
-//                             color: 'gray.50',
-//                         }}>
-//                         Ask
-//                     </FormLabel>
-//                     <InputGroup size="sm">
-//                         <InputLeftAddon
-//                             bg="gray.50"
-//                             _dark={{
-//                                 bg: 'gray.800',
-//                             }}
-//                             color="gray.500"
-//                             rounded="md">
-//                             Title
-//                         </InputLeftAddon>
-//                         <Input
-//                             type="text"
-//                             placeholder="please describe your qusetion clearly"
-//                             focusBorderColor="brand.400"
-//                             rounded="md"
-//                         />
-//                     </InputGroup>
-//                 </FormControl>
-//                 <FormControl mt={1}>
-//                     <FormLabel
-//                         fontSize="sm"
-//                         fontWeight="md"
-//                         _dark={{
-//                             color: 'gray.50',
-//                         }}>
-//                         More Detail
-//                     </FormLabel>
-//                     <Textarea
-//                         placeholder="Description for more detail about your questions and problems"
-//                         rows={3}
-//                         shadow="sm"
-//                         focusBorderColor="brand.400"
-//                         fontSize={{
-//                             sm: 'sm',
-//                         }}
-//                     />
-//                     <FormHelperText>
-//                         Be patient! We will reply as soon as possible.
-//                     </FormHelperText>
-//                 </FormControl>
-//             </SimpleGrid>
-//         </>
-//     );
-// };
 const Form5 = () => {
+    return (
+        <>
+            <Heading
+                fontSize="30px"
+                fontFamily="VT323"
+                textShadow="0 1px #D6517D"
+                color="#D6517D"
+                fontWeight={'bold'}
+            >
+                Need some help?
+            </Heading>
+            <SimpleGrid columns={1} spacing={6}>
+                <FormControl as={GridItem} id="email" colSpan={[3, 2]}>
+                    <FormLabel
+                        fontSize="sm"
+                        fontWeight="md"
+                        _dark={{
+                            color: 'gray.50',
+                        }}>
+                        Who are you
+                    </FormLabel>
+                    <InputGroup size="sm">
+                        <InputLeftAddon
+                            bg="gray.50"
+                            _dark={{
+                                bg: 'gray.800',
+                            }}
+                            color="gray.500"
+                            rounded="md">
+                            Email
+                        </InputLeftAddon>
+                        <Input
+                            type="email"
+                            placeholder="example : ******@gmail.com"
+                            focusBorderColor="brand.400"
+                            rounded="md"
+                        />
+                    </InputGroup>
+                </FormControl>
+                <FormControl as={GridItem} colSpan={[3, 2]}>
+                    <FormLabel
+                        fontSize="sm"
+                        fontWeight="md"
+                        _dark={{
+                            color: 'gray.50',
+                        }}>
+                        Ask
+                    </FormLabel>
+                    <InputGroup size="sm">
+                        <InputLeftAddon
+                            bg="gray.50"
+                            _dark={{
+                                bg: 'gray.800',
+                            }}
+                            color="gray.500"
+                            rounded="md">
+                            Title
+                        </InputLeftAddon>
+                        <Input
+                            type="text"
+                            placeholder="please describe your qusetion clearly"
+                            focusBorderColor="brand.400"
+                            rounded="md"
+                        />
+                    </InputGroup>
+                </FormControl>
+                <FormControl mt={1}>
+                    <FormLabel
+                        fontSize="sm"
+                        fontWeight="md"
+                        _dark={{
+                            color: 'gray.50',
+                        }}>
+                        More Detail
+                    </FormLabel>
+                    <Textarea
+                        placeholder="Description for more detail about your questions and problems"
+                        rows={3}
+                        shadow="sm"
+                        focusBorderColor="brand.400"
+                        fontSize={{
+                            sm: 'sm',
+                        }}
+                    />
+                    <FormHelperText>
+                        Be patient! We will reply as soon as possible.
+                    </FormHelperText>
+                </FormControl>
+            </SimpleGrid>
+        </>
+    );
+};
+const Form6 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const address = useAddress()
     const [checkedItems, setCheckedItems] = React.useState([false, false])
@@ -905,14 +905,14 @@ function multistep() {
                     mb="5%"
                     mx="5%"
                 ></Progress>
-                {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : step === 3 ? <Form3 /> : step === 4 ? <Form4 /> : <Form5 />}
+                {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : step === 3 ? <Form3 /> : step === 4 ? <Form4 /> : step === 5 ? <Form5 /> :<Form6 />}
                 <ButtonGroup mt="5%" w="100%">
                     <Flex w="100%" justifyContent="space-between">
                         <Flex>
                             <Button
                                 onClick={() => {
                                     setStep(step - 1);
-                                    setProgress(progress - 20);
+                                    setProgress(progress - 16.6);
                                 }}
                                 isDisabled={step === 1}
                                 colorScheme="teal"
@@ -923,13 +923,13 @@ function multistep() {
                             </Button>
                             <Button
                                 w="7rem"
-                                isDisabled={step === 5}
+                                isDisabled={step === 6}
                                 onClick={() => {
                                     setStep(step + 1);
                                     if (step === 5) {
                                         setProgress(100);
                                     } else {
-                                        setProgress(progress + 20);
+                                        setProgress(progress + 16.6);
                                     }
                                 }}
                                 colorScheme="teal"
@@ -937,7 +937,7 @@ function multistep() {
                                 Next
                             </Button>
                         </Flex>
-                        {/* {step === 4 ? (
+                        {step === 5 ? (
                             <Button
                                 w="7rem"
                                 colorScheme="red"
@@ -953,7 +953,7 @@ function multistep() {
                                 }}>
                                 Submit
                             </Button>
-                        ) : null} */}
+                        ) : null}
                     </Flex>
                 </ButtonGroup>
             </Box>
