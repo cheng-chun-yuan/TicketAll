@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAddress, useContract, Web3Button, useContractRead, useContractEvents } from "@thirdweb-dev/react";
 import { NFT_ADDRESS } from '../const/contractAddress';
 import RefundIcon from '../assets/social-media-icons/refund.png'
@@ -218,9 +218,13 @@ const Form2 = () => {
     const address = useAddress()
     const [valuee, setValue] = React.useState('')
     const handleChange = (event) => setValue(event.target.value)
+    const {
+        data: owner,
+        isLoading: loadingowner
+    } = useContractRead(contract, "owner")
     return (
         <Box>
-            {address ? (
+            {address == owner ? (
                 <div>
                     <Flex align="center" justify="center">
                         <Text mb='8px'>Value:</Text>
@@ -279,111 +283,135 @@ const Form2 = () => {
 const Form3 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const address = useAddress()
-    const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7');
+    const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7')
     const BN = web3.utils.BN;
     const { data: allEvents, loading: loadingevent } = useContractEvents(contract, "firstmint")
     const { data: allRefund, loading: loadingrefund } = useContractEvents(contract, "Refund")
     const { data: finalMint, loading: loadingmint } = useContractEvents(contract, "finalmint")
+    const {
+        data: owner,
+        isLoading: loadingowner
+    } = useContractRead(contract, "owner")
     return (
-        <Card maxH={'50vh'} overflow={'scroll'}>
-            <CardBody>
-                <Heading
+        <>
+            {address == owner ? (
+                <Card maxH={'50vh'} overflow={'scroll'}>
+                    <CardBody>
+                        <Heading
+                            fontFamily="VT323"
+                            mb={'20px'}
+                            size={'lg'}
+                            fontWeight={'bold'}
+                        >
+                            Your History
+                        </Heading>
+                        {!loadingevent && !loadingrefund && !loadingmint ?
+                            (
+                                <Box>
+                                    {allRefund && allRefund?.map((event, index) => (
+                                        <Card key={index}>
+                                            <CardBody>
+                                                <Center>
+                                                    <Flex alignItems={'center'} mb={'10px'}>
+                                                        <Image
+                                                            src={RefundIcon}
+                                                            alt='Refund'
+                                                            width={30}
+                                                            height={30}
+                                                            mr={'10px'}
+                                                        />
+                                                        <Tooltip
+                                                            label={`Time:${dayjs.unix(event.data.timestamp)}`}
+                                                            bg={'gray.200'}
+                                                            color={'black'}
+                                                        >
+                                                            <InfoOutlineIcon />
+                                                        </Tooltip>
+                                                        <Text fontWeight={'bold'} mr={'10px'}>
+                                                            Refund Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
+                                                            <Spacer />
+                                                            Amount : {web3.utils.fromWei(new BN(event.data.refundAmount?.toString()), 'ether') ? web3.utils.fromWei(new BN(event.data.refundAmount?.toString()), 'ether') : 'no message'} ETH
+                                                        </Text>
+                                                    </Flex>
+                                                </Center>
+                                            </CardBody>
+                                        </Card>
+                                    ))}
+                                    {allEvents && allEvents?.map((event, index) => (
+                                        <Card key={index}>
+                                            <CardBody>
+                                                <Center>
+                                                    <Flex alignItems={'center'} mb={'10px'}>
+                                                        <Image
+                                                            src={MintIcon}
+                                                            alt='Mint'
+                                                            width={30}
+                                                            height={30}
+                                                            mr={'10px'}
+                                                        />
+                                                        <Tooltip
+                                                            label={`Time:${dayjs.unix(event.data.timestamp)}`}
+                                                            bg={'gray.200'}
+                                                            color={'black'}
+                                                        >
+                                                            <InfoOutlineIcon />
+                                                        </Tooltip>
+                                                        <Text fontWeight={'bold'} mr={'10px'}>
+                                                            firstMint Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
+                                                        </Text>
+                                                    </Flex>
+                                                </Center>
+                                            </CardBody>
+                                        </Card>
+                                    ))}
+                                    {finalMint && finalMint?.map((event, index) => (
+                                        <Card key={index}>
+                                            <CardBody>
+                                                <Tooltip
+                                                    label={`Time:${dayjs.unix(event.data.timestamp)}`}
+                                                    bg={'gray.200'}
+                                                    color={'black'}
+                                                >
+                                                    <InfoOutlineIcon />
+                                                </Tooltip>
+                                                finalMint Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
+                                            </CardBody>
+                                        </Card>
+                                    ))}
+                                </Box>
+                            ) : (
+                                <Stack>
+                                    <Skeleton height={'100px'} />
+                                    <Skeleton height={'100px'} />
+                                    <Skeleton height={'100px'} />
+                                </Stack>
+                            )
+                        }
+                    </CardBody>
+                </Card>
+            ) : (
+                <Text
+                    marginTop="70px"
+                    fontSize="30px"
+                    letterSpacing="-5.5%"
                     fontFamily="VT323"
-                    mb={'20px'}
-                    size={'lg'}
-                    fontWeight={'bold'}
+                    textShadow="0 3px #000"
+                    color="#D6517D"
                 >
-                    Your History
-                </Heading>
-                {!loadingevent && !loadingrefund && !loadingmint ?
-                    (
-                        <Box>
-                            {allRefund && allRefund?.map((event, index) => (
-                                <Card key={index}>
-                                    <CardBody>
-                                        <Center>
-                                            <Flex alignItems={'center'} mb={'10px'}>
-                                                <Image
-                                                    src={RefundIcon}
-                                                    alt='Refund'
-                                                    width={30}
-                                                    height={30}
-                                                    mr={'10px'}
-                                                />
-                                                <Tooltip
-                                                    label={`Time:${dayjs.unix(event.data.timestamp)}`}
-                                                    bg={'gray.200'}
-                                                    color={'black'}
-                                                >
-                                                    <InfoOutlineIcon />
-                                                </Tooltip>
-                                                <Text fontWeight={'bold'} mr={'10px'}>
-                                                    Refund Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
-                                                    <Spacer />
-                                                    Amount : {web3.utils.fromWei(new BN(event.data.refundAmount?.toString()), 'ether') ? web3.utils.fromWei(new BN(event.data.refundAmount?.toString()), 'ether') : 'no message'} ETH
-                                                </Text>
-                                            </Flex>
-                                        </Center>
-                                    </CardBody>
-                                </Card>
-                            ))}
-                            {allEvents && allEvents?.map((event, index) => (
-                                <Card key={index}>
-                                    <CardBody>
-                                        <Center>
-                                            <Flex alignItems={'center'} mb={'10px'}>
-                                                <Image
-                                                    src={MintIcon}
-                                                    alt='Mint'
-                                                    width={30}
-                                                    height={30}
-                                                    mr={'10px'}
-                                                />
-                                                <Tooltip
-                                                    label={`Time:${dayjs.unix(event.data.timestamp)}`}
-                                                    bg={'gray.200'}
-                                                    color={'black'}
-                                                >
-                                                    <InfoOutlineIcon />
-                                                </Tooltip>
-                                                <Text fontWeight={'bold'} mr={'10px'}>
-                                                    firstMint Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
-                                                </Text>
-                                            </Flex>
-                                        </Center>
-                                    </CardBody>
-                                </Card>
-                            ))}
-                            {finalMint && finalMint?.map((event, index) => (
-                                <Card key={index}>
-                                    <CardBody>
-                                        <Tooltip
-                                            label={`Time:${dayjs.unix(event.data.timestamp)}`}
-                                            bg={'gray.200'}
-                                            color={'black'}
-                                        >
-                                            <InfoOutlineIcon />
-                                        </Tooltip>
-                                        finalMint Token ID: {event.data._tokenId?.toString() ? event.data._tokenId?.toString() : 'no message'}
-                                    </CardBody>
-                                </Card>
-                            ))}
-                        </Box>
-                    ) : (
-                        <Stack>
-                            <Skeleton height={'100px'} />
-                            <Skeleton height={'100px'} />
-                            <Skeleton height={'100px'} />
-                        </Stack>
-                    )
-                }
-            </CardBody>
-        </Card>
+                    Please change your account to the contract owner
+                </Text>
+            )}
+        </>
     );
 };
 const Form4 = () => {
+    const { contract } = useContract(NFT_ADDRESS)
+    const address = useAddress()
     const [messageData, setMessageData] = useState([]);
-
+    const {
+        data: owner,
+        isLoading: loadingowner
+    } = useContractRead(contract, "owner")
     useEffect(() => {
         axios.get(BACKEND_URL + '/api/messages')
             .then((response) => {
@@ -395,37 +423,52 @@ const Form4 = () => {
     }, []);
 
     return (
-        <Card maxH={'50vh'} overflow={'scroll'}>
-            <CardBody>
-                <Heading
+        <>
+            {address == owner ? (
+                <Card maxH={'50vh'} overflow={'scroll'}>
+                    <CardBody>
+                        <Heading
+                            fontFamily="VT323"
+                            mb={'20px'}
+                            size={'lg'}
+                            fontWeight={'bold'}
+                        >
+                            Message List
+                        </Heading>
+                        <Box>
+                            {messageData.map((message, index) => (
+                                <Card key={index}>
+                                    <CardBody>
+                                        <Center>
+                                            <Flex alignItems={"start"} mb={'10px'}>
+                                                <Text fontWeight={'bold'} mr={'10px'}>
+                                                    Email: {message.email}
+                                                    <Spacer />
+                                                    Title: {message.title}
+                                                    <Spacer />
+                                                    Description: {message.description}
+                                                </Text>
+                                            </Flex>
+                                        </Center>
+                                    </CardBody>
+                                </Card>
+                            ))}
+                        </Box>
+                    </CardBody>
+                </Card>
+            ) : (
+                <Text
+                    marginTop="70px"
+                    fontSize="30px"
+                    letterSpacing="-5.5%"
                     fontFamily="VT323"
-                    mb={'20px'}
-                    size={'lg'}
-                    fontWeight={'bold'}
+                    textShadow="0 3px #000"
+                    color="#D6517D"
                 >
-                    Message List
-                </Heading>
-                <Box>
-                    {messageData.map((message, index) => (
-                        <Card key={index}>
-                            <CardBody>
-                                <Center>
-                                    <Flex alignItems={'center'} mb={'10px'}>
-                                        <Text fontWeight={'bold'} mr={'10px'}>
-                                            Email: {message.email}
-                                            <Spacer />
-                                            Title: {message.title}
-                                            <Spacer />
-                                            Description: {message.description}
-                                        </Text>
-                                    </Flex>
-                                </Center>
-                            </CardBody>
-                        </Card>
-                    ))}
-                </Box>
-            </CardBody>
-        </Card>
+                    Please change your account to the contract owner
+                </Text>
+            )}
+        </>
     );
 };
 function multistep() {
