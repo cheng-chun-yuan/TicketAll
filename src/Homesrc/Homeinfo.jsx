@@ -114,8 +114,7 @@ const MainMint = () => {
                     </Heading>
                     <Link href='/Activity' >
                       <Center>
-                        <Image src={Buyer} h={'300px'}>
-                        </Image>
+                        <Image src={Buyer} h={'300px'}/>
                       </Center>
                     </Link>
                   </Box>
@@ -128,10 +127,9 @@ const MainMint = () => {
                     >
                       Seller
                     </Heading>
-                    <Link href='/Seller' >
+                    <Link href='/Seller'>
                       <Center>
-                        <Image src={Seller} h={'300px'}>
-                        </Image>
+                        <Image src={Seller} h={'300px'}/>
                       </Center>
                     </Link>
                   </Box>

@@ -16,12 +16,13 @@ import {
     Card, CardBody,
     Text,
     Skeleton,
-    Stack,
+    Stack, StackDivider,
     Spacer,
     Tooltip,
     Image,
     Center,
-    Icon
+    Icon,
+    CardHeader
 } from '@chakra-ui/react';
 import dayjs from "dayjs";
 import { InfoOutlineIcon } from '@chakra-ui/icons';
@@ -426,34 +427,44 @@ const Form4 = () => {
         <>
             {address == owner ? (
                 <Card maxH={'50vh'} overflow={'scroll'}>
-                    <CardBody>
+                    <CardHeader>
                         <Heading
                             fontFamily="VT323"
-                            mb={'20px'}
                             size={'lg'}
                             fontWeight={'bold'}
                         >
                             Message List
                         </Heading>
-                        <Box>
-                            {messageData.map((message, index) => (
-                                <Card key={index}>
-                                    <CardBody>
+                    </CardHeader>
+                    <CardBody>
+                        <Stack divider={<StackDivider />} spacing='4'>
+                            <Box>
+                                {messageData.map((message, index) => (
+                                    <Card key={index} margin={5} bg={'blue.100'}>
+                                        <Tooltip
+                                            margin={'10px'}
+                                            label={`Address:${message.address}`}
+                                            bg={'gray.200'}
+                                            color={'black'}
+                                        >
+                                            <InfoOutlineIcon />
+                                        </Tooltip>
                                         <Center>
-                                            <Flex alignItems={"start"} mb={'10px'}>
-                                                <Text fontWeight={'bold'} mr={'10px'}>
+
+                                            <Flex alignItems={"start"} >
+                                                <Text fontWeight={'bold'} fontSize={'xs'}>
                                                     Email: {message.email}
                                                     <Spacer />
                                                     Title: {message.title}
                                                     <Spacer />
-                                                    Description: {message.description}
+                                                    Detail: {message.description}
                                                 </Text>
                                             </Flex>
                                         </Center>
-                                    </CardBody>
-                                </Card>
-                            ))}
-                        </Box>
+                                    </Card>
+                                ))}
+                            </Box>
+                        </Stack>
                     </CardBody>
                 </Card>
             ) : (
@@ -472,6 +483,12 @@ const Form4 = () => {
     );
 };
 function multistep() {
+    const { contract } = useContract(NFT_ADDRESS);
+    const address = useAddress();
+    const {
+        data: owner,
+        isLoading: loadingowner
+    } = useContractRead(contract, "owner")
     const [step, setStep] = useState(1);
     const [progress, setProgress] = useState(25);
     return (
@@ -504,16 +521,17 @@ function multistep() {
                                     setStep(step - 1);
                                     setProgress(progress - 25);
                                 }}
-                                isDisabled={step === 1}
+                                isDisabled={step === 1 }
                                 colorScheme="teal"
                                 variant="solid"
                                 w="7rem"
-                                mr="5%">
+                                mr="5%"
+                            >
                                 Back
                             </Button>
                             <Button
                                 w="7rem"
-                                isDisabled={step === 4}
+                                isDisabled={step === 4 || address != owner}
                                 onClick={() => {
                                     setStep(step + 1);
                                     if (step === 3) {

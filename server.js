@@ -199,13 +199,13 @@ app.get("/verify-signin", async (req, res) => {
 });
 app.post('/api/submit', (req, res) => {
     console.log('api-submit')
-    const { email, title, description } = req.body;
+    const {address ,email, title, description } = req.body;
 
     // Perform any necessary operations with the submitted data
     // For example, you can save it to a database or perform some calculations
 
     // Log the email to the console
-    messageData.push({ email, title, description });
+    messageData.push({ address,email, title, description });
     console.log(messageData);
     // Send a response indicating the success of the submission
     res.status(200).json({ message: 'Data submitted successfully' });

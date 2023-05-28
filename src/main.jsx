@@ -4,7 +4,6 @@ import Concert from "./Concertsrc/Concert";
 import Construct from "./Constructsrc/Concert";
 import Staking from "./Stakingsrc/Staking"
 import Home from "./Homesrc/HomePage"
-import Show from "./show"
 import Activity from './Activitysrc/ActivityPage';
 import Information from './Informationsrc/Information';
 import { ThirdwebProvider } from "@thirdweb-dev/react";

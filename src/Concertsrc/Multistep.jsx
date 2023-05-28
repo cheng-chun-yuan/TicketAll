@@ -704,6 +704,7 @@ const Form4 = () => {
 };
 
 const Form5 = () => {
+    const address = useAddress();
     const toast = useToast();
     const [email, setDataObject1] = useState('');
     const [title, setDataObject2] = useState('');
@@ -722,6 +723,7 @@ const Form5 = () => {
                 return;
             };
             const response = await axios.post(BACKEND_URL + '/api/submit', {
+                address: address,
                 email: email,
                 title: title,
                 description: description
@@ -739,7 +741,7 @@ const Form5 = () => {
         } catch (error) {
             toast({
                 title: 'Error',
-                description: 'An error occurred while submitting the data.',
+                description: 'An error occurred while submitting the data.'+ error,
                 status: 'error',
                 duration: 3000,
                 isClosable: true,
