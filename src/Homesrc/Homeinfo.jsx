@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAddress } from "@thirdweb-dev/react";
-import { Flex, Box, Text, Spacer, Heading, SimpleGrid, Image, Link, Center, Button, Input } from '@chakra-ui/react'
+import { Flex, Box, Text, Heading, SimpleGrid, Image, Link, Center, Button, Input } from '@chakra-ui/react'
 import Seller from '../assets/social-media-icons/seller.png'
 import Buyer from '../assets/social-media-icons/deal.png'
 const MainMint = () => {

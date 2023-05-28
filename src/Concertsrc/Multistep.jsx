@@ -4,6 +4,7 @@ import RefundIcon from '../assets/social-media-icons/refund.png'
 import MintIcon from '../assets/social-media-icons/mint.png'
 import Web3 from 'web3';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import contractABI from '../contractABI.json'; // Replace with your ERC721 contract ABI
 import {
     Progress,
@@ -664,7 +665,7 @@ const Form4 = () => {
                                     <Box key={nft.tokenId}>
                                         <Text>{nft.metadata.name}:{nft.tokenId}</Text>
                                         <Center>
-                                            <Image src={nft.metadata.image} alt={nft.metadata.name} h={'150px'} />
+                                            <Image src={nft.metadata.image} alt={nft.metadata.name} h={'150px'} marginBottom={'20px'} />
                                         </Center>
                                     </Box>
                                 ))}
@@ -701,7 +702,50 @@ const Form4 = () => {
         </Box>
     );
 };
+
 const Form5 = () => {
+    const toast = useToast();
+    const [email, setDataObject1] = useState('');
+    const [title, setDataObject2] = useState('');
+    const [description, setDataObject3] = useState('');
+    const handleSubmit = async () => {
+        try {
+            // Perform the first API request
+            if (email === '' || title === '' || description === '') {   
+                toast({
+                    title: 'Error',
+                    description: 'please fill in the form.',
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true,
+                });
+                return;
+            };
+            const response = await axios.post(BACKEND_URL + '/api/submit', {
+                email: email,
+                title: title,
+                description: description
+            });
+            toast({
+                title: 'Data Submitted',
+                description: 'Your data has been successfully submitted.',
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+            });
+            setDataObject1('');
+            setDataObject2('');
+            setDataObject3('');
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: 'An error occurred while submitting the data.',
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            });
+        }
+    };
     return (
         <>
             <Heading
@@ -734,6 +778,8 @@ const Form5 = () => {
                             Email
                         </InputLeftAddon>
                         <Input
+                            value={email}
+                            onChange={(e) => setDataObject1(e.target.value)}
                             type="email"
                             placeholder="example : ******@gmail.com"
                             focusBorderColor="brand.400"
@@ -761,6 +807,8 @@ const Form5 = () => {
                             Title
                         </InputLeftAddon>
                         <Input
+                            value={title}
+                            onChange={(e) => setDataObject2(e.target.value)}
                             type="text"
                             placeholder="please describe your qusetion clearly"
                             focusBorderColor="brand.400"
@@ -778,6 +826,8 @@ const Form5 = () => {
                         More Detail
                     </FormLabel>
                     <Textarea
+                        value={description}
+                        onChange={(e) => setDataObject3(e.target.value)}
                         placeholder="Description for more detail about your questions and problems"
                         rows={3}
                         shadow="sm"
@@ -791,6 +841,15 @@ const Form5 = () => {
                     </FormHelperText>
                 </FormControl>
             </SimpleGrid>
+            <Button
+                w="7rem"
+                colorScheme="red"
+                variant="solid"
+                onClick={handleSubmit}
+                marginTop={'20px'}
+            >
+                Submit
+            </Button>
         </>
     );
 };
@@ -881,9 +940,9 @@ const Form6 = () => {
     );
 };
 function multistep() {
-    const toast = useToast();
     const [step, setStep] = useState(1);
-    const [progress, setProgress] = useState(25);
+    const [progress, setProgress] = useState(16.7);
+
     return (
         <Box>
             <Box
@@ -905,7 +964,7 @@ function multistep() {
                     mb="5%"
                     mx="5%"
                 ></Progress>
-                {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : step === 3 ? <Form3 /> : step === 4 ? <Form4 /> : step === 5 ? <Form5 /> :<Form6 />}
+                {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : step === 3 ? <Form3 /> : step === 4 ? <Form4 /> : step === 5 ? <Form5 /> : <Form6 />}
                 <ButtonGroup mt="5%" w="100%">
                     <Flex w="100%" justifyContent="space-between">
                         <Flex>
@@ -937,23 +996,6 @@ function multistep() {
                                 Next
                             </Button>
                         </Flex>
-                        {step === 5 ? (
-                            <Button
-                                w="7rem"
-                                colorScheme="red"
-                                variant="solid"
-                                onClick={() => {
-                                    toast({
-                                        title: 'Message delivery',
-                                        description: "We will reply you as soon as possible",
-                                        status: 'success',
-                                        duration: 3000,
-                                        isClosable: true,
-                                    });
-                                }}>
-                                Submit
-                            </Button>
-                        ) : null}
                     </Flex>
                 </ButtonGroup>
             </Box>

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useAddress, useContract, Web3Button, useContractRead, useContractEvents } from "@thirdweb-dev/react";
 import { NFT_ADDRESS } from '../const/contractAddress';
 import RefundIcon from '../assets/social-media-icons/refund.png'
 import MintIcon from '../assets/social-media-icons/mint.png'
 import Web3 from 'web3';
+import axios from 'axios';
 import {
     Progress,
     Box,
@@ -380,6 +381,53 @@ const Form3 = () => {
         </Card>
     );
 };
+const Form4 = () => {
+    const [messageData, setMessageData] = useState([]);
+
+    useEffect(() => {
+        axios.get(BACKEND_URL + '/api/messages')
+            .then((response) => {
+                setMessageData(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
+
+    return (
+        <Card maxH={'50vh'} overflow={'scroll'}>
+            <CardBody>
+                <Heading
+                    fontFamily="VT323"
+                    mb={'20px'}
+                    size={'lg'}
+                    fontWeight={'bold'}
+                >
+                    Message List
+                </Heading>
+                <Box>
+                    {messageData.map((message, index) => (
+                        <Card key={index}>
+                            <CardBody>
+                                <Center>
+                                    <Flex alignItems={'center'} mb={'10px'}>
+                                        <Text fontWeight={'bold'} mr={'10px'}>
+                                            Email: {message.email}
+                                            <Spacer />
+                                            Title: {message.title}
+                                            <Spacer />
+                                            Description: {message.description}
+                                        </Text>
+                                    </Flex>
+                                </Center>
+                            </CardBody>
+                        </Card>
+                    ))}
+                </Box>
+            </CardBody>
+        </Card>
+    );
+};
 function multistep() {
     const [step, setStep] = useState(1);
     const [progress, setProgress] = useState(25);
@@ -404,14 +452,14 @@ function multistep() {
                     mb="5%"
                     mx="5%"
                 ></Progress>
-                {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : <Form3 />}
+                {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : step === 3 ? <Form3 /> : <Form4 />}
                 <ButtonGroup mt="5%" w="100%">
                     <Flex w="100%" justifyContent="space-between">
                         <Flex>
                             <Button
                                 onClick={() => {
                                     setStep(step - 1);
-                                    setProgress(progress - 33);
+                                    setProgress(progress - 25);
                                 }}
                                 isDisabled={step === 1}
                                 colorScheme="teal"
@@ -422,13 +470,13 @@ function multistep() {
                             </Button>
                             <Button
                                 w="7rem"
-                                isDisabled={step === 3}
+                                isDisabled={step === 4}
                                 onClick={() => {
                                     setStep(step + 1);
-                                    if (step === 2) {
+                                    if (step === 3) {
                                         setProgress(100);
                                     } else {
-                                        setProgress(progress + 33);
+                                        setProgress(progress + 25);
                                     }
                                 }}
                                 colorScheme="teal"

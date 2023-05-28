@@ -101,17 +101,18 @@
 const express = require("express");
 const fetch = require("node-fetch");
 const https = require("https");
+const bodyParser = require('body-parser');
 const agent = new https.Agent({
     rejectUnauthorized: false
 })
 const app = express();
 require('dotenv').config();
 const port = process.env.PORT || 3000;
-
+const cors = require('cors');
 const apiurl = process.env.API_URL || "https://v4.passwordless.dev";
 const API_SECRET = process.env.API_SECRET || "catty:secret:186a0ba14b824dcf8c8a94cf9a36e39a"; // Replace with your API secret
 const API_KEY = process.env.API_KEY || "catty:public:12c712ffae424ffb94690cb619ee869f"; // this will be injected to index.html
-
+const messageData = [];
 console.log("Using API URL: " + apiurl);
 console.log("Using API key: " + API_KEY);
 console.log("Using API secret: " + API_SECRET);
@@ -120,7 +121,8 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*')
     next();
 });
-
+app.use(cors());
+app.use(bodyParser.json());
 /** 
  * Register - Get token from the passwordless API
  * 
@@ -195,11 +197,29 @@ app.get("/verify-signin", async (req, res) => {
     res.statusCode = response.status;
     res.send(body);
 });
+app.post('/api/submit', (req, res) => {
+    console.log('api-submit')
+    const { email, title, description } = req.body;
 
+    // Perform any necessary operations with the submitted data
+    // For example, you can save it to a database or perform some calculations
+
+    // Log the email to the console
+    messageData.push({ email, title, description });
+    console.log(messageData);
+    // Send a response indicating the success of the submission
+    res.status(200).json({ message: 'Data submitted successfully' });
+});
+app.get('/api/messages', (req, res) => {
+    // Send the messageData as the response
+    res.status(200).json(messageData);
+    // res.send.json(messageData);
+});
 
 // Small helper to update API_KEYs:
 // Response with index.html but replace API_KEY value.
 const fs = require('fs');
+const { m } = require("framer-motion");
 app.get("", (req, res) => {
     const index = "public/index.html";
     fs.readFile(index, 'utf8', function (err, data) {
