@@ -23,11 +23,11 @@ import {
     Image,
     Center,
     Icon,
-    CardHeader
+    CardHeader,
 } from '@chakra-ui/react';
 import dayjs from "dayjs";
 import { InfoOutlineIcon } from '@chakra-ui/icons';
-const Form1 = () => {
+const Form2 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const [time, setValue] = React.useState('')
     const [timestep, setTimestep] = React.useState('')
@@ -215,7 +215,7 @@ const Form1 = () => {
         </Box >
     );
 };
-const Form2 = () => {
+const Form3 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const address = useAddress()
     const [valuee, setValue] = React.useState('')
@@ -282,7 +282,7 @@ const Form2 = () => {
         </Box>
     );
 };
-const Form3 = () => {
+const Form4 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const address = useAddress()
     const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7')
@@ -483,10 +483,11 @@ const Form5 = () => {
         </>
     );
 };
-const Form4 = () => {
+const Form1 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const address = useAddress()
     const [data, setData] = useState('No result');
+    console.log(data);
     const buy_address = data.substring(0, 42);
     const tokenId = data.substring(42);
     const {
@@ -496,7 +497,7 @@ const Form4 = () => {
     const {
         data: ownerOf,
         isLoading: loadingownerOf
-    } = useContractRead(contract, "ownerOf",[tokenId])
+    } = useContractRead(contract, "ownerOf", [tokenId])
     const handleScan = (result, error) => {
         if (result) {
             setData(result.text);
@@ -507,7 +508,16 @@ const Form4 = () => {
         }
     };
     return (
-        <>
+        <Box>
+            <Heading
+                fontSize="30px"
+                fontFamily="VT323"
+                textShadow="0 1px #D6517D"
+                color="#D6517D"
+                fontWeight={'bold'}
+            >
+                Scan Ticket
+            </Heading>
             {address == owner ? (
                 <>
                     <QrReader
@@ -556,7 +566,7 @@ const Form4 = () => {
                 </Text>
             )
             }
-        </>
+        </Box>
     );
 };
 function multistep() {

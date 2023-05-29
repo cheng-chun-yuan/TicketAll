@@ -6,6 +6,7 @@ import Web3 from 'web3';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { QRCodeCanvas } from "qrcode.react";
+
 import contractABI from '../contractABI.json'; // Replace with your ERC721 contract ABI
 import {
     Progress,
