@@ -673,12 +673,14 @@ const Form4 = () => {
                                         <Text>{nft.metadata.name}:{nft.tokenId}</Text>
                                         <Center>
                                             <Image src={nft.metadata.image} alt={nft.metadata.name} h={'150px'} margin={'20px'} />
+                                            {nft.metadata.name=='Ticket' && 
                                             <QRCodeCanvas
                                                 id="qrCode"
                                                 value={address+nft.tokenId}
                                                 height={150}
                                                 margin={'20px'}
                                             />
+                                            }   
                                         </Center>
                                     </Box>
                                 ))}

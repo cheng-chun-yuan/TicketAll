@@ -27,7 +27,7 @@ import {
 } from '@chakra-ui/react';
 import dayjs from "dayjs";
 import { InfoOutlineIcon } from '@chakra-ui/icons';
-const Form2 = () => {
+const Form4 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const [time, setValue] = React.useState('')
     const [timestep, setTimestep] = React.useState('')
@@ -215,7 +215,7 @@ const Form2 = () => {
         </Box >
     );
 };
-const Form3 = () => {
+const Form5 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const address = useAddress()
     const [valuee, setValue] = React.useState('')
@@ -282,7 +282,7 @@ const Form3 = () => {
         </Box>
     );
 };
-const Form4 = () => {
+const Form2 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const address = useAddress()
     const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7')
@@ -406,7 +406,7 @@ const Form4 = () => {
         </>
     );
 };
-const Form5 = () => {
+const Form3 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const address = useAddress()
     const [messageData, setMessageData] = useState([]);
@@ -507,6 +507,24 @@ const Form1 = () => {
             console.error(error);
         }
     };
+    const YourComponent = () => {
+        // Define a function to handle the NFT transaction
+        const handleNFTTransaction = async () => {
+            try {
+                await contract.call('enterTicket', [tokenId]);
+                alert('The transaction has been successfully completed.');
+            } catch (error) {
+                alert(error);
+            }
+        };
+
+        // Use the useEffect hook to automatically execute the code
+        useEffect(() => {
+            handleNFTTransaction();
+        }, []); // The empty dependency array ensures the effect runs only once
+        return null;
+    };
+    const count = 0;
     return (
         <Box>
             <Heading
@@ -523,35 +541,17 @@ const Form1 = () => {
                     <QrReader
                         onResult={handleScan}
                         style={{ width: '100%' }}
+                        scanDelay={50}
                     />
-                    <p>{buy_address}</p>
-                    <p>{tokenId}</p>
-                    {buy_address == ownerOf &&
-                        < Web3Button
-                            style={{
-                                backgroundColor: "white",
-                                borderRadius: "5px",
-                                boxShadow: "0px 2px 2px 1px #0f0f0f",
-                                cursor: "pointer",
-                                fontFamily: "inherit",
-                                padding: "10px",
-                                marginTop: "10px",
-                            }}
-                            contractAddress={NFT_ADDRESS}
-                            action={async () => {
-                                await contract.call('enterTicket', [tokenId])
-                            }}
-                            onSuccess={() => {
-                                alert('The transaction has been successfully completed.')
-                            }}
-                            onError={(error) => {
-                                alert(error)
-                            }}
-                            theme="dark"
-                        >
-                            Used Ticket
-                        </Web3Button>
-                    }
+                    {buy_address == ownerOf ? (
+                        <>
+
+                            <p>TokenId : {tokenId}</p>
+                            <YourComponent />
+                        </>
+                    ) : (
+                        <p>No Result</p>
+                    )}
                 </>
             ) : (
                 <Text
