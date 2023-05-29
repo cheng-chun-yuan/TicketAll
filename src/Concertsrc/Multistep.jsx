@@ -5,6 +5,7 @@ import MintIcon from '../assets/social-media-icons/mint.png'
 import Web3 from 'web3';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { QRCodeCanvas } from "qrcode.react";
 import contractABI from '../contractABI.json'; // Replace with your ERC721 contract ABI
 import {
     Progress,
@@ -176,15 +177,15 @@ const Form1 = () => {
                                 BACKEND_URL + "/create-token?alias=" + alias
                             );
                             const backendResponse = await backendRequest.json();
-                            try{await p.register(backendResponse.token);}
-                            catch (error) {console.log(error)}
+                            try { await p.register(backendResponse.token); }
+                            catch (error) { console.log(error) }
                             const { token, error } = await p.signinWithAlias(address);
                             // console.log("Received token", token);
                             const response = await fetch(BACKEND_URL + "/verify-signin?token=" + token);
                             if (response.ok) {
                                 // Continue with the next steps
-                                try{await BA_contract.call("approve", [NFT_ADDRESS, 100])}
-                                catch (error) {return;}
+                                try { await BA_contract.call("approve", [NFT_ADDRESS, 100]) }
+                                catch (error) { return; }
                                 await contract.call('buyCallOption', [coinAmount]);
                             } else {
                                 // Break or handle the failure case
@@ -670,7 +671,13 @@ const Form4 = () => {
                                     <Box key={nft.tokenId}>
                                         <Text>{nft.metadata.name}:{nft.tokenId}</Text>
                                         <Center>
-                                            <Image src={nft.metadata.image} alt={nft.metadata.name} h={'150px'} marginBottom={'20px'} />
+                                            <Image src={nft.metadata.image} alt={nft.metadata.name} h={'150px'} margin={'20px'} />
+                                            <QRCodeCanvas
+                                                id="qrCode"
+                                                value={address+nft.tokenId}
+                                                height={150}
+                                                margin={'20px'}
+                                            />
                                         </Center>
                                     </Box>
                                 ))}

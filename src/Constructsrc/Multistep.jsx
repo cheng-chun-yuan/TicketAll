@@ -5,6 +5,7 @@ import RefundIcon from '../assets/social-media-icons/refund.png'
 import MintIcon from '../assets/social-media-icons/mint.png'
 import Web3 from 'web3';
 import axios from 'axios';
+import { QrReader } from 'react-qr-reader';
 import {
     Progress,
     Box,
@@ -405,7 +406,7 @@ const Form3 = () => {
         </>
     );
 };
-const Form4 = () => {
+const Form5 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const address = useAddress()
     const [messageData, setMessageData] = useState([]);
@@ -482,12 +483,88 @@ const Form4 = () => {
         </>
     );
 };
+const Form4 = () => {
+    const { contract } = useContract(NFT_ADDRESS)
+    const address = useAddress()
+    const [data, setData] = useState('No result');
+    const buy_address = data.substring(0, 42);
+    const tokenId = data.substring(42);
+    const {
+        data: owner,
+        isLoading: loadingowner
+    } = useContractRead(contract, "owner")
+    const {
+        data: ownerOf,
+        isLoading: loadingownerOf
+    } = useContractRead(contract, "ownerOf",[tokenId])
+    const handleScan = (result, error) => {
+        if (result) {
+            setData(result.text);
+        }
+
+        if (error) {
+            console.error(error);
+        }
+    };
+    return (
+        <>
+            {address == owner ? (
+                <>
+                    <QrReader
+                        onResult={handleScan}
+                        style={{ width: '100%' }}
+                    />
+                    <p>{buy_address}</p>
+                    <p>{tokenId}</p>
+                    {buy_address == ownerOf &&
+                        < Web3Button
+                            style={{
+                                backgroundColor: "white",
+                                borderRadius: "5px",
+                                boxShadow: "0px 2px 2px 1px #0f0f0f",
+                                cursor: "pointer",
+                                fontFamily: "inherit",
+                                padding: "10px",
+                                marginTop: "10px",
+                            }}
+                            contractAddress={NFT_ADDRESS}
+                            action={async () => {
+                                await contract.call('enterTicket', [tokenId])
+                            }}
+                            onSuccess={() => {
+                                alert('The transaction has been successfully completed.')
+                            }}
+                            onError={(error) => {
+                                alert(error)
+                            }}
+                            theme="dark"
+                        >
+                            Used Ticket
+                        </Web3Button>
+                    }
+                </>
+            ) : (
+                <Text
+                    marginTop="70px"
+                    fontSize="30px"
+                    letterSpacing="-5.5%"
+                    fontFamily="VT323"
+                    textShadow="0 3px #000"
+                    color="#D6517D"
+                >
+                    Please change your account to the contract owner
+                </Text>
+            )
+            }
+        </>
+    );
+};
 function multistep() {
     const { contract } = useContract(NFT_ADDRESS);
     const address = useAddress();
     const {
         data: owner,
-        isLoading: loadingowner
+        isLoading
     } = useContractRead(contract, "owner")
     const [step, setStep] = useState(1);
     const [progress, setProgress] = useState(25);
@@ -521,7 +598,7 @@ function multistep() {
                                     setStep(step - 1);
                                     setProgress(progress - 25);
                                 }}
-                                isDisabled={step === 1 }
+                                isDisabled={step === 1}
                                 colorScheme="teal"
                                 variant="solid"
                                 w="7rem"
