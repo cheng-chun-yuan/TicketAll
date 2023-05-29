@@ -491,7 +491,7 @@ const Form4 = () => {
     const tokenId = data.substring(42);
     const {
         data: owner,
-        isLoading: loadingowner
+        isLoading
     } = useContractRead(contract, "owner")
     const {
         data: ownerOf,
