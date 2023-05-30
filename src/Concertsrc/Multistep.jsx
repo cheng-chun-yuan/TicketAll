@@ -6,7 +6,8 @@ import Web3 from 'web3';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { QRCodeCanvas } from "qrcode.react";
-
+import AES from 'crypto-js/aes';
+import encUtf8 from 'crypto-js/enc-utf8';
 import contractABI from '../contractABI.json'; // Replace with your ERC721 contract ABI
 import {
     Progress,
@@ -676,7 +677,7 @@ const Form4 = () => {
                                             {nft.metadata.name=='Ticket' && 
                                             <QRCodeCanvas
                                                 id="qrCode"
-                                                value={address+nft.tokenId}
+                                                value={AES.encrypt((address+nft.tokenId)?.toString(), 'secret_key').toString()}
                                                 height={150}
                                                 margin={'20px'}
                                             />

@@ -5,6 +5,8 @@ import RefundIcon from '../assets/social-media-icons/refund.png'
 import MintIcon from '../assets/social-media-icons/mint.png'
 import Web3 from 'web3';
 import axios from 'axios';
+import AES from 'crypto-js/aes';
+import encUtf8 from 'crypto-js/enc-utf8';
 import { QrReader } from 'react-qr-reader';
 import {
     Progress,
@@ -487,7 +489,6 @@ const Form1 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const address = useAddress()
     const [data, setData] = useState('No result');
-    console.log(data);
     const buy_address = data.substring(0, 42);
     const tokenId = data.substring(42);
     const {
@@ -500,15 +501,16 @@ const Form1 = () => {
     } = useContractRead(contract, "ownerOf", [tokenId])
     const handleScan = (result, error) => {
         if (result) {
-            setData(result.text);
+            const bytes = AES.decrypt(result.text, 'secret_key');
+            const originalText = bytes.toString(encUtf8);
+            setData(originalText);
         }
-
         if (error) {
             console.error(error);
         }
+
     };
     const YourComponent = () => {
-        // Define a function to handle the NFT transaction
         const handleNFTTransaction = async () => {
             try {
                 await contract.call('enterTicket', [tokenId]);
@@ -517,14 +519,11 @@ const Form1 = () => {
                 alert(error);
             }
         };
-
-        // Use the useEffect hook to automatically execute the code
         useEffect(() => {
             handleNFTTransaction();
         }, []); // The empty dependency array ensures the effect runs only once
         return null;
     };
-    const count = 0;
     return (
         <Box>
             <Heading
@@ -541,13 +540,11 @@ const Form1 = () => {
                     <QrReader
                         onResult={handleScan}
                         style={{ width: '100%' }}
-                        scanDelay={50}
                     />
                     {buy_address == ownerOf ? (
                         <>
-
                             <p>TokenId : {tokenId}</p>
-                            <YourComponent />
+                            <YourComponent/>
                         </>
                     ) : (
                         <p>No Result</p>
