@@ -489,7 +489,7 @@ const Form1 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const address = useAddress()
     const [data, setData] = useState('No result');
-    const buy_address = data.substring(0, 42);
+    const buyAddress = data.substring(0, 42);
     const tokenId = data.substring(42);
     const {
         data: owner,
@@ -541,7 +541,7 @@ const Form1 = () => {
                         onResult={handleScan}
                         style={{ width: '100%' }}
                     />
-                    {buy_address == ownerOf ? (
+                    {buyAddress == ownerOf ? (
                         <>
                             <p>TokenId : {tokenId}</p>
                             <YourComponent/>
