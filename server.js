@@ -107,13 +107,13 @@ const agent = new https.Agent({
 })
 const app = express();
 require('dotenv').config();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 const cors = require('cors');
-const apiurl = process.env.API_URL || "https://v4.passwordless.dev";
-const API_SECRET = process.env.API_SECRET || "catty:secret:186a0ba14b824dcf8c8a94cf9a36e39a"; // Replace with your API secret
-const API_KEY = process.env.API_KEY || "catty:public:12c712ffae424ffb94690cb619ee869f"; // this will be injected to index.html
+const API_URL = process.env.API_URL;
+const API_SECRET = process.env.API_SECRET; // Replace with your API secret
+const API_KEY = process.env.API_KEY; // this will be injected to index.html
 const messageData = [];
-console.log("Using API URL: " + apiurl);
+console.log("Using API URL: " + API_URL);
 console.log("Using API key: " + API_KEY);
 console.log("Using API secret: " + API_SECRET);
 
@@ -145,9 +145,9 @@ app.get("/create-token", async (req, res) => {
         aliases: alias ? [alias] : [] // We can also set aliases for the userid, so that signin can be initiated without knowing the userid
     };
 
-    console.log("creating-token", apiurl);
+    console.log("creating-token", API_URL);
     // Send the username to the passwordless api to get a token
-    var response = await fetch(apiurl + "/register/token", {
+    var response = await fetch(API_URL + "/register/token", {
         method: "POST",
         body: JSON.stringify(payload),
         headers: { ApiSecret: API_SECRET, 'Content-Type': 'application/json' },
@@ -180,7 +180,7 @@ app.get("/verify-signin", async (req, res) => {
     const token = { token: req.query.token };
 
     console.log("Validating token", token);
-    const response = await fetch(apiurl + "/signin/verify", {
+    const response = await fetch(API_URL + "/signin/verify", {
         method: "POST",
         body: JSON.stringify(token),
         headers: { ApiSecret: API_SECRET, 'Content-Type': 'application/json' },

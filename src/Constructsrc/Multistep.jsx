@@ -501,7 +501,7 @@ const Form1 = () => {
     } = useContractRead(contract, "ownerOf", [tokenId])
     const handleScan = (result, error) => {
         if (result) {
-            const bytes = AES.decrypt(result.text, 'secret_key');
+            const bytes = AES.decrypt(result.text, "secret_key");
             const originalText = bytes.toString(encUtf8);
             setData(originalText);
         }

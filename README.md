@@ -1,4 +1,3 @@
-
 # TicketAll
 This is an Anti-Scalper application designed to utilize Fido, Quadratic Voting, and ERC721 non-transferable features to prevent ticket scalping. We are committed to protecting consumer rights and providing them with a fair ticket purchasing experience.
 ## Feature

@@ -371,7 +371,6 @@ const Form2 = () => {
                                 });
                             }
 
-
                         }}
                         onSuccess={() => {
                             alert('The transaction has been successfully completed.')
@@ -677,7 +676,7 @@ const Form4 = () => {
                                             {nft.metadata.name=='Ticket' && 
                                             <QRCodeCanvas
                                                 id="qrCode"
-                                                value={AES.encrypt((address+nft.tokenId)?.toString(), 'secret_key').toString()}
+                                                value={AES.encrypt((address+nft.tokenId)?.toString(), "secret_key").toString()}
                                                 height={150}
                                                 margin={'20px'}
                                             />
