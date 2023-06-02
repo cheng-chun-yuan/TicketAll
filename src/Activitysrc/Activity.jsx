@@ -14,7 +14,14 @@ import {
 import { FaArrowRight } from 'react-icons/fa'
 import lauv from '../assets/social-media-icons/lauv.jpg';
 import lauv2 from '../assets/social-media-icons/lauv2.jpg';
-const Activity = () => (
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+import { Navigation, Pagination} from 'swiper';
+
+const Activity1 = () => (
     <Box
         maxW="7xl"
         mx="auto"
@@ -80,16 +87,16 @@ const Activity = () => (
                         }}
                     >
                         <Heading size="xl" color={useColorModeValue('red.500', 'red.300')} fontFamily="VT323">
-                        Lauv : The Between Albums Tour
+                            Lauv : The Between Albums Tour
                         </Heading>
                         <Heading size="xl" fontWeight="normal" color={useColorModeValue('black', 'black')} fontFamily="VT323">
                             Official Sales Start : 2023/05/16 (TUE) 0AM
-                            <Spacer/>
+                            <Spacer />
                             Venue : Taipei Nangang Exhibition Center
                         </Heading>
                     </Stack>
                     <HStack spacing="3">
-                        <Link color={useColorModeValue('red.500', 'red.300')} fontWeight="bold" fontSize="lg" href='concert' margin={2}>  
+                        <Link color={useColorModeValue('red.500', 'red.300')} fontWeight="bold" fontSize="lg" href='concert' margin={2}>
                             Mint Now
                         </Link>
                         <Icon color={useColorModeValue('red.500', 'red.300')} as={FaArrowRight} />
@@ -121,5 +128,22 @@ const Activity = () => (
         </Stack>
     </Box>
 )
-
+const Activity = () => (
+    <Swiper
+        modules={[Navigation, Pagination]}
+        slidesPerView={1}
+        navigation
+        pagination={{ clickable: true }}
+    >
+        <SwiperSlide>
+            <Activity1 />
+        </SwiperSlide>
+        <SwiperSlide>
+            <Activity1 />
+        </SwiperSlide>
+        <SwiperSlide>
+            <Activity1 />
+        </SwiperSlide>
+    </Swiper>
+)
 export default Activity;

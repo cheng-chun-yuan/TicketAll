@@ -68,8 +68,7 @@ const Form1 = () => {
         data: check,
         isLoading: loadingcheck
     } = useContractRead(contract, "check", [address])
-    const remainAmount = 6-totalNF-numCallOption
-    console.log(remainAmount)
+    const remainAmount = 6 - totalNF - numCallOption
     const handleIncrement2 = () => {
         if (coinAmount >= remainAmount) return
         setCoinAmount(coinAmount + 1)
@@ -192,17 +191,39 @@ const Form1 = () => {
                             const response = await fetch(BACKEND_URL + "/verify-signin?token=" + token);
                             if (response.ok) {
                                 // Continue with the next steps
-                                try { await BA_contract.call("approve", [NFT_ADDRESS,numPoint]) }
-                                catch (error) { return; }
-                                await contract.call('buyCallOption', [coinAmount]);
+                                try {
+                                    await BA_contract.call("approve", [NFT_ADDRESS, numPoint])
+                                } catch (error) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: "Transaction failed",
+                                    })
+                                    return;
+                                }
+                                try {
+                                    await contract.call('buyCallOption', [coinAmount]);
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Transaction successfully!',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    })
+                                } catch (error) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: "An error occurred while sending the transaction",
+                                    });
+                                }
                             } else {
                                 // Break or handle the failure case
-                                console.log("Verification request failed");
-                                alert('error:' + error.message)
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: "Identity verification failed",
+                                })
                                 return;
                             }
                         }}
-                        isDisabled = {remainAmount===0}
+                        isDisabled={remainAmount === 0}
                     >
                         Mint Authority
                     </Web3Button>
@@ -271,7 +292,7 @@ const Form2 = () => {
         setMintAmount(mintAmount - 1)
     }
     const handleIncrement = () => {
-        if (mintAmount >= 6-totalNF) return
+        if (mintAmount >= 6 - totalNF) return
         setMintAmount(mintAmount + 1)
     }
     // const Auctioneth = web3.utils.fromWei(Auction, 'ether');
@@ -381,15 +402,17 @@ const Form2 = () => {
                         }}
                         onSuccess={() => {
                             Swal.fire({
-                                position: 'top-end',
                                 icon: 'success',
-                                title: 'Your work has been saved',
+                                title: 'NFT has been successfully minted',
                                 showConfirmButton: false,
                                 timer: 1500
                             })
                         }}
-                        onError={(error) => {
-                            alert('error:' + error.message)
+                        onError={() => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Mint failed',
+                            })
                         }}
                         isDisabled={rerefund == 0}
                     >
@@ -451,64 +474,6 @@ const Form3 = () => {
                 {!loadingevent && !loadingrefund && !loadingmint ?
                     (
                         <Box>
-                            {/* {unstake && unstake?.map((event, index) => (
-                                <Card key={index}>
-                                    {event.data.user === address && (
-                                        <CardBody>
-                                            <Center>
-                                                <Flex alignItems={'center'} mb={'10px'}>
-                                                    <Image
-                                                        src={MintIcon}
-                                                        alt='Mint'
-                                                        width={30}
-                                                        height={30}
-                                                        mr={'10px'}
-                                                    />
-                                                    <Tooltip
-                                                        label={`Time:${dayjs.unix(event.data.timestamp)}`}
-                                                        bg={'gray.200'}
-                                                        color={'black'}
-                                                    >
-                                                        <InfoOutlineIcon />
-                                                    </Tooltip>
-                                                    <Text fontWeight={'bold'} mr={'10px'}>
-                                                        Unstake Token ID: {event.data.tokenId?.toString() ? event.data.tokenId?.toString() : 'no message'}
-                                                    </Text>
-                                                </Flex>
-                                            </Center>
-                                        </CardBody>
-                                    )}
-                                </Card>
-                            ))}
-                            {stake && stake?.map((event, index) => (
-                                <Card key={index}>
-                                    {event.data.user === address && (
-                                        <CardBody>
-                                            <Center>
-                                                <Flex alignItems={'center'} mb={'10px'}>
-                                                    <Image
-                                                        src={MintIcon}
-                                                        alt='Mint'
-                                                        width={30}
-                                                        height={30}
-                                                        mr={'10px'}
-                                                    />
-                                                    <Tooltip
-                                                        label={`Time:${dayjs.unix(event.data.timestamp)}`}
-                                                        bg={'gray.200'}
-                                                        color={'black'}
-                                                    >
-                                                        <InfoOutlineIcon />
-                                                    </Tooltip>
-                                                    <Text fontWeight={'bold'} mr={'10px'}>
-                                                        Stake Token ID: {event.data.tokenId?.toString() ? event.data.tokenId?.toString() : 'no message'}
-                                                    </Text>
-                                                </Flex>
-                                            </Center>
-                                        </CardBody>
-                                    )}
-                                </Card>
-                            ))} */}
                             {allRefund && allRefund?.map((event, index) => (
                                 <Card key={index}>
                                     {event.data.from === address && (
@@ -686,14 +651,14 @@ const Form4 = () => {
                                         <Text>{nft.metadata.name}:{nft.tokenId}</Text>
                                         <Center>
                                             <Image src={nft.metadata.image} alt={nft.metadata.name} h={'150px'} margin={'20px'} />
-                                            {nft.metadata.name=='Ticket' && 
-                                            <QRCodeCanvas
-                                                id="qrCode"
-                                                value={AES.encrypt((address+nft.tokenId)?.toString(), "secret_key").toString()}
-                                                height={150}
-                                                margin={'20px'}
-                                            />
-                                            }   
+                                            {nft.metadata.name == 'Ticket' &&
+                                                <QRCodeCanvas
+                                                    id="qrCode"
+                                                    value={AES.encrypt((address + nft.tokenId)?.toString(), "secret_key").toString()}
+                                                    height={150}
+                                                    margin={'20px'}
+                                                />
+                                            }
                                         </Center>
                                     </Box>
                                 ))}
@@ -710,15 +675,26 @@ const Form4 = () => {
                         });
                         const { token, error } = await p.signinWithAlias(alias);
                         if (error) {
-                            alert("Sign in failed, received the error");
+                            Swal.fire({
+                                icon: 'error',
+                                title: "Sign in failed",
+                            });
                             return;
                         }
                         const user = await fetch(BACKEND_URL + "/verify-signin?token=" + token).then((r) => r.json());
                         if (user.success === true) {
                             toggleShowMore();
-                            alert("User is logged in!");
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'User is logged in successfully!',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
                         } else {
-                            alert("User is not logged in!", error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: "User is not logged in!",
+                            });
                         }
                     }}
                     color={'black'}
@@ -944,13 +920,16 @@ const Form6 = () => {
                             Swal.fire({
                                 position: 'top-end',
                                 icon: 'success',
-                                title: 'Your work has been saved',
+                                title: 'Your NFT has been refunded',
                                 showConfirmButton: false,
                                 timer: 1500
                             })
                         }}
                         onError={(error) => {
-                            alert(error)
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'An error occurred while sending the transaction',
+                            })
                         }}
                         isDisabled={!allChecked}
                         theme="dark"
