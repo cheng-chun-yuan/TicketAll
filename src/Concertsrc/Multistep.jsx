@@ -5,9 +5,9 @@ import MintIcon from '../assets/social-media-icons/mint.png'
 import Web3 from 'web3';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import { QRCodeCanvas } from "qrcode.react";
 import AES from 'crypto-js/aes';
-import encUtf8 from 'crypto-js/enc-utf8';
 import contractABI from '../contractABI.json'; // Replace with your ERC721 contract ABI
 import {
     Progress,
@@ -49,6 +49,10 @@ const Form1 = () => {
         setCoinAmount(coinAmount - 1)
     }
     const {
+        data: totalNF,
+        isLoading: loadingTotalNF
+    } = useContractRead(contract, 'balanceOf', [address])
+    const {
         data: numCallOption,
         isLoading: loadingCallOption
     } = useContractRead(contract, "pointBalances", [address])
@@ -64,8 +68,10 @@ const Form1 = () => {
         data: check,
         isLoading: loadingcheck
     } = useContractRead(contract, "check", [address])
+    const remainAmount = 6-totalNF-numCallOption
+    console.log(remainAmount)
     const handleIncrement2 = () => {
-        if (coinAmount >= 6) return
+        if (coinAmount >= remainAmount) return
         setCoinAmount(coinAmount + 1)
     }
     return (
@@ -186,7 +192,7 @@ const Form1 = () => {
                             const response = await fetch(BACKEND_URL + "/verify-signin?token=" + token);
                             if (response.ok) {
                                 // Continue with the next steps
-                                try { await BA_contract.call("approve", [NFT_ADDRESS, 100]) }
+                                try { await BA_contract.call("approve", [NFT_ADDRESS,numPoint]) }
                                 catch (error) { return; }
                                 await contract.call('buyCallOption', [coinAmount]);
                             } else {
@@ -196,6 +202,7 @@ const Form1 = () => {
                                 return;
                             }
                         }}
+                        isDisabled = {remainAmount===0}
                     >
                         Mint Authority
                     </Web3Button>
@@ -240,10 +247,6 @@ const Form2 = () => {
     const [mintAmount, setMintAmount] = useState(1)
     const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7');
     const address = useAddress()
-    const handleDecrement = () => {
-        if (mintAmount <= 1) return
-        setMintAmount(mintAmount - 1)
-    }
     const {
         data: maxSupply,
         isLoading: loadingmaxSupply
@@ -263,8 +266,12 @@ const Form2 = () => {
     const {
         data: rerefund,
     } = useContractRead(contract, 'rerefund')
+    const handleDecrement = () => {
+        if (mintAmount <= 1) return
+        setMintAmount(mintAmount - 1)
+    }
     const handleIncrement = () => {
-        if (mintAmount >= 6) return
+        if (mintAmount >= 6-totalNF) return
         setMintAmount(mintAmount + 1)
     }
     // const Auctioneth = web3.utils.fromWei(Auction, 'ether');
@@ -373,7 +380,13 @@ const Form2 = () => {
 
                         }}
                         onSuccess={() => {
-                            alert('The transaction has been successfully completed.')
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Your work has been saved',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
                         }}
                         onError={(error) => {
                             alert('error:' + error.message)
@@ -717,7 +730,6 @@ const Form4 = () => {
         </Box>
     );
 };
-
 const Form5 = () => {
     const address = useAddress();
     const toast = useToast();
@@ -929,7 +941,13 @@ const Form6 = () => {
                             })
                         }}
                         onSuccess={() => {
-                            alert('The transaction has been successfully completed.')
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Your work has been saved',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
                         }}
                         onError={(error) => {
                             alert(error)
@@ -959,7 +977,6 @@ const Form6 = () => {
 function multistep() {
     const [step, setStep] = useState(1);
     const [progress, setProgress] = useState(16.7);
-
     return (
         <Box>
             <Box
@@ -994,7 +1011,8 @@ function multistep() {
                                 colorScheme="teal"
                                 variant="solid"
                                 w="7rem"
-                                mr="5%">
+                                mr="5%"
+                            >
                                 Back
                             </Button>
                             <Button
@@ -1009,7 +1027,8 @@ function multistep() {
                                     }
                                 }}
                                 colorScheme="teal"
-                                variant="outline">
+                                variant={"outline"}
+                            >
                                 Next
                             </Button>
                         </Flex>
