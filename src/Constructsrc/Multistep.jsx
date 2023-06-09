@@ -6,6 +6,7 @@ import MintIcon from '../assets/social-media-icons/mint.png'
 import Web3 from 'web3';
 import axios from 'axios';
 import AES from 'crypto-js/aes';
+import Swal from 'sweetalert2';
 import encUtf8 from 'crypto-js/enc-utf8';
 import { QrReader } from 'react-qr-reader';
 import {
@@ -29,27 +30,27 @@ import {
 } from '@chakra-ui/react';
 import dayjs from "dayjs";
 import { InfoOutlineIcon } from '@chakra-ui/icons';
-const Form4 = () => {
+const Form1 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const [time, setValue] = React.useState('')
-    const [timestep, setTimestep] = React.useState('')
+    const [time2, setValue2] = React.useState('')
     const [endprice, setEndprice] = React.useState('')
     const [pricestep, setPricestep] = React.useState('')
     const [stepnumber, setStepnumber] = React.useState('')
+    const [pricestep2, setPricestep2] = React.useState('')
+    const [stepnumber2, setStepnumber2] = React.useState('')
     const handleChange = (event) => setValue(event.target.value)
-    const handleTimestep = (event) => setTimestep(event.target.value)
-    const handlePricestep = (event) => setPricestep(event.target.value)
+    const handleChange2 = (event) => setValue2(event.target.value)
     const handleEndprice = (event) => setEndprice(event.target.value)
+    const handlePricestep = (event) => setPricestep(event.target.value)
     const handleStepnumber = (event) => setStepnumber(event.target.value)
+    const handlePricestep2 = (event) => setPricestep2(event.target.value)
+    const handleStepnumber2 = (event) => setStepnumber2(event.target.value)
     const address = useAddress()
     const {
         data: owner,
         isLoading: loadingowner
     } = useContractRead(contract, "owner")
-    const {
-        data: rerefund,
-        isLoading: loadingrerefund
-    } = useContractRead(contract, 'rerefund')
     return (
         <Box>
             <Heading
@@ -69,20 +70,6 @@ const Form4 = () => {
                 lineHeight={"26px"}
                 marginTop="20px"
             >
-                <Box
-                    fontSize="30px"
-                    letterSpacing="0.5%"
-                    fontFamily="VT323"
-                    textShadow="0 2px 2px #000"
-                    lineHeight={"26px"}
-                    marginTop="20px"
-                >
-                    <Skeleton
-                        isLoaded={!loadingrerefund}
-                    >
-                        Now auction mint :{rerefund?.toString()}
-                    </Skeleton>
-                </Box>
                 <Skeleton
                     isLoaded={!loadingowner}
                 >
@@ -112,7 +99,7 @@ const Form4 = () => {
             {address == owner ? (
                 <div>
                     <Flex align="center" justify="center" margin={'4px'}>
-                        <Text>Start Time:</Text>
+                        <Text>First Start Time:</Text>
                         <Input
                             width="250px"
                             height="35px"
@@ -125,15 +112,15 @@ const Form4 = () => {
                         />
                     </Flex>
                     <Flex align="center" justify="center" margin={'4px'}>
-                        <Text >Time Step:</Text>
+                        <Text>Second start Time:</Text>
                         <Input
                             width="250px"
                             height="35px"
                             textAlign="center"
                             type="number"
-                            value={timestep}
-                            onChange={handleTimestep}
-                            placeholder='num of steps'
+                            value={time2}
+                            onChange={handleChange2}
+                            placeholder='Timestamp'
                             size='sm'
                         />
                     </Flex>
@@ -176,6 +163,32 @@ const Form4 = () => {
                             size='sm'
                         />
                     </Flex>
+                    <Flex align="center" justify="center" margin={'4px'}>
+                        <Text>Price Step:</Text>
+                        <Input
+                            width="250px"
+                            height="35px"
+                            textAlign="center"
+                            type="number"
+                            value={pricestep2}
+                            onChange={handlePricestep2}
+                            placeholder='one step price'
+                            size='sm'
+                        />
+                    </Flex>
+                    <Flex align="center" justify="center" margin={'4px'}>
+                        <Text>Step Number:</Text>
+                        <Input
+                            width="250px"
+                            height="35px"
+                            textAlign="center"
+                            type="number"
+                            value={stepnumber2}
+                            onChange={handleStepnumber2}
+                            placeholder='num of steps'
+                            size='sm'
+                        />
+                    </Flex>
                     <Web3Button
                         style={{
                             backgroundColor: "white",
@@ -188,13 +201,21 @@ const Form4 = () => {
                         }}
                         contractAddress={NFT_ADDRESS}
                         action={async () => {
-                            await contract.call('setAuction', [time, timestep, endprice, pricestep, stepnumber])
+                            await contract.call('setFactor', [time, time2, pricestep, stepnumber, pricestep2, stepnumber2, endprice])
                         }}
                         onSuccess={() => {
-                            alert('The transaction has been successfully completed.')
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'The transaction has been successfully completed.',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
                         }}
-                        onError={(error) => {
-                            alert(error)
+                        onError={() => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Transaction failed',
+                            })
                         }}
                         theme="dark"
                     >
@@ -289,9 +310,9 @@ const Form2 = () => {
     const address = useAddress()
     const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7')
     const BN = web3.utils.BN;
-    const { data: allEvents, loading: loadingevent } = useContractEvents(contract, "firstmint")
+    const { data: allEvents, loading: loadingevent } = useContractEvents(contract, "firstMint")
     const { data: allRefund, loading: loadingrefund } = useContractEvents(contract, "Refund")
-    const { data: finalMint, loading: loadingmint } = useContractEvents(contract, "finalmint")
+    const { data: finalMint, loading: loadingmint } = useContractEvents(contract, "secondMint")
     const {
         data: owner,
         isLoading: loadingowner
@@ -485,7 +506,7 @@ const Form3 = () => {
         </>
     );
 };
-const Form1 = () => {
+const Form4 = () => {
     const { contract } = useContract(NFT_ADDRESS)
     const address = useAddress()
     const [data, setData] = useState('No result');

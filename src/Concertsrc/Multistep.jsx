@@ -265,17 +265,39 @@ const Form1 = () => {
 };
 const Form2 = () => {
     const { contract } = useContract(NFT_ADDRESS)
-    const [mintAmount, setMintAmount] = useState(1)
+    const [mintAmountA, setMintAmountA] = useState(0)
+    const [mintAmountB, setMintAmountB] = useState(0)
+    const [mintAmountC, setMintAmountC] = useState(0)
     const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7');
     const address = useAddress()
+    const { 
+        data: lock,
+        isLoading: loadinglock 
+    } = useContractRead(contract, "lock");
     const {
-        data: maxSupply,
-        isLoading: loadingmaxSupply
-    } = useContractRead(contract, "maxSupply")
+        data: maxSupplyA,
+        isLoading: loadingmaxSupplyA
+    } = useContractRead(contract, "maxSupplyA")
     const {
-        data: totalNFT,
-        isLoading: loadingTotalNFT
-    } = useContractRead(contract, 'nowSupply')
+        data: totalNFTA,
+        isLoading: loadingTotalNFTA
+    } = useContractRead(contract, 'nowSupplyA')
+    const {
+        data: maxSupplyB,
+        isLoading: loadingmaxSupplyB
+    } = useContractRead(contract, "maxSupplyB")
+    const {
+        data: totalNFTB,
+        isLoading: loadingTotalNFTB
+    } = useContractRead(contract, 'nowSupplyB')
+    const {
+        data: maxSupplyC,
+        isLoading: loadingmaxSupplyC
+    } = useContractRead(contract, "maxSupplyC")
+    const {
+        data: totalNFTC,
+        isLoading: loadingTotalNFTC
+    } = useContractRead(contract, 'nowSupplyC')
     const {
         data: totalNF,
         isLoading: loadingTotalNF
@@ -284,16 +306,29 @@ const Form2 = () => {
         data: Auction,
         isLoading: loadingAuction
     } = useContractRead(contract, 'getAuctionPrice')
-    const {
-        data: rerefund,
-    } = useContractRead(contract, 'rerefund')
-    const handleDecrement = () => {
-        if (mintAmount <= 1) return
-        setMintAmount(mintAmount - 1)
+    const handleDecrementA = () => {
+        if (mintAmountA <= 0) return
+        setMintAmountA(mintAmountA - 1)
     }
-    const handleIncrement = () => {
-        if (mintAmount >= 6 - totalNF) return
-        setMintAmount(mintAmount + 1)
+    const handleIncrementA = () => {
+        if (mintAmountA + mintAmountB +mintAmountC >= 6 - totalNF) return
+        setMintAmountA(mintAmountA + 1)
+    }
+    const handleDecrementB = () => {
+        if (mintAmountB <= 0) return
+        setMintAmountB(mintAmountB - 1)
+    }
+    const handleIncrementB = () => {
+        if (mintAmountA + mintAmountB +mintAmountC >= 6 - totalNF) return
+        setMintAmountB(mintAmountB + 1)
+    }
+    const handleDecrementC = () => {
+        if (mintAmountC <= 0) return
+        setMintAmountC(mintAmountC - 1)
+    }
+    const handleIncrementC = () => {
+        if (mintAmountA + mintAmountB +mintAmountC >= 6 - totalNF) return
+        setMintAmountC(mintAmountC + 1)
     }
     // const Auctioneth = web3.utils.fromWei(Auction, 'ether');
     const BN = web3.utils.BN;
@@ -309,9 +344,13 @@ const Form2 = () => {
                 marginTop="20px"
             >
                 <Skeleton
-                    isLoaded={!loadingTotalNFT || !loadingmaxSupply}
+                    isLoaded={!loadingTotalNFTA && !loadingmaxSupplyA && !loadingTotalNFTB && !loadingmaxSupplyB && !loadingTotalNFTC && !loadingmaxSupplyC}
                 >
-                    Remain Amount of NFT : {(maxSupply - totalNFT)?.toString()}
+                    Remain Amount of A : {(maxSupplyA - totalNFTA)?.toString()}
+                    <Spacer/>
+                    Remain Amount of B : {(maxSupplyB - totalNFTB)?.toString()}
+                    <Spacer/>
+                    Remain Amount of C : {(maxSupplyC - totalNFTC)?.toString()}
                 </Skeleton>
             </Box>
             <Box
@@ -322,59 +361,185 @@ const Form2 = () => {
                 lineHeight={"26px"}
                 marginTop="20px"
             >
-                {rerefund == 2 ? <Skeleton
-                    isLoaded={!loadingAuction}
-                >
-                    Final Mint <Spacer />AuctionPrice: {Auctioneth} ETH
-                </Skeleton> : rerefund == 1 ? <Skeleton
-                    isLoaded={!loadingAuction}
-                >
-                    First Round <Spacer />Auction Price: {Auctioneth} ETH
-                </Skeleton> : <Text>Mint not yet</Text>}
+                {lock ?(
+                    <Skeleton
+                        isLoaded={!loadingAuction}
+                    >
+                        First Round <Spacer />Auction Price: {Auctioneth} ETH
+                    </Skeleton>
+                ):( 
+                    <Text>Mint not yet</Text>
+                )}
             </Box>
             {address ? (
                 <div>
-                    <Flex align="center" justify="center">
-                        <Button
-                            backgroundColor="#D6517D"
-                            borderRadius="5px"
-                            boxShadow="0px 2px 2px 1px #0f0f0f"
-                            color="white"
-                            cursor="pointer"
-                            fontFamily="inherit"
-                            padding="10px"
-                            marginTop="10px"
-                            onClick={handleDecrement}
-                        >
-                            -
-                        </Button>
-                        <Input
-                            readOnly
-                            fontFamily="inherit"
-                            width="100px"
-                            height="40px"
-                            textAlign="center"
-                            paddingLeft="19px"
-                            marginTop="10px"
-                            type="number"
-                            value={mintAmount}
-                            onChange={(e) => setMintAmount(e.target.value)}
-                        />
-                        <Button
-                            backgroundColor="#D6517D"
-                            borderRadius="5px"
-                            boxShadow="0px 2px 2px 1px #0f0f0f"
-                            color="white"
-                            cursor="pointer"
-                            fontFamily="inherit"
-                            padding="10px"
-                            marginTop="10px"
-                            onClick={handleIncrement}
-                        >
-                            +
-                        </Button>
-                    </Flex>
-
+                    <Center>
+                        <Flex align="center" justify="center">
+                            
+                            <InputGroup>
+                                <Button
+                                    backgroundColor="#D6517D"
+                                    borderRadius="5px"
+                                    boxShadow="0px 2px 2px 1px #0f0f0f"
+                                    color="white"
+                                    cursor="pointer"
+                                    fontFamily="inherit"
+                                    padding="10px"
+                                    marginTop="10px"
+                                    onClick={handleDecrementA}
+                                >
+                                    -
+                                </Button>
+                                <InputLeftAddon 
+                                    children='A:' 
+                                    fontFamily="inherit"
+                                    width="60px"
+                                    height="40px"
+                                    textAlign="center"
+                                    paddingLeft="19px"
+                                    marginTop="10px"
+                                    color='black'
+                                />
+                                <Input
+                                    readOnly
+                                    fontFamily="inherit"
+                                    width="100px"
+                                    height="40px"
+                                    textAlign="center"
+                                    paddingLeft="19px"
+                                    marginTop="10px"
+                                    type="number"
+                                    value={mintAmountA}
+                                    onChange={(e) => setMintAmountA(e.target.value)}
+                                />
+                                <Button
+                                    backgroundColor="#D6517D"
+                                    borderRadius="5px"
+                                    boxShadow="0px 2px 2px 1px #0f0f0f"
+                                    color="white"
+                                    cursor="pointer"
+                                    fontFamily="inherit"
+                                    padding="10px"
+                                    marginTop="10px"
+                                    onClick={handleIncrementA}
+                                >
+                                    +
+                                </Button>
+                            </InputGroup>
+                            
+                        </Flex>
+                    </Center>
+                    <Center>
+                        <Flex align="center" justify="center">
+                            
+                            <InputGroup>
+                                <Button
+                                    backgroundColor="#D6517D"
+                                    borderRadius="5px"
+                                    boxShadow="0px 2px 2px 1px #0f0f0f"
+                                    color="white"
+                                    cursor="pointer"
+                                    fontFamily="inherit"
+                                    padding="10px"
+                                    marginTop="10px"
+                                    onClick={handleDecrementB}
+                                >
+                                    -
+                                </Button>
+                                <InputLeftAddon 
+                                    children='B:' 
+                                    fontFamily="inherit"
+                                    width="60px"
+                                    height="40px"
+                                    textAlign="center"
+                                    paddingLeft="19px"
+                                    marginTop="10px"
+                                    color='black'
+                                />
+                                <Input
+                                    readOnly
+                                    fontFamily="inherit"
+                                    width="100px"
+                                    height="40px"
+                                    textAlign="center"
+                                    paddingLeft="19px"
+                                    marginTop="10px"
+                                    type="number"
+                                    value={mintAmountB}
+                                    onChange={(e) => setMintAmountB(e.target.value)}
+                                />
+                                <Button
+                                    backgroundColor="#D6517D"
+                                    borderRadius="5px"
+                                    boxShadow="0px 2px 2px 1px #0f0f0f"
+                                    color="white"
+                                    cursor="pointer"
+                                    fontFamily="inherit"
+                                    padding="10px"
+                                    marginTop="10px"
+                                    onClick={handleIncrementB}
+                                >
+                                    +
+                                </Button>
+                            </InputGroup>
+                            
+                        </Flex>
+                    </Center>
+                    <Center>
+                        <Flex align="center" justify="center">
+                            <InputGroup>
+                                <Button
+                                    backgroundColor="#D6517D"
+                                    borderRadius="5px"
+                                    boxShadow="0px 2px 2px 1px #0f0f0f"
+                                    color="white"
+                                    cursor="pointer"
+                                    fontFamily="inherit"
+                                    padding="10px"
+                                    marginTop="10px"
+                                    onClick={handleDecrementC}
+                                >
+                                    -
+                                </Button>
+                                <InputLeftAddon 
+                                    children='C:' 
+                                    fontFamily="inherit"
+                                    width="60px"
+                                    height="40px"
+                                    textAlign="center"
+                                    paddingLeft="19px"
+                                    marginTop="10px"
+                                    color='black'
+                                />
+                                <Input
+                                    readOnly
+                                    fontFamily="inherit"
+                                    width="100px"
+                                    height="40px"
+                                    textAlign="center"
+                                    paddingLeft="19px"
+                                    marginTop="10px"
+                                    type="number"
+                                    value={mintAmountC}
+                                    onChange={(e) => setMintAmountC(e.target.value)}
+                                />
+                                <Button
+                                    backgroundColor="#D6517D"
+                                    borderRadius="5px"
+                                    boxShadow="0px 2px 2px 1px #0f0f0f"
+                                    color="white"
+                                    cursor="pointer"
+                                    fontFamily="inherit"
+                                    padding="10px"
+                                    marginTop="10px"
+                                    onClick={handleIncrementC}
+                                >
+                                    +
+                                </Button>
+                            </InputGroup>
+                            
+                        </Flex>
+                    </Center>
                     <Web3Button
                         style={{
                             backgroundColor: "white",
@@ -387,18 +552,10 @@ const Form2 = () => {
                         }}
                         contractAddress={NFT_ADDRESS}
                         action={async () => {
-                            if (rerefund == 1) {
-                                await contract.call("auctionmintNFT", [mintAmount], {
-                                    value: (mintAmount * Auction).toString(),
-                                    from: address,
-                                });
-                            } else {
-                                await contract.call("FinalmintNFT", [mintAmount], {
-                                    value: (mintAmount * Auction).toString(),
-                                    from: address,
-                                });
-                            }
-
+                            await contract.call("mintNFT", [mintAmountA,mintAmountB,mintAmountC], {
+                                value: ( (3*mintAmountA + 2*mintAmountB + mintAmountC)* Auction).toString(),
+                                from: address,
+                            });
                         }}
                         onSuccess={() => {
                             Swal.fire({
@@ -414,7 +571,7 @@ const Form2 = () => {
                                 title: 'Mint failed',
                             })
                         }}
-                        isDisabled={rerefund == 0}
+                        isDisabled={!lock}
                     >
                         Mint
                     </Web3Button>
