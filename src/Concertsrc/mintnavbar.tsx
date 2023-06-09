@@ -20,7 +20,6 @@ import Linchielon from '../assets/social-media-icons/071.png';
 import Cheng from '../assets/social-media-icons/cheng.png';
 import Debby from '../assets/social-media-icons/Debby.jpg';
 import Cw from '../assets/social-media-icons/cw.jpg';
-import Sh from '../assets/social-media-icons/SH.jpg';
 import { ConnectWallet } from '@thirdweb-dev/react';
 
 const NavLink = ({ children }: { children: ReactNode }) => (
@@ -160,36 +159,6 @@ export default function Simple() {
                                             <Image
                                                 boxSize='2rem'
                                                 borderRadius='full'
-                                                src={Sh}
-                                                alt='Simon the pensive'
-                                                mr='12px'
-                                            />
-                                            <span>
-                                                許聖德
-                                            </span>
-                                        </MenuItem>
-                                        <MenuItem
-                                            minH='30px'
-                                            color={'black'}
-                                        >
-                                            <Image
-                                                boxSize='2rem'
-                                                borderRadius='full'
-                                                src={Cw}
-                                                alt='Simon the pensive'
-                                                mr='12px'
-                                            />
-                                            <span>
-                                                陳麒文
-                                            </span>
-                                        </MenuItem>
-                                        <MenuItem
-                                            minH='30px'
-                                            color={'black'}
-                                        >
-                                            <Image
-                                                boxSize='2rem'
-                                                borderRadius='full'
                                                 src={Debby}
                                                 alt='Simon the pensive'
                                                 mr='12px'
@@ -308,36 +277,6 @@ export default function Simple() {
                                             />
                                             <span>
                                                 林倩伊
-                                            </span>
-                                        </MenuItem>
-                                        <MenuItem
-                                            minH='30px'
-                                            color={'black'}
-                                        >
-                                            <Image
-                                                boxSize='2rem'
-                                                borderRadius='full'
-                                                src={Sh}
-                                                alt='Simon the pensive'
-                                                mr='12px'
-                                            />
-                                            <span>
-                                                許聖德
-                                            </span>
-                                        </MenuItem>
-                                        <MenuItem
-                                            minH='30px'
-                                            color={'black'}
-                                        >
-                                            <Image
-                                                boxSize='2rem'
-                                                borderRadius='full'
-                                                src={Cw}
-                                                alt='Simon the pensive'
-                                                mr='12px'
-                                            />
-                                            <span>
-                                                陳麒文
                                             </span>
                                         </MenuItem>
                                         <MenuItem

@@ -96,15 +96,15 @@ const Form1 = () => {
                 <Skeleton
                     isLoaded={!loadingcheck}
                 >
-                    {check ? (
-                        <Icon viewBox='0 0 200 200' color='green.500'>
+                    {address && check  ? (
+                        <Icon viewBox='0 0 200 200' color='green'>
                             <path
                                 fill='currentColor'
                                 d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
                             />
                         </Icon>
                     ) : (
-                        <Icon viewBox='0 0 200 200' color='red.500'>
+                        <Icon viewBox='0 0 200 200' color='red'>
                             <path
                                 fill='currentColor'
                                 d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
@@ -198,7 +198,7 @@ const Form1 = () => {
                                         icon: 'error',
                                         title: "Transaction failed",
                                     })
-                                    return;
+                                    return false;
                                 }
                                 try {
                                     await contract.call('buyCallOption', [coinAmount]);
@@ -220,8 +220,22 @@ const Form1 = () => {
                                     icon: 'error',
                                     title: "Identity verification failed",
                                 })
-                                return;
+                                return false;
                             }
+                        }}
+                        onSuccess={() => {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Transaction successfully!',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        }}
+                        onError={() => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Transaction failed',
+                            })
                         }}
                         isDisabled={remainAmount === 0}
                     >
@@ -232,7 +246,22 @@ const Form1 = () => {
                     >
                         BA token you need  :  {numPoint?.toString()}
                     </Skeleton>
+                    <Box
+                        fontSize="30px"
+                        letterSpacing="0.5%"
+                        fontFamily="VT323"
+                        textShadow="0 2px 2px #000"
+                        lineHeight={"26px"}
+                        marginTop="10px"
+                    >
+                        <Skeleton
+                            isLoaded={!loadingCallOption}
+                        >
+                            Number you can mint :  {numCallOption?.toString()}
+                        </Skeleton>
+                    </Box>
                 </div>
+
             ) : (
                 <Text
                     marginTop="70px"
@@ -246,20 +275,6 @@ const Form1 = () => {
                 </Text>
             )
             }
-            <Box
-                fontSize="30px"
-                letterSpacing="0.5%"
-                fontFamily="VT323"
-                textShadow="0 2px 2px #000"
-                lineHeight={"26px"}
-                marginTop="10px"
-            >
-                <Skeleton
-                    isLoaded={!loadingCallOption}
-                >
-                    Number you can mint :  {numCallOption?.toString()}
-                </Skeleton>
-            </Box>
         </Box >
     );
 };
@@ -270,9 +285,9 @@ const Form2 = () => {
     const [mintAmountC, setMintAmountC] = useState(0)
     const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7');
     const address = useAddress()
-    const { 
+    const {
         data: lock,
-        isLoading: loadinglock 
+        isLoading: loadinglock
     } = useContractRead(contract, "lock");
     const {
         data: maxSupplyA,
@@ -311,7 +326,7 @@ const Form2 = () => {
         setMintAmountA(mintAmountA - 1)
     }
     const handleIncrementA = () => {
-        if (mintAmountA + mintAmountB +mintAmountC >= 6 - totalNF) return
+        if (mintAmountA + mintAmountB + mintAmountC >= 6 - totalNF) return
         setMintAmountA(mintAmountA + 1)
     }
     const handleDecrementB = () => {
@@ -319,7 +334,7 @@ const Form2 = () => {
         setMintAmountB(mintAmountB - 1)
     }
     const handleIncrementB = () => {
-        if (mintAmountA + mintAmountB +mintAmountC >= 6 - totalNF) return
+        if (mintAmountA + mintAmountB + mintAmountC >= 6 - totalNF) return
         setMintAmountB(mintAmountB + 1)
     }
     const handleDecrementC = () => {
@@ -327,7 +342,7 @@ const Form2 = () => {
         setMintAmountC(mintAmountC - 1)
     }
     const handleIncrementC = () => {
-        if (mintAmountA + mintAmountB +mintAmountC >= 6 - totalNF) return
+        if (mintAmountA + mintAmountB + mintAmountC >= 6 - totalNF) return
         setMintAmountC(mintAmountC + 1)
     }
     // const Auctioneth = web3.utils.fromWei(Auction, 'ether');
@@ -347,9 +362,9 @@ const Form2 = () => {
                     isLoaded={!loadingTotalNFTA && !loadingmaxSupplyA && !loadingTotalNFTB && !loadingmaxSupplyB && !loadingTotalNFTC && !loadingmaxSupplyC}
                 >
                     Remain Amount of A : {(maxSupplyA - totalNFTA)?.toString()}
-                    <Spacer/>
+                    <Spacer />
                     Remain Amount of B : {(maxSupplyB - totalNFTB)?.toString()}
-                    <Spacer/>
+                    <Spacer />
                     Remain Amount of C : {(maxSupplyC - totalNFTC)?.toString()}
                 </Skeleton>
             </Box>
@@ -361,13 +376,17 @@ const Form2 = () => {
                 lineHeight={"26px"}
                 marginTop="20px"
             >
-                {lock ?(
+                {lock ? (
                     <Skeleton
                         isLoaded={!loadingAuction}
                     >
-                        First Round <Spacer />Auction Price: {Auctioneth} ETH
+                        First Round
+                        <Spacer />
+                        Auction Price: {Auctioneth} ETH
+                        <Spacer />
+                        Total Price: {(3 * mintAmountA + 2 * mintAmountB + mintAmountC) * Auctioneth} ETH
                     </Skeleton>
-                ):( 
+                ) : (
                     <Text>Mint not yet</Text>
                 )}
             </Box>
@@ -375,7 +394,7 @@ const Form2 = () => {
                 <div>
                     <Center>
                         <Flex align="center" justify="center">
-                            
+
                             <InputGroup>
                                 <Button
                                     backgroundColor="#D6517D"
@@ -390,8 +409,8 @@ const Form2 = () => {
                                 >
                                     -
                                 </Button>
-                                <InputLeftAddon 
-                                    children='A:' 
+                                <InputLeftAddon
+                                    children='A:'
                                     fontFamily="inherit"
                                     width="60px"
                                     height="40px"
@@ -426,12 +445,12 @@ const Form2 = () => {
                                     +
                                 </Button>
                             </InputGroup>
-                            
+
                         </Flex>
                     </Center>
                     <Center>
                         <Flex align="center" justify="center">
-                            
+
                             <InputGroup>
                                 <Button
                                     backgroundColor="#D6517D"
@@ -446,8 +465,8 @@ const Form2 = () => {
                                 >
                                     -
                                 </Button>
-                                <InputLeftAddon 
-                                    children='B:' 
+                                <InputLeftAddon
+                                    children='B:'
                                     fontFamily="inherit"
                                     width="60px"
                                     height="40px"
@@ -482,7 +501,7 @@ const Form2 = () => {
                                     +
                                 </Button>
                             </InputGroup>
-                            
+
                         </Flex>
                     </Center>
                     <Center>
@@ -501,8 +520,8 @@ const Form2 = () => {
                                 >
                                     -
                                 </Button>
-                                <InputLeftAddon 
-                                    children='C:' 
+                                <InputLeftAddon
+                                    children='C:'
                                     fontFamily="inherit"
                                     width="60px"
                                     height="40px"
@@ -537,7 +556,7 @@ const Form2 = () => {
                                     +
                                 </Button>
                             </InputGroup>
-                            
+
                         </Flex>
                     </Center>
                     <Web3Button
@@ -552,8 +571,8 @@ const Form2 = () => {
                         }}
                         contractAddress={NFT_ADDRESS}
                         action={async () => {
-                            await contract.call("mintNFT", [mintAmountA,mintAmountB,mintAmountC], {
-                                value: ( (3*mintAmountA + 2*mintAmountB + mintAmountC)* Auction).toString(),
+                            await contract.call("mintNFT", [mintAmountA, mintAmountB, mintAmountC], {
+                                value: ((3 * mintAmountA + 2 * mintAmountB + mintAmountC) * Auction).toString(),
                                 from: address,
                             });
                         }}
@@ -571,7 +590,7 @@ const Form2 = () => {
                                 title: 'Mint failed',
                             })
                         }}
-                        isDisabled={!lock}
+                        isDisabled={!lock || mintAmountA + mintAmountB + mintAmountC === 0}
                     >
                         Mint
                     </Web3Button>
@@ -612,9 +631,9 @@ const Form3 = () => {
     const address = useAddress()
     const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7');
     const BN = web3.utils.BN;
-    const { data: allEvents, loading: loadingevent } = useContractEvents(contract, "firstmint")
+    const { data: allEvents, loading: loadingevent } = useContractEvents(contract, "firstMint")
     const { data: allRefund, loading: loadingrefund } = useContractEvents(contract, "Refund")
-    const { data: finalMint, loading: loadingmint } = useContractEvents(contract, "finalmint")
+    const { data: finalMint, loading: loadingmint } = useContractEvents(contract, "secondMint")
     // const { data: stake, loading: loadingstake } = useContractEvents(st_contract, "NFTStaked")
     // const { data: unstake, loading: loadingunstake } = useContractEvents(st_contract, "NFTUnstaked")
     return (
@@ -733,23 +752,28 @@ const Form4 = () => {
     };
     const { contract } = useContract(NFT_ADDRESS)
     const {
-        data: nowSupply,
-        isLoading: loadingnowSupply
-    } = useContractRead(contract, "nowSupply")
+        data: nowSupplyA,
+        isLoading: loadingnowSupplyA
+    } = useContractRead(contract, "nowSupplyA")
+    const {
+        data: nowSupplyB,
+        isLoading: loadingnowSupplyB
+    } = useContractRead(contract, "nowSupplyB")
+    const {
+        data: nowSupplyC,
+        isLoading: loadingnowSupplyC
+    } = useContractRead(contract, "nowSupplyC")
 
     useEffect(() => {
         const fetchOwnedNFTs = async () => {
             const tokenIds = [];
-            for (let i = 1; i <= nowSupply; i++) {
+            for (let i = 1; i <= 100; i++) {
                 try {
                     const data = await contract.call("ownerOf", [i]);
                     if (data === address) {
                         tokenIds.push(i);
                     }
-                } catch (error) {
-                    // Handle the revert error here
-                    continue; // Continue to the next iteration of the loop
-                }
+                } catch (error) {}
             }
             // const tokenIds = await contract.methods.stakeOfOwner(address,1).call();
             // const tokenIds = [1, 2];

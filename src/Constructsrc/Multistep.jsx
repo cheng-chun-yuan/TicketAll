@@ -27,19 +27,23 @@ import {
     Center,
     Icon,
     CardHeader,
+    FormControl,
+    FormLabel,
 } from '@chakra-ui/react';
 import dayjs from "dayjs";
-import { InfoOutlineIcon } from '@chakra-ui/icons';
+import { InfoOutlineIcon, CheckIcon, WarningIcon } from '@chakra-ui/icons';
+// import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
 const Form1 = () => {
     const { contract } = useContract(NFT_ADDRESS)
-    const [time, setValue] = React.useState('')
+    const [startDate, setStartDate] = useState(new Date());
     const [time2, setValue2] = React.useState('')
     const [endprice, setEndprice] = React.useState('')
     const [pricestep, setPricestep] = React.useState('')
     const [stepnumber, setStepnumber] = React.useState('')
     const [pricestep2, setPricestep2] = React.useState('')
     const [stepnumber2, setStepnumber2] = React.useState('')
-    const handleChange = (event) => setValue(event.target.value)
+    const handleChange = (event) => setStartDate(event.target.value)
     const handleChange2 = (event) => setValue2(event.target.value)
     const handleEndprice = (event) => setEndprice(event.target.value)
     const handlePricestep = (event) => setPricestep(event.target.value)
@@ -74,167 +78,151 @@ const Form1 = () => {
                     isLoaded={!loadingowner}
                 >
                     {owner == address ? (
-                        <Box>
-                            <Icon viewBox='0 0 200 200' color='green.500'>
-                                <path
-                                    fill='currentColor'
-                                    d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
-                                />
-                            </Icon>
+                        <div>
+                            <CheckIcon margin={10} color={'green'}/>
                             You are contract owner
-                        </Box>
+                            <Flex align="center" justify="center" margin={'4px'}>
+                                <Text >Choose Start Time:</Text>
+                                <Input
+                                    width="250px"
+                                    height="35px"
+                                    textAlign="center"
+                                    type="number"
+                                    value={startDate}
+                                    onChange={handleChange}
+                                    placeholder='Timestamp'
+                                    size='sm'
+                                />
+                            </Flex>
+                            <Flex align="center" justify="center" margin={'4px'}>
+                                <Text>Second start Time:</Text>
+                                <Input
+                                    width="250px"
+                                    height="35px"
+                                    textAlign="center"
+                                    type="number"
+                                    value={time2}
+                                    onChange={handleChange2}
+                                    placeholder='Timestamp'
+                                    size='sm'
+                                />
+                            </Flex>
+                            <Flex align="center" justify="center" margin={'4px'}>
+                                <Text >End Price:</Text>
+                                <Input
+                                    width="250px"
+                                    height="35px"
+                                    textAlign="center"
+                                    type="number"
+                                    value={endprice}
+                                    onChange={handleEndprice}
+                                    placeholder='the final price'
+                                    size='sm'
+                                />
+                            </Flex>
+                            <Flex align="center" justify="center" margin={'4px'}>
+                                <Text>Price Step:</Text>
+                                <Input
+                                    width="250px"
+                                    height="35px"
+                                    textAlign="center"
+                                    type="number"
+                                    value={pricestep}
+                                    onChange={handlePricestep}
+                                    placeholder='one step price'
+                                    size='sm'
+                                />
+                            </Flex>
+                            <Flex align="center" justify="center" margin={'4px'}>
+                                <Text>Step Number:</Text>
+                                <Input
+                                    width="250px"
+                                    height="35px"
+                                    textAlign="center"
+                                    type="number"
+                                    value={stepnumber}
+                                    onChange={handleStepnumber}
+                                    placeholder='num of steps'
+                                    size='sm'
+                                />
+                            </Flex>
+                            <Flex align="center" justify="center" margin={'4px'}>
+                                <Text>Price Step:</Text>
+                                <Input
+                                    width="250px"
+                                    height="35px"
+                                    textAlign="center"
+                                    type="number"
+                                    value={pricestep2}
+                                    onChange={handlePricestep2}
+                                    placeholder='one step price'
+                                    size='sm'
+                                />
+                            </Flex>
+                            <Flex align="center" justify="center" margin={'4px'}>
+                                <Text>Step Number:</Text>
+                                <Input
+                                    width="250px"
+                                    height="35px"
+                                    textAlign="center"
+                                    type="number"
+                                    value={stepnumber2}
+                                    onChange={handleStepnumber2}
+                                    placeholder='num of steps'
+                                    size='sm'
+                                />
+                            </Flex>
+                            <Web3Button
+                                style={{
+                                    backgroundColor: "white",
+                                    borderRadius: "5px",
+                                    boxShadow: "0px 2px 2px 1px #0f0f0f",
+                                    cursor: "pointer",
+                                    fontFamily: "inherit",
+                                    padding: "10px",
+                                    marginTop: "10px",
+                                }}
+                                contractAddress={NFT_ADDRESS}
+                                action={async () => {
+                                    await contract.call('setFactor', [startDate, time2, pricestep, stepnumber, pricestep2, stepnumber2, endprice])
+                                }}
+                                onSuccess={() => {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'The transaction has been successfully completed.',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    })
+                                }}
+                                onError={() => {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Transaction failed',
+                                    })
+                                }}
+                                theme="dark"
+                            >
+                                SetAuction
+                            </Web3Button>
+                        </div>
                     ) : (
                         <Box>
-                            <Icon viewBox='0 0 200 200' color='red.500'>
-                                <path
-                                    fill='currentColor'
-                                    d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
-                                />
-                            </Icon>
+                            <WarningIcon margin={10} color={'red'} />
                             You are not contract owner
+                            <Text
+                                marginTop="70px"
+                                fontSize="30px"
+                                letterSpacing="-5.5%"
+                                fontFamily="VT323"
+                                textShadow="0 3px #000"
+                                color="#D6517D"
+                            >
+                                Please change your account to the contract owner
+                            </Text>
                         </Box>
                     )}
                 </Skeleton>
             </Box>
-            {address == owner ? (
-                <div>
-                    <Flex align="center" justify="center" margin={'4px'}>
-                        <Text>First Start Time:</Text>
-                        <Input
-                            width="250px"
-                            height="35px"
-                            textAlign="center"
-                            type="number"
-                            value={time}
-                            onChange={handleChange}
-                            placeholder='Timestamp'
-                            size='sm'
-                        />
-                    </Flex>
-                    <Flex align="center" justify="center" margin={'4px'}>
-                        <Text>Second start Time:</Text>
-                        <Input
-                            width="250px"
-                            height="35px"
-                            textAlign="center"
-                            type="number"
-                            value={time2}
-                            onChange={handleChange2}
-                            placeholder='Timestamp'
-                            size='sm'
-                        />
-                    </Flex>
-                    <Flex align="center" justify="center" margin={'4px'}>
-                        <Text >End Price:</Text>
-                        <Input
-                            width="250px"
-                            height="35px"
-                            textAlign="center"
-                            type="number"
-                            value={endprice}
-                            onChange={handleEndprice}
-                            placeholder='the final price'
-                            size='sm'
-                        />
-                    </Flex>
-                    <Flex align="center" justify="center" margin={'4px'}>
-                        <Text>Price Step:</Text>
-                        <Input
-                            width="250px"
-                            height="35px"
-                            textAlign="center"
-                            type="number"
-                            value={pricestep}
-                            onChange={handlePricestep}
-                            placeholder='one step price'
-                            size='sm'
-                        />
-                    </Flex>
-                    <Flex align="center" justify="center" margin={'4px'}>
-                        <Text>Step Number:</Text>
-                        <Input
-                            width="250px"
-                            height="35px"
-                            textAlign="center"
-                            type="number"
-                            value={stepnumber}
-                            onChange={handleStepnumber}
-                            placeholder='num of steps'
-                            size='sm'
-                        />
-                    </Flex>
-                    <Flex align="center" justify="center" margin={'4px'}>
-                        <Text>Price Step:</Text>
-                        <Input
-                            width="250px"
-                            height="35px"
-                            textAlign="center"
-                            type="number"
-                            value={pricestep2}
-                            onChange={handlePricestep2}
-                            placeholder='one step price'
-                            size='sm'
-                        />
-                    </Flex>
-                    <Flex align="center" justify="center" margin={'4px'}>
-                        <Text>Step Number:</Text>
-                        <Input
-                            width="250px"
-                            height="35px"
-                            textAlign="center"
-                            type="number"
-                            value={stepnumber2}
-                            onChange={handleStepnumber2}
-                            placeholder='num of steps'
-                            size='sm'
-                        />
-                    </Flex>
-                    <Web3Button
-                        style={{
-                            backgroundColor: "white",
-                            borderRadius: "5px",
-                            boxShadow: "0px 2px 2px 1px #0f0f0f",
-                            cursor: "pointer",
-                            fontFamily: "inherit",
-                            padding: "10px",
-                            marginTop: "10px",
-                        }}
-                        contractAddress={NFT_ADDRESS}
-                        action={async () => {
-                            await contract.call('setFactor', [time, time2, pricestep, stepnumber, pricestep2, stepnumber2, endprice])
-                        }}
-                        onSuccess={() => {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'The transaction has been successfully completed.',
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                        }}
-                        onError={() => {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Transaction failed',
-                            })
-                        }}
-                        theme="dark"
-                    >
-                        SetAuction
-                    </Web3Button>
-                </div>
-            ) : (
-                <Text
-                    marginTop="70px"
-                    fontSize="30px"
-                    letterSpacing="-5.5%"
-                    fontFamily="VT323"
-                    textShadow="0 3px #000"
-                    color="#D6517D"
-                >
-                    Please change your account to the contract owner
-                </Text>
-            )
-            }
         </Box >
     );
 };
@@ -565,7 +553,7 @@ const Form4 = () => {
                     {buyAddress == ownerOf ? (
                         <>
                             <p>TokenId : {tokenId}</p>
-                            <YourComponent/>
+                            <YourComponent />
                         </>
                     ) : (
                         <p>No Result</p>
