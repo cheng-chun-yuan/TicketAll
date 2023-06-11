@@ -102,6 +102,16 @@ const express = require("express");
 const fetch = require("node-fetch");
 const https = require("https");
 const bodyParser = require('body-parser');
+const BoardDB = require('../models/BoardDB');
+const db = require('./db');
+const mongoose = require('mongoose');
+const { messages } = require("./data/index.js");
+
+db.connect();
+
+// insert data to db, note that this should be done only once
+// BoardDB.insertMany(messages);
+
 const agent = new https.Agent({
     rejectUnauthorized: false
 })
