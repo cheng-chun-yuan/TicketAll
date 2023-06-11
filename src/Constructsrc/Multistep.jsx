@@ -264,7 +264,7 @@ const Form5 = () => {
                         }}
                         contractAddress={NFT_ADDRESS}
                         action={async () => {
-                            await contract.call('enterTicket', [valuee])
+                            await contract.call('setEnter', [valuee])
                         }}
                         onSuccess={() => {
                             alert('The transaction has been successfully completed.')
@@ -522,7 +522,7 @@ const Form4 = () => {
     const YourComponent = () => {
         const handleNFTTransaction = async () => {
             try {
-                await contract.call('enterTicket', [tokenId]);
+                await contract.call('setEnter', [tokenId]);
                 alert('The transaction has been successfully completed.');
             } catch (error) {
                 alert(error);
