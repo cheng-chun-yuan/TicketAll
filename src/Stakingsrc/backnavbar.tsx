@@ -18,6 +18,7 @@ import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import Linchielon from '../assets/social-media-icons/071.png';
 import Cheng from '../assets/social-media-icons/cheng.png';
 import Debby from '../assets/social-media-icons/Debby.jpg';
+import Keivn from '../assets/social-media-icons/kevin.png';
 import { ConnectWallet } from '@thirdweb-dev/react';
 
 const NavLink = ({ children }: { children: ReactNode }) => (
@@ -203,6 +204,21 @@ function Backnavbar() {
                                             />
                                             <span>
                                                 張芳瑜
+                                            </span>
+                                        </MenuItem>
+                                        <MenuItem
+                                            minH='30px'
+                                            color={'black'}
+                                        >
+                                            <Image
+                                                boxSize='2rem'
+                                                borderRadius='full'
+                                                src={Kevin}
+                                                alt='Simon the pensive'
+                                                mr='12px'
+                                            />
+                                            <span>
+                                                林柏呈
                                             </span>
                                         </MenuItem>
                                     </MenuList>
