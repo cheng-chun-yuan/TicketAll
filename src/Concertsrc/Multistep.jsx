@@ -92,11 +92,10 @@ const Form1 = () => {
                 lineHeight={"26px"}
                 marginTop="20px"
             >
-
                 <Skeleton
                     isLoaded={!loadingcheck}
                 >
-                    {address && check  ? (
+                    {address && check ? (
                         <Icon viewBox='0 0 200 200' color='green'>
                             <path
                                 fill='currentColor'
@@ -213,6 +212,7 @@ const Form1 = () => {
                                         icon: 'error',
                                         title: "An error occurred while sending the transaction",
                                     });
+                                    return false;
                                 }
                             } else {
                                 // Break or handle the failure case
@@ -220,22 +220,7 @@ const Form1 = () => {
                                     icon: 'error',
                                     title: "Identity verification failed",
                                 })
-                                return false;
                             }
-                        }}
-                        onSuccess={() => {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Transaction successfully!',
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                        }}
-                        onError={() => {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Transaction failed',
-                            })
                         }}
                         isDisabled={remainAmount === 0}
                     >
@@ -743,37 +728,34 @@ const Form3 = () => {
 const Form4 = () => {
     const [nfts, setNFTs] = useState([]);
     const address = useAddress();
+    const { contract } = useContract(NFT_ADDRESS);
     // const web3 = new Web3('https://goerli.infura.io/v3/b82e2ff0e6f445c8812457351e2947a7');
     // const contract = new web3.eth.Contract(contractABI, NFT_ADDRESS);
     const [showMore, setShowMore] = useState(false);
-
+    
     const toggleShowMore = () => {
         setShowMore(!showMore);
     };
-    const { contract } = useContract(NFT_ADDRESS)
-    const {
-        data: nowSupplyA,
-        isLoading: loadingnowSupplyA
-    } = useContractRead(contract, "nowSupplyA")
-    const {
-        data: nowSupplyB,
-        isLoading: loadingnowSupplyB
-    } = useContractRead(contract, "nowSupplyB")
-    const {
-        data: nowSupplyC,
-        isLoading: loadingnowSupplyC
-    } = useContractRead(contract, "nowSupplyC")
+    // const { contract } = useContract(NFT_ADDRESS);
 
     useEffect(() => {
         const fetchOwnedNFTs = async () => {
+            const tokenId = [];
             const tokenIds = [];
-            for (let i = 1; i <= 100; i++) {
+            const eventss = await contract.events.getEvents("firstMint")
+            eventss.filter(event => event.data.to === address).map(event => tokenId.push(event.data._tokenId?.toString()));
+            console.log(1)
+            const events2 = await contract.events.getEvents("secondMint")
+            events2.filter(event => event.data.to === address).map(event => tokenId.push(event.data._tokenId?.toString()));
+            console.log(2)
+            for (let i = 0; i <= tokenId.length; i++) {
                 try {
-                    const data = await contract.call("ownerOf", [i]);
+                    console.log(3)
+                    const data = await contract.call("ownerOf", [tokenId[i]]);
                     if (data === address) {
-                        tokenIds.push(i);
+                        tokenIds.push(tokenId[i]);
                     }
-                } catch (error) {}
+                } catch (error) { }
             }
             // const tokenIds = await contract.methods.stakeOfOwner(address,1).call();
             // const tokenIds = [1, 2];
@@ -796,7 +778,6 @@ const Form4 = () => {
     async function fetchNFTMetadata(tokenId) {
         // Implement your logic to fetch the metadata (e.g., from IPFS, a centralized server, or a blockchain query)
         // For this example, let's assume the metadata is stored in a JSON file on Pinata
-
         const pinataUrl = await contract.call("tokenURI", [tokenId]);
         try {
             const response = await fetch(pinataUrl);

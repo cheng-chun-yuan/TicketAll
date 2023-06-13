@@ -88,10 +88,10 @@ export default function Footer() {
                         <SocialButton label={'Twitter'} href={'https://twitter.com/elonmusk'} >
                             <FaTwitter />
                         </SocialButton>
-                        <SocialButton label={'Facebook'} href={'https://www.facebook.com/profile.php?id=100001337162372'}>
+                        <SocialButton label={'Facebook'} href={'https://www.facebook.com/profile.php?id=100079969282356'}>
                             <FaFacebook />
                         </SocialButton>
-                        <SocialButton label={'Instagram'} href={'https://www.instagram.com/chien_1_/'}>
+                        <SocialButton label={'Instagram'} href={'https://www.instagram.com/hgf.yuan_/'}>
                             <FaInstagram />
                         </SocialButton>
                     </Stack>
